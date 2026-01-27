@@ -70,7 +70,8 @@ Run these once per product, not per feature:
 | `/sunrise.clarify` | Clarify unclear requirements |
 | `/sunrise.analyze` | Check consistency across specifications |
 | `/sunrise.checklist` | Generate quality validation checklists |
-| `/sunrise.taskstoissues` | Convert tasks to GitHub issues |
+| `/sunrise.tasks-to-issues` | Convert tasks to GitHub issues |
+| `/sunrise.tasks-to-ado` | Convert tasks to Azure DevOps work items |
 
 ## 🎯 Core Philosophy
 
