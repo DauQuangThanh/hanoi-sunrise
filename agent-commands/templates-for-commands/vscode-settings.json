@@ -1,0 +1,15 @@
+{
+    "chat.promptFilesRecommendations": {
+        "sunrise.set-ground-rules": true,
+        "sunrise.specify": true,
+        "sunrise.architect": true,
+        "sunrise.design": true,
+        "sunrise.taskify": true,
+        "sunrise.implement": true
+    },
+    "chat.tools.terminal.autoApprove": {
+        ".sunrise/scripts/bash/": true,
+        ".sunrise/scripts/powershell/": true
+    }
+}
+
