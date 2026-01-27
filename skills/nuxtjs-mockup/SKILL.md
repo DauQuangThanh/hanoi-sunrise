@@ -5,6 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "2.0"
+  last-updated: "2026-01-27"
 ---
 
 # Nuxt.js Mockup Skill
@@ -49,107 +50,60 @@ Creates interactive UI mockups and prototypes using the latest Nuxt 4 (Vue 3 fra
 ## Technology Stack
 
 **Latest Versions (January 2026):**
+- Nuxt 4.3, Vue 3.5, Tailwind CSS 4.1, Vite 5.4, TypeScript 5.6
 
-- **Nuxt 4.3**: Vue.js framework with powerful features
-- **Vue 3.5**: Progressive JavaScript framework
-- **Tailwind CSS 4.1**: Utility-first CSS with new engine
-- **Vite 5.4**: Fast build tool (built into Nuxt 4)
-- **TypeScript 5.6**: Type safety and better DX
-- **@nuxt/ui**: Fully styled components built on Reka UI (optional)
-- **@nuxt/icon**: Icon module with 200,000+ icons from Iconify
-
-**Note:** Nuxt 4 uses Vite as its default build tool for both development and production.
+See [references/setup-guide.md](references/setup-guide.md#technology-stack-details) for complete version details and features.
 
 ## Instructions
 
+### Phase 0: Specification and Requirements Gathering
+
+**⚠️ IMPORTANT: Always request specification documents before starting implementation.**
+
+1. **Request specification documents:**
+   - Ask the user to provide design specifications, wireframes, or requirements documents
+   - Request any relevant documentation: UI/UX designs, mockups, user stories, or feature descriptions
+   - If no formal documentation exists, ask the user to describe:
+     - Target pages or screens to be created
+     - Key UI components needed
+     - User interactions and flows
+     - Branding guidelines (colors, fonts, style preferences)
+     - Any example references or inspiration
+
+2. **Review and confirm understanding:**
+   - Summarize the requirements back to the user
+   - Clarify any ambiguities or missing details
+   - Confirm the scope and expected deliverables
+   - Ask about any technical constraints or preferences
+
+3. **Only proceed to Phase 1 after:**
+   - Specification documents are provided and reviewed
+   - Requirements are clearly understood
+   - User confirms readiness to start implementation
+
 ### Phase 1: Project Setup and Initialization
 
-1. **Run prerequisite check:**
+See [references/setup-guide.md](references/setup-guide.md#project-setup-steps) for complete setup instructions including:
 
-   ```bash
-   # Bash
-   ./skills/nuxtjs-mockup/scripts/check-nuxt-prerequisites.sh --json
-   
-   # PowerShell
-   .\skills\nuxtjs-mockup\scripts\check-nuxt-prerequisites.ps1 -Json
-   ```
+- Running prerequisite checks
+- Initializing Nuxt 4 project
+- Installing Tailwind CSS and dependencies
+- Configuring Nuxt and Tailwind
+- Project structure creation
 
-2. **Parse script output:**
-   - `node_version`: Must be 18.0.0 or higher
-   - `package_manager`: npm, pnpm, or yarn detected
-   - `workspace_root`: Repository root path
+**Quick Start:**
 
-3. **Initialize Nuxt 4 project** (if not exists):
+```bash
+# Check prerequisites
+./skills/nuxtjs-mockup/scripts/check-nuxt-prerequisites.sh
 
-   ```bash
-   # Using pnpm (recommended)
-   pnpm create nuxt@latest mockup
-   
-   # Or using npx
-   npx create nuxt@latest mockup
-   
-   cd mockup
-   ```
+# Create project
+pnpm create nuxt@latest mockup
+cd mockup
 
-4. **Install Tailwind CSS and dependencies:**
-
-   ```bash
-   # Install Tailwind CSS 4 with Vite plugin
-   pnpm add -D tailwindcss@next @tailwindcss/vite@next
-   
-   # Install additional utilities
-   pnpm add class-variance-authority clsx tailwind-merge
-   
-   # Install icons (Nuxt icon module)
-   pnpm add -D @nuxt/icon
-   ```
-
-5. **Configure Nuxt for Tailwind:**
-
-   Update `nuxt.config.ts`:
-
-   ```typescript
-   export default defineNuxtConfig({
-     modules: ['@nuxt/icon'],
-     vite: {
-       plugins: [
-         require('@tailwindcss/vite')(),
-       ],
-     },
-     css: ['~/assets/css/tailwind.css'],
-     devtools: { enabled: true },
-   })
-   ```
-
-6. **Create Tailwind CSS file:**
-
-   Create `assets/css/tailwind.css`:
-
-   ```css
-   @import "tailwindcss";
-   ```
-
-7. **Project structure created:**
-
-   ```
-   mockup/
-   ├── app.vue             # Root component
-   ├── nuxt.config.ts      # Nuxt configuration
-   ├── tailwind.config.ts  # Tailwind configuration
-   ├── tsconfig.json       # TypeScript config
-   ├── package.json
-   ├── assets/
-   │   └── css/
-   │       └── tailwind.css
-   ├── components/         # Auto-imported components
-   │   ├── ui/            # Base UI components
-   │   └── custom/        # Custom components
-   ├── composables/       # Vue composables
-   ├── layouts/           # Layout components
-   ├── pages/             # File-based routing
-   ├── public/            # Static assets
-   └── server/            # API routes (optional)
-   ```
+# Install Tailwind CSS 4
+pnpm add -D tailwindcss@next @tailwindcss/vite@next @nuxt/icon
+```
 
 ### Phase 2: Design Analysis and Planning
 
@@ -193,325 +147,78 @@ Creates interactive UI mockups and prototypes using the latest Nuxt 4 (Vue 3 fra
 
 ### Phase 3: Component Development
 
-1. **Create base UI components** in `components/ui/`:
-   - Use template: `templates/component-template.vue`
-   - Follow naming: PascalCase (e.g., `Button.vue`, `Card.vue`)
-   - Components are auto-imported by Nuxt
-   - Use TypeScript with `<script setup lang="ts">`
+See [references/setup-guide.md](references/setup-guide.md#component-development-patterns) for complete component templates and best practices.
 
-2. **Build custom components** in `components/custom/`:
-
-   ```vue
-   <!-- HeroSection.vue -->
-   <script setup lang="ts">
-   interface Props {
-     title: string
-     subtitle: string
-     ctaText: string
-   }
-   
-   const props = defineProps<Props>()
-   const emit = defineEmits<{
-     ctaClick: []
-   }>()
-   </script>
-   
-   <template>
-     <section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100">
-       <div class="container mx-auto px-4 text-center">
-         <h1 class="text-5xl font-bold mb-4">{{ title }}</h1>
-         <p class="text-xl text-gray-600 mb-8">{{ subtitle }}</p>
-         <button 
-           class="btn-primary"
-           @click="emit('ctaClick')"
-         >
-           {{ ctaText }}
-         </button>
-       </div>
-     </section>
-   </template>
-   ```
-
-3. **Component best practices:**
-   - Use `<script setup>` for concise syntax
-   - Define props with TypeScript interfaces
-   - Use `defineEmits` for custom events
-   - Leverage Vue 3 Composition API
-   - Auto-import composables from `composables/`
-
-4. **Styling guidelines:**
-   - Use Tailwind utility classes
-   - Responsive breakpoints: `sm:`, `md:`, `lg:`, `xl:`, `2xl:`
-   - Dark mode support: `dark:` variant
-   - Animation: Use Tailwind animate utilities
-   - Extract repeated patterns to custom classes in `assets/css/tailwind.css`
+**Key Points:**
+- Create base UI components in `components/ui/`
+- Build custom components in `components/custom/`
+- Use `<script setup>` with TypeScript
+- Components are auto-imported by Nuxt
+- Follow naming conventions (PascalCase)
 
 ### Phase 4: Page Implementation
 
-1. **Create pages in `pages/` directory:**
+See [references/setup-guide.md](references/setup-guide.md#page-structure-templates) for page templates and layout patterns.
 
-   ```
-   pages/
-   ├── index.vue           # Home (/)
-   ├── about.vue           # About (/about)
-   ├── features.vue        # Features (/features)
-   └── contact.vue         # Contact (/contact)
-   ```
-
-2. **Page structure template:**
-
-   ```vue
-   <!-- pages/index.vue -->
-   <script setup lang="ts">
-   useHead({
-     title: 'Home - Product Name',
-     meta: [
-       { name: 'description', content: 'Product description for SEO' }
-     ]
-   })
-   
-   const features = [
-     { title: 'Feature 1', description: 'Description' },
-     { title: 'Feature 2', description: 'Description' },
-   ]
-   </script>
-   
-   <template>
-     <div>
-       <HeroSection 
-         title="Welcome to Our Product"
-         subtitle="Build amazing things faster"
-         cta-text="Get Started"
-         @cta-click="handleClick"
-       />
-       <FeatureGrid :features="features" />
-     </div>
-   </template>
-   ```
-
-3. **Create layouts** in `layouts/` directory:
-
-   ```vue
-   <!-- layouts/default.vue -->
-   <template>
-     <div>
-       <Navigation />
-       <main>
-         <slot />
-       </main>
-       <Footer />
-     </div>
-   </template>
-   ```
-
-4. **Use layouts in pages:**
-
-   ```vue
-   <script setup lang="ts">
-   definePageMeta({
-     layout: 'default'
-   })
-   </script>
-   ```
+**Key Points:**
+- Create pages in `pages/` directory (file-based routing)
+- Use layouts from `layouts/` directory
+- Add SEO meta tags with `useHead()`
+- Implement navigation with `<NuxtLink>`
 
 ### Phase 5: Interactivity and State
 
-1. **Add client-side interactions:**
-   - Use Vue 3 reactivity (`ref`, `reactive`, `computed`)
-   - Implement form submissions
-   - Add modal dialogs
-   - Create dropdown menus
-   - Toggle states (light/dark theme)
+See [references/setup-guide.md](references/setup-guide.md#interactivity-patterns) for state management and composables.
 
-2. **State management approach:**
-   - **Local state**: Use `ref()` and `reactive()` for component state
-   - **Composables**: Extract reusable logic to `composables/`
-   - **Global state**: Use Pinia (if needed for complex apps)
-   - **Keep it simple**: Avoid heavy state management for mockups
-
-3. **Example interactive component:**
-
-   ```vue
-   <script setup lang="ts">
-   const count = ref(0)
-   const submitted = ref(false)
-   
-   const handleSubmit = () => {
-     submitted.value = true
-     // Mockup: just show success state
-   }
-   </script>
-   
-   <template>
-     <div v-if="submitted">
-       Thank you! We'll be in touch.
-     </div>
-     <form v-else @submit.prevent="handleSubmit">
-       <!-- Form fields -->
-       <button type="submit">Submit</button>
-     </form>
-   </template>
-   ```
-
-4. **Use composables for reusable logic:**
-
-   ```typescript
-   // composables/useTheme.ts
-   export const useTheme = () => {
-     const isDark = ref(false)
-     
-     const toggleTheme = () => {
-       isDark.value = !isDark.value
-       // Toggle dark class on document
-     }
-     
-     return { isDark, toggleTheme }
-   }
-   ```
+**Key Points:**
+- Use Vue 3 reactivity (`ref`, `reactive`, `computed`)
+- Create composables for reusable logic
+- Implement form submissions and interactions
+- Keep state management simple for mockups
 
 ### Phase 6: Navigation and Routing
 
-1. **Navigation component:**
+See [references/setup-guide.md](references/setup-guide.md#navigation-component) for navigation component template.
 
-   ```vue
-   <!-- components/Navigation.vue -->
-   <script setup lang="ts">
-   const navigation = [
-     { name: 'Home', to: '/' },
-     { name: 'Features', to: '/features' },
-     { name: 'About', to: '/about' },
-     { name: 'Contact', to: '/contact' },
-   ]
-   </script>
-   
-   <template>
-     <header class="sticky top-0 z-50 bg-white border-b">
-       <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
-         <NuxtLink to="/" class="text-xl font-bold">
-           Logo
-         </NuxtLink>
-         <div class="flex space-x-6">
-           <NuxtLink 
-             v-for="item in navigation"
-             :key="item.name"
-             :to="item.to"
-             class="text-gray-600 hover:text-gray-900"
-             active-class="text-blue-600 font-semibold"
-           >
-             {{ item.name }}
-           </NuxtLink>
-         </div>
-       </nav>
-     </header>
-   </template>
-   ```
-
-2. **Programmatic navigation:**
-
-   ```typescript
-   const router = useRouter()
-   const navigateToPage = () => {
-     router.push('/about')
-   }
-   ```
+**Key Points:**
+- Create navigation component with routes
+- Use `<NuxtLink>` for client-side navigation
+- Add active state styling
+- Support mobile navigation patterns
 
 ### Phase 7: Polish and Optimization
 
-1. **Responsive design verification:**
-   - Test all breakpoints: mobile (320px+), tablet (768px+), desktop (1024px+)
-   - Ensure touch-friendly tap targets (min 44x44px)
-   - Check text readability on all screen sizes
-   - Verify image scaling and aspect ratios
+See [references/setup-guide.md](references/setup-guide.md#performance-optimization) for optimization techniques.
 
-2. **Performance optimization:**
-   - Use `<NuxtImg>` component for optimized images
-   - Lazy load components: `defineAsyncComponent`
-   - Code splitting automatic with Nuxt
-   - Use `<ClientOnly>` for browser-only components
-
-3. **Accessibility checks:**
-   - Semantic HTML elements (`<header>`, `<nav>`, `<main>`, `<footer>`)
-   - ARIA labels for interactive elements
-   - Keyboard navigation support
-   - Color contrast ratios (WCAG AA minimum)
-   - Alt text for all images
-
-4. **Browser testing:**
-   - Chrome/Edge (latest)
-   - Firefox (latest)
-   - Safari (latest)
-   - Mobile browsers (iOS Safari, Chrome Android)
+**Checklist:**
+- [ ] Responsive design tested (mobile, tablet, desktop)
+- [ ] Performance optimized (lazy loading, image optimization)
+- [ ] Accessibility checked (ARIA, keyboard nav, contrast)
+- [ ] Browser testing completed
 
 ### Phase 8: Development Server and Preview
 
-1. **Start development server:**
+See [references/setup-guide.md](references/setup-guide.md#development-and-deployment) for deployment options.
 
-   ```bash
-   pnpm dev
-   # or
-   npm run dev
-   ```
-
-   - Server runs on <http://localhost:3000>
-   - Hot module replacement (HMR) enabled via Vite
-   - Instant updates on file changes
-
-2. **Create preview build:**
-
-   ```bash
-   pnpm build
-   pnpm preview
-   ```
-
-3. **Share mockup with stakeholders:**
-
-   - **Local network**: Share local IP (e.g., <http://192.168.1.100:3000>)
-   - **Deploy to Vercel/Netlify**: `vercel deploy` or `netlify deploy`
-   - **Static export**: `nuxt generate` for static hosting
+**Commands:**
+```bash
+pnpm dev              # Start development server
+pnpm build            # Build for production
+pnpm preview          # Preview production build
+nuxt generate         # Generate static site
+```
 
 ### Phase 9: Documentation and Handoff
 
-1. **Create README.md** for the mockup:
+**Create README.md** with project overview, setup instructions, and component documentation.
 
-   ```markdown
-   # [Project Name] Mockup
-   
-   Interactive UI prototype built with Nuxt 3, Vue 3, and Tailwind CSS 4.
-   
-   ## Pages
-   - Home: `/`
-   - Features: `/features`
-   - About: `/about`
-   
-   ## Running Locally
-   \`\`\`bash
-   pnpm install
-   pnpm dev
-   \`\`\`
-   
-   ## Build for Production
-   \`\`\`bash
-   pnpm build
-   pnpm preview
-   \`\`\`
-   
-   ## Components
-   - HeroSection: Landing hero with CTA
-   - FeatureGrid: Feature showcase grid
-   - ContactForm: Contact form with validation
-   ```
+**Document design decisions** and provide handoff assets for production implementation.
 
-2. **Document design decisions:**
-   - Color palette and rationale
-   - Typography choices
-   - Component patterns used
-   - Any deviations from original design
+## Additional Resources
 
-3. **Provide handoff assets:**
-   - Component library overview
-   - Style guide (if created)
-   - Asset sources and licensing
-   - Next steps for full implementation
+- [references/setup-guide.md](references/setup-guide.md) - Complete setup and development guide
+- [references/EXAMPLES.md](references/EXAMPLES.md) - Detailed examples (landing pages, dashboards, e-commerce)
+- [references/BEST_PRACTICES.md](references/BEST_PRACTICES.md) - Best practices and notes
 
 ## Success Criteria
 
@@ -527,37 +234,15 @@ Creates interactive UI mockups and prototypes using the latest Nuxt 4 (Vue 3 fra
 
 ## Error Handling
 
-### Common Issues
+See [references/setup-guide.md](references/setup-guide.md#error-handling) for complete error handling guide covering:
 
-1. **Node.js Version Mismatch:**
-   - Error: Nuxt 3 requires Node.js 18+
-   - Action: Upgrade Node.js or use nvm/volta
-   - Fix: `nvm install 20 && nvm use 20`
-
-2. **Port Already in Use:**
-   - Error: Port 3000 is already in use
-   - Action: Kill process or use different port
-   - Fix: `PORT=3001 pnpm dev`
-
-3. **Module Not Found:**
-   - Error: Cannot find module in components/
-   - Action: Check component auto-import
-   - Fix: Ensure file is in `components/` directory with proper naming
-
-4. **Tailwind Classes Not Working:**
-   - Error: Classes not applying styles
-   - Action: Check Tailwind module configuration
-   - Fix: Ensure `@nuxtjs/tailwindcss` is in modules array
-
-5. **Hydration Errors:**
-   - Error: Hydration mismatch
-   - Action: Avoid mismatched client/server rendering
-   - Fix: Use `<ClientOnly>` for browser-only code
-
-6. **Build Errors:**
-   - Error: Type errors or build failures
-   - Action: Fix TypeScript types and imports
-   - Fix: Run `pnpm typecheck` and `pnpm lint`
+**Common Issues:**
+- Node.js version mismatch
+- Port already in use
+- Module not found
+- Tailwind classes not working
+- Hydration errors
+- Build errors
 
 ## Templates
 

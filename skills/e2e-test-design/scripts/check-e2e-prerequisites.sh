@@ -39,6 +39,10 @@ STANDARDS_FILE="$WORKSPACE_ROOT/docs/standards.md"
 EXISTING_E2E_PLAN="$WORKSPACE_ROOT/docs/e2e-test-plan.md"
 SPECS_DIR="$WORKSPACE_ROOT/specs"
 
+# Design files (check multiple locations)
+DESIGN_FILE_DOCS="$WORKSPACE_ROOT/docs/design.md"
+DESIGN_FILE_TECHNICAL="$WORKSPACE_ROOT/docs/technical-design.md"
+
 # Results
 ALL_REQUIRED_PRESENT=true
 ERRORS=()
@@ -72,16 +76,57 @@ if [ -f "$EXISTING_E2E_PLAN" ]; then
     INFO+=("Found existing e2e-test-plan.md (will be updated)")
 fi
 
-# Count feature specifications
+# Count feature specifications (NOW REQUIRED)
 if [ -d "$SPECS_DIR" ]; then
     SPEC_COUNT=$(find "$SPECS_DIR" -type f -name "spec.md" | wc -l)
     if [ $SPEC_COUNT -gt 0 ]; then
         INFO+=("Found $SPEC_COUNT feature specification(s)")
     else
-        WARNINGS+=("No feature specifications found in specs/ (recommended for user journey extraction)")
+        ALL_REQUIRED_PRESENT=false
+        ERRORS+=("No feature specifications found in specs/ - at least 1 spec.md required")
     fi
 else
-    WARNINGS+=("specs/ directory not found (recommended for user journey extraction)")
+    ALL_REQUIRED_PRESENT=false
+    ERRORS+=("specs/ directory not found - feature specifications required")
+fi
+
+# Check for design documents (REQUIRED)
+DESIGN_FOUND=false
+DESIGN_LOCATIONS=""
+
+if [ -f "$DESIGN_FILE_DOCS" ]; then
+    DESIGN_FOUND=true
+    DESIGN_LOCATIONS="docs/design.md"
+    INFO+=("Found design.md")
+fi
+
+if [ -f "$DESIGN_FILE_TECHNICAL" ]; then
+    DESIGN_FOUND=true
+    if [ -n "$DESIGN_LOCATIONS" ]; then
+        DESIGN_LOCATIONS="$DESIGN_LOCATIONS, docs/technical-design.md"
+    else
+        DESIGN_LOCATIONS="docs/technical-design.md"
+    fi
+    INFO+=("Found technical-design.md")
+fi
+
+# Also check for design files in specs directories
+if [ -d "$SPECS_DIR" ]; then
+    SPEC_DESIGN_COUNT=$(find "$SPECS_DIR" -type f -name "design.md" | wc -l)
+    if [ $SPEC_DESIGN_COUNT -gt 0 ]; then
+        DESIGN_FOUND=true
+        if [ -n "$DESIGN_LOCATIONS" ]; then
+            DESIGN_LOCATIONS="$DESIGN_LOCATIONS, specs/*/design.md ($SPEC_DESIGN_COUNT files)"
+        else
+            DESIGN_LOCATIONS="specs/*/design.md ($SPEC_DESIGN_COUNT files)"
+        fi
+        INFO+=("Found $SPEC_DESIGN_COUNT design file(s) in specs/")
+    fi
+fi
+
+if [ "$DESIGN_FOUND" = false ]; then
+    ALL_REQUIRED_PRESENT=false
+    ERRORS+=("No design documents found - required in docs/design.md, docs/technical-design.md, or specs/*/design.md")
 fi
 
 # Output results
@@ -112,7 +157,13 @@ if [ "$JSON_OUTPUT" = true ]; then
     echo "  },"
     echo "  \"feature_specs\": {"
     echo "    \"directory\": \"$SPECS_DIR\","
-    echo "    \"count\": $SPEC_COUNT"
+    echo "    \"count\": $SPEC_COUNT,"
+    echo "    \"required\": true"
+    echo "  },"
+    echo "  \"design_files\": {"
+    echo "    \"found\": $([[ $DESIGN_FOUND == true ]] && echo \"true\" || echo \"false\"),"
+    echo "    \"locations\": \"$DESIGN_LOCATIONS\","
+    echo "    \"required\": true"
     echo "  },"
     echo "  \"errors\": ["
     for i in "${!ERRORS[@]}"; do
@@ -169,6 +220,20 @@ else
     else
         echo -e "  ${RED}✗${NC} ground-rules.md (MISSING - REQUIRED)"
     fi
+    
+    # Feature specifications
+    if [ $SPEC_COUNT -gt 0 ]; then
+        echo -e "  ${GREEN}✓${NC} Feature specifications ($SPEC_COUNT found in specs/)"
+    else
+        echo -e "  ${RED}✗${NC} Feature specifications (MISSING - at least 1 required in specs/*/spec.md)"
+    fi
+    
+    # Design documents
+    if [ "$DESIGN_FOUND" = true ]; then
+        echo -e "  ${GREEN}✓${NC} Design documents ($DESIGN_LOCATIONS)"
+    else
+        echo -e "  ${RED}✗${NC} Design documents (MISSING - required in docs/design.md, docs/technical-design.md, or specs/*/design.md)"
+    fi
     echo ""
     
     # Optional files section
@@ -183,15 +248,6 @@ else
         echo -e "  ${GREEN}✓${NC} e2e-test-plan.md (will be updated)"
     else
         echo -e "  ${YELLOW}○${NC} e2e-test-plan.md (will be created)"
-    fi
-    echo ""
-    
-    # Feature specifications section
-    echo -e "${BLUE}Feature Specifications:${NC}"
-    if [ $SPEC_COUNT -gt 0 ]; then
-        echo -e "  ${GREEN}✓${NC} Found $SPEC_COUNT specification(s) in specs/"
-    else
-        echo -e "  ${YELLOW}○${NC} No specifications found (recommended for user journey extraction)"
     fi
     echo ""
     
@@ -217,10 +273,6 @@ else
     if [ "$ALL_REQUIRED_PRESENT" = true ]; then
         echo -e "${GREEN}✓ All required files present. Ready to run e2e-test-design skill.${NC}"
         
-        if [ $SPEC_COUNT -eq 0 ]; then
-            echo -e "${YELLOW}Note: Consider adding feature specifications in specs/ for better user journey extraction.${NC}"
-        fi
-        
         if [ ! -f "$STANDARDS_FILE" ]; then
             echo -e "${YELLOW}Note: Consider creating standards.md for test code standards guidance.${NC}"
         fi
@@ -230,7 +282,9 @@ else
             echo -e "  ${RED}-${NC} $error"
         done
         echo ""
-        echo -e "${YELLOW}Tip: Run 'architect' skill to create architecture.md if needed.${NC}"
+        echo -e "${YELLOW}Tip: Run 'architecture-design' skill to create architecture.md if needed.${NC}"
+        echo -e "${YELLOW}Tip: Run 'requirements-specification' skill to create feature specifications.${NC}"
+        echo -e "${YELLOW}Tip: Run 'technical-design' skill to create design documents.${NC}"
         echo -e "${YELLOW}Tip: Create docs/ground-rules.md with project principles and constraints.${NC}"
     fi
     echo ""

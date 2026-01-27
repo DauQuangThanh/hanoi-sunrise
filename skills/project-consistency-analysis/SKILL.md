@@ -4,7 +4,7 @@ description: Performs read-only cross-artifact consistency analysis across spec.
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-26"
+  last-updated: "2026-01-27"
 license: MIT
 ---
 
@@ -146,266 +146,63 @@ Create internal representations for analysis (do not include in output):
 
 ### Step 4: Detection Passes (High-Signal Analysis)
 
-Focus on actionable findings. Limit to 50 findings total; summarize overflow.
+Focus on actionable findings. Limit to 50 findings total; summarize overflow. See [references/analysis-patterns.md](references/analysis-patterns.md) for detailed detection algorithms, examples, and patterns.
 
-#### A. Duplication Detection
+**Six Detection Passes**:
 
-**Objective:** Identify near-duplicate requirements that should be consolidated
+**A. Duplication Detection**: Near-duplicate requirements (>70% similarity) that should be consolidated
 
-**Detection Criteria:**
+**B. Ambiguity Detection**: Vague adjectives, placeholders, unmeasurable criteria
 
-- Requirements with >70% textual similarity
-- Same user story described multiple times
-- Repeated non-functional requirements with different wording
+**C. Underspecification Detection**: Incomplete requirements, missing acceptance criteria, undefined error handling
 
-**Example Finding:**
+**D. Ground-Rules Alignment**: Validate MUST/SHOULD principles, prohibited practices, quality gates
 
-- **Location:** spec.md:L45, spec.md:L120
-- **Issue:** Two requirements both specify "fast response time" without clear distinction
-- **Recommendation:** Consolidate into single requirement with measurable criteria
+**E. Coverage Gap Detection**: Requirements without tasks, orphan tasks, missing NFR coverage
 
-#### B. Ambiguity Detection
-
-**Objective:** Flag vague or unmeasurable requirements
-
-**Detection Criteria:**
-
-- Vague adjectives without measurable criteria:
-  - "fast", "scalable", "secure", "intuitive", "robust", "efficient", "user-friendly"
-- Unresolved placeholders:
-  - "TODO", "TKTK", "???", "<placeholder>", "[to be determined]"
-- Requirements using "should" without clear definition
-- Acceptance criteria with subjective measures
-
-**Example Finding:**
-
-- **Location:** spec.md:L78
-- **Issue:** "System must be fast" - no measurable performance criteria
-- **Recommendation:** Specify concrete metric (e.g., "API responses < 200ms for 95th percentile")
-
-#### C. Underspecification Detection
-
-**Objective:** Identify incomplete or unclear requirements
-
-**Detection Criteria:**
-
-- Requirements with action verbs but missing objects or outcomes
-- User stories missing acceptance criteria
-- Tasks referencing undefined files or components
-- Non-functional requirements without implementation guidance
-
-**Example Finding:**
-
-- **Location:** spec.md:L92
-- **Issue:** "System must handle errors" - missing error types and handling strategies
-- **Recommendation:** Specify error types, logging requirements, and user feedback mechanisms
-
-#### D. Ground-Rules Alignment
-
-**Objective:** Validate compliance with project principles
-
-**Detection Criteria:**
-
-- Any requirement or design element conflicting with MUST principles
-- Missing mandated sections from ground-rules
-- Skipped quality gates
-- Use of prohibited practices
-
-**Severity:** All ground-rules violations are CRITICAL
-
-**Example Finding:**
-
-- **Location:** design.md:L150
-- **Issue:** Violates ground-rule "MUST use TypeScript for type safety" - design specifies plain JavaScript
-- **Recommendation:** Update design to use TypeScript or update ground-rules if principle changed
-
-#### E. Coverage Gap Detection
-
-**Objective:** Ensure all requirements have corresponding tasks
-
-**Detection Criteria:**
-
-- Requirements with zero associated tasks
-- Tasks with no mapped requirement or user story
-- Non-functional requirements not reflected in implementation tasks
-- Missing tasks for security, performance, or accessibility requirements
-
-**Example Finding:**
-
-- **Location:** spec.md:L56 (Requirement: data-encryption)
-- **Issue:** No tasks implement data encryption requirement
-- **Recommendation:** Add tasks for encryption implementation and testing
-
-#### F. Inconsistency Detection
-
-**Objective:** Identify contradictions and misalignments
-
-**Detection Criteria:**
-
-- **Terminology Drift**: Same concept named differently (e.g., "User" vs "Account" vs "Profile")
-- **Data Entity Mismatches**: Entities in design.md not defined in spec.md (or vice versa)
-- **Task Ordering Issues**: Integration tasks before foundational setup without dependency notes
-- **Conflicting Requirements**: Contradictory technology or approach specifications
-- **Architecture Misalignment**: Design uses technology not approved in architecture.md
-- **Standards Violations**: File/code naming not following standards.md
-- **Pattern Deviations**: Implementation not following architectural patterns
-
-**Example Finding:**
-
-- **Location:** spec.md:L34 vs design.md:L78
-- **Issue:** Spec requires Next.js, design specifies Vue.js
-- **Recommendation:** Resolve technology conflict - align spec and design
+**F. Inconsistency Detection**: Terminology drift, data mismatches, technology conflicts, architecture/standards violations
 
 ### Step 5: Severity Assignment
 
-Assign severity levels to prioritize findings:
+Assign severity levels to prioritize findings. See [references/analysis-patterns.md](references/analysis-patterns.md) for detailed severity decision tree and examples.
 
-#### CRITICAL
+**CRITICAL**: Ground-rules MUST violations, missing core artifacts, zero coverage for baseline functionality, contradictory requirements, major security/data gaps. **Action: Must resolve before implementation**
 
-- Violates ground-rules MUST requirement
-- Missing core spec artifact
-- Requirement with zero coverage that blocks baseline functionality
-- Contradictory requirements preventing implementation
-- Major security or data integrity gaps
+**HIGH**: Duplicate/conflicting requirements, ambiguous security/performance, untestable criteria, missing NFR coverage, architecture/standards violations. **Action: Should resolve before implementation**
 
-**Action:** Must resolve before implementation
+**MEDIUM**: Terminology drift, underspecified edge cases, minor coverage gaps, task ordering issues with workarounds. **Action: Can proceed but recommend fixes**
 
-#### HIGH
-
-- Duplicate or conflicting requirements
-- Ambiguous security/performance attributes
-- Untestable acceptance criteria
-- Missing non-functional requirement coverage
-- Architecture/standards violations
-
-**Action:** Should resolve before implementation
-
-#### MEDIUM
-
-- Terminology drift affecting clarity
-- Underspecified edge cases
-- Minor coverage gaps in optional features
-- Task ordering inconsistencies with workarounds
-
-**Action:** Can proceed but recommend fixes
-
-#### LOW
-
-- Style/wording improvements
-- Minor redundancy not affecting execution
-- Optional documentation gaps
-- Cosmetic inconsistencies
-
-**Action:** Optional improvements, can defer
+**LOW**: Style improvements, minor redundancy, optional documentation gaps, cosmetic inconsistencies. **Action: Optional, can defer**
 
 ### Step 6: Generate Analysis Report
 
-Create structured report using `templates/analysis-report.md`:
+Create structured report using `templates/analysis-report.md`. See [references/analysis-patterns.md](references/analysis-patterns.md) for detailed report templates and formatting.
 
-**Report Structure:**
-
-1. **Executive Summary**
-   - Overall status (Pass / Issues Found / Critical Issues)
-   - Total findings by severity
-   - Coverage percentage
-   - Key metrics
-
-2. **Findings Table**
-
-   | ID | Category | Severity | Location(s) | Summary | Recommendation |
-   |---|---|---|---|---|---|
-   | A1 | Ambiguity | HIGH | spec.md:L78 | "Fast response" unmeasurable | Define < 200ms target |
-   | D1 | Duplication | MEDIUM | spec.md:L45, L120 | Duplicate requirements | Merge into single req |
-
-3. **Coverage Summary**
-
-   | Requirement Key | Has Tasks? | Task IDs | Notes |
-   |---|---|---|---|
-   | user-can-login | ✅ | T010, T011 | Complete |
-   | data-encryption | ❌ | - | Missing implementation |
-
-4. **Ground-Rules Alignment Issues** (if any)
-
-   List all CRITICAL ground-rules violations with recommendations
-
-5. **Unmapped Tasks** (if any)
-
-   Tasks that don't map to any requirement or user story
-
-6. **Metrics Summary**
-   - Total Requirements: X
-   - Total Tasks: Y
-   - Coverage %: Z% (requirements with ≥1 task)
-   - Findings: Critical: A, High: B, Medium: C, Low: D
-   - Ambiguity Count: E
-   - Duplication Count: F
+**Report Sections**:
+1. **Executive Summary**: Status, total findings by severity, coverage %, key metrics
+2. **Findings Table**: ID, Category, Severity, Location(s), Summary, Recommendation
+3. **Coverage Summary**: Requirements with/without tasks, orphan tasks
+4. **Ground-Rules Alignment Issues**: CRITICAL violations (if any)
+5. **Unmapped Tasks**: Tasks without requirements (if any)
+6. **Metrics Summary**: Requirements, tasks, coverage %, findings counts
 
 ### Step 7: Provide Next Actions
 
-Based on analysis results, recommend next steps:
+Based on analysis results, recommend next steps. See [references/analysis-patterns.md](references/analysis-patterns.md) for decision tree and next actions template.
 
-#### If CRITICAL Issues Exist
+**If CRITICAL Issues**: Stop, resolve critical issues, suggest fix commands, re-run analysis
 
-- **Stop:** Do not proceed with implementation
-- **Action:** Resolve critical issues first
-- **Commands:** Suggest specific commands to fix issues
-  - `/sunrise.specify` - Refine specifications
-  - `/sunrise.design` - Adjust architecture
-  - Manually edit tasks.md to add coverage
+**If HIGH/MEDIUM Issues**: Proceed with caution, address high-priority items, provide improvement suggestions
 
-#### If Only HIGH/MEDIUM Issues
-
-- **Proceed with Caution:** Can start implementation but should fix issues
-- **Action:** Address high-priority items, defer medium if needed
-- **Commands:** Provide improvement suggestions
-
-#### If Only LOW Issues or No Issues
-
-- **Clear to Proceed:** Ready for implementation
-- **Action:** Optional improvements can be deferred
-- **Commands:** `/sunrise.implement` to start implementation
-
-**Example Next Actions Block:**
-
-```markdown
-## Next Actions
-
-**Status:** 🔴 Critical Issues Found - Do Not Implement
-
-### Immediate Actions Required
-
-1. **Resolve Technology Conflict** (CRITICAL)
-   - Location: spec.md:L34 vs design.md:L78
-   - Action: Align on Next.js or Vue.js, update conflicting document
-
-2. **Add Encryption Tasks** (CRITICAL)
-   - Location: spec.md:L56
-   - Action: Add tasks to tasks.md for data encryption implementation
-
-3. **Fix Ground-Rules Violation** (CRITICAL)
-   - Location: design.md:L150
-   - Action: Update design to use TypeScript per ground-rules
-
-### Recommended Next Steps
-
-1. Run `/sunrise.specify` to refine ambiguous requirements
-2. Edit tasks.md to add coverage for missing requirements
-3. Re-run analysis after fixes to verify resolution
-```
+**If LOW/No Issues**: Clear to proceed, optional improvements can be deferred, suggest `/phoenix.implement`
 
 ### Step 8: Offer Remediation Suggestions
 
-After presenting the report, ask the user:
+After presenting the report, ask: **"Would you like me to suggest concrete remediation edits for the top N issues?"**
 
-**"Would you like me to suggest concrete remediation edits for the top N issues?"**
+**Important**: Do NOT apply edits automatically. This skill is strictly read-only.
 
-**Important:** Do NOT apply edits automatically. This skill is strictly read-only.
-
-If user agrees, provide specific edit recommendations:
-
-- Exact file paths and line numbers
-- "Change from" → "Change to" examples
-- Rationale for each change
+If user agrees, provide specific edit recommendations with exact file paths, line numbers, "Change from" → "Change to" examples, and rationale. See [references/analysis-patterns.md](references/analysis-patterns.md) for remediation suggestion format and examples.
 
 ## Operating Principles
 

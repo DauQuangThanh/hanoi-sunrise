@@ -19,6 +19,10 @@ $StandardsFile = Join-Path $WorkspaceRoot "docs/standards.md"
 $ExistingE2EPlan = Join-Path $WorkspaceRoot "docs/e2e-test-plan.md"
 $SpecsDir = Join-Path $WorkspaceRoot "specs"
 
+# Design files (check multiple locations)
+$DesignFileDocs = Join-Path $WorkspaceRoot "docs/design.md"
+$DesignFileTechnical = Join-Path $WorkspaceRoot "docs/technical-design.md"
+
 # Results
 $AllRequiredPresent = $true
 $Errors = @()
@@ -52,18 +56,54 @@ if (Test-Path $ExistingE2EPlan) {
     $Info += "Found existing e2e-test-plan.md (will be updated)"
 }
 
-# Count feature specifications
+# Count feature specifications (NOW REQUIRED)
 if (Test-Path $SpecsDir) {
     $SpecFiles = Get-ChildItem -Path $SpecsDir -Filter "spec.md" -Recurse -File
     $SpecCount = $SpecFiles.Count
     if ($SpecCount -gt 0) {
         $Info += "Found $SpecCount feature specification(s)"
     } else {
-        $Warnings += "No feature specifications found in specs/ (recommended for user journey extraction)"
+        $AllRequiredPresent = $false
+        $Errors += "No feature specifications found in specs/ - at least 1 spec.md required"
     }
 } else {
-    $Warnings += "specs/ directory not found (recommended for user journey extraction)"
+    $AllRequiredPresent = $false
+    $Errors += "specs/ directory not found - feature specifications required"
 }
+
+# Check for design documents (REQUIRED)
+$DesignFound = $false
+$DesignLocations = @()
+
+if (Test-Path $DesignFileDocs) {
+    $DesignFound = $true
+    $DesignLocations += "docs/design.md"
+    $Info += "Found design.md"
+}
+
+if (Test-Path $DesignFileTechnical) {
+    $DesignFound = $true
+    $DesignLocations += "docs/technical-design.md"
+    $Info += "Found technical-design.md"
+}
+
+# Also check for design files in specs directories
+if (Test-Path $SpecsDir) {
+    $SpecDesignFiles = Get-ChildItem -Path $SpecsDir -Filter "design.md" -Recurse -File
+    $SpecDesignCount = $SpecDesignFiles.Count
+    if ($SpecDesignCount -gt 0) {
+        $DesignFound = $true
+        $DesignLocations += "specs/*/design.md ($SpecDesignCount files)"
+        $Info += "Found $SpecDesignCount design file(s) in specs/"
+    }
+}
+
+if (-not $DesignFound) {
+    $AllRequiredPresent = $false
+    $Errors += "No design documents found - required in docs/design.md, docs/technical-design.md, or specs/*/design.md"
+}
+
+$DesignLocationsString = $DesignLocations -join ", "
 
 # Output results
 if ($Json) {
@@ -94,6 +134,12 @@ if ($Json) {
         feature_specs = @{
             directory = $SpecsDir
             count = $SpecCount
+            required = $true
+        }
+        design_files = @{
+            found = $DesignFound
+            locations = $DesignLocationsString
+            required = $true
         }
         errors = $Errors
         warnings = $Warnings
@@ -134,6 +180,28 @@ if ($Json) {
         Write-Host "✗" -ForegroundColor Red -NoNewline
         Write-Host " ground-rules.md (MISSING - REQUIRED)"
     }
+    
+    # Feature specifications
+    if ($SpecCount -gt 0) {
+        Write-Host "  " -NoNewline
+        Write-Host "✓" -ForegroundColor Green -NoNewline
+        Write-Host " Feature specifications ($SpecCount found in specs/)"
+    } else {
+        Write-Host "  " -NoNewline
+        Write-Host "✗" -ForegroundColor Red -NoNewline
+        Write-Host " Feature specifications (MISSING - at least 1 required in specs/*/spec.md)"
+    }
+    
+    # Design documents
+    if ($DesignFound) {
+        Write-Host "  " -NoNewline
+        Write-Host "✓" -ForegroundColor Green -NoNewline
+        Write-Host " Design documents ($DesignLocationsString)"
+    } else {
+        Write-Host "  " -NoNewline
+        Write-Host "✗" -ForegroundColor Red -NoNewline
+        Write-Host " Design documents (MISSING - required in docs/design.md, docs/technical-design.md, or specs/*/design.md)"
+    }
     Write-Host ""
     
     # Optional files section
@@ -156,19 +224,6 @@ if ($Json) {
         Write-Host "  " -NoNewline
         Write-Host "○" -ForegroundColor Yellow -NoNewline
         Write-Host " e2e-test-plan.md (will be created)"
-    }
-    Write-Host ""
-    
-    # Feature specifications section
-    Write-Host "Feature Specifications:" -ForegroundColor Blue
-    if ($SpecCount -gt 0) {
-        Write-Host "  " -NoNewline
-        Write-Host "✓" -ForegroundColor Green -NoNewline
-        Write-Host " Found $SpecCount specification(s) in specs/"
-    } else {
-        Write-Host "  " -NoNewline
-        Write-Host "○" -ForegroundColor Yellow -NoNewline
-        Write-Host " No specifications found (recommended for user journey extraction)"
     }
     Write-Host ""
     
@@ -198,10 +253,6 @@ if ($Json) {
     if ($AllRequiredPresent) {
         Write-Host "✓ All required files present. Ready to run e2e-test-design skill." -ForegroundColor Green
         
-        if ($SpecCount -eq 0) {
-            Write-Host "Note: Consider adding feature specifications in specs/ for better user journey extraction." -ForegroundColor Yellow
-        }
-        
         if (-not (Test-Path $StandardsFile)) {
             Write-Host "Note: Consider creating standards.md for test code standards guidance." -ForegroundColor Yellow
         }
@@ -211,7 +262,9 @@ if ($Json) {
             Write-Host "  - $error" -ForegroundColor Red
         }
         Write-Host ""
-        Write-Host "Tip: Run 'architect' skill to create architecture.md if needed." -ForegroundColor Yellow
+        Write-Host "Tip: Run 'architecture-design' skill to create architecture.md if needed." -ForegroundColor Yellow
+        Write-Host "Tip: Run 'requirements-specification' skill to create feature specifications." -ForegroundColor Yellow
+        Write-Host "Tip: Run 'technical-design' skill to create design documents." -ForegroundColor Yellow
         Write-Host "Tip: Create docs/ground-rules.md with project principles and constraints." -ForegroundColor Yellow
     }
     Write-Host ""

@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-26"
+  last-updated: "2026-01-27"
 ---
 
 # E2E Test Design Skill
@@ -35,12 +35,15 @@ Activate this skill when:
 
 - `docs/architecture.md` - System architecture and components (required)
 - `docs/ground-rules.md` - Project principles and constraints (required)
-- Feature specifications in `specs/*/spec.md` - For user journey extraction (highly recommended)
+- At least one feature specification in `specs/*/spec.md` - For user journey extraction (required)
+- Design documents in `docs/design.md` or `specs/*/design.md` - For implementation details (required)
 
 **Optional Files:**
 
 - `docs/standards.md` - Coding standards (for test code standards)
 - Existing `docs/e2e-test-plan.md` - For updates
+
+**Important**: This skill MUST NOT proceed without specifications and design documents. E2E tests require understanding of user journeys, workflows, and implementation details that come from specs and design.
 
 **Validation:**
 
@@ -70,7 +73,8 @@ scripts/check-e2e-prerequisites.sh --json
 - Presence of `docs/architecture.md` (required)
 - Presence of `docs/ground-rules.md` (required)
 - Presence of `docs/standards.md` (optional)
-- Count of feature specifications in `specs/`
+- Count of feature specifications in `specs/` (at least 1 required)
+- Presence of design documents in `docs/design.md` or `specs/*/design.md` (required)
 - Existing `docs/e2e-test-plan.md` (for updates)
 
 ## Instructions
@@ -80,14 +84,20 @@ scripts/check-e2e-prerequisites.sh --json
 1. **Run prerequisite script** to detect required files:
    - Execute the appropriate script for your platform
    - Parse JSON output to get file paths
-   - Verify `architecture.md` and `ground-rules.md` exist (required)
-   - Note count of feature specifications (needed for user journey extraction)
+   - **STOP AND ASK USER** if any of these are missing:
+     - `docs/architecture.md` (required)
+     - `docs/ground-rules.md` (required)
+     - At least one specification file in `specs/*/spec.md` (required)
+     - Design documents in `docs/design.md` or `specs/*/design.md` (required)
+   - If required files are missing, inform user: "E2E test design requires specifications and design documents. Please create them first using the requirements-specification and technical-design skills."
+   - DO NOT PROCEED without these files
 
 2. **Read context files** in order:
    - **MUST READ**: `docs/architecture.md` for system components and integration points
    - **MUST READ**: `docs/ground-rules.md` for testing constraints
+   - **MUST READ**: All feature specs from `specs/*/spec.md` for user journey extraction
+   - **MUST READ**: Design documents (`docs/design.md` or `specs/*/design.md`) for implementation details
    - **MUST READ IF EXISTS**: `docs/standards.md` for test code standards
-   - **READ ALL**: Feature specs from `specs/*/spec.md` for user journey extraction
    - **READ IF EXISTS**: Existing `docs/e2e-test-plan.md` for updates
 
 3. **Create docs/ directory** if it doesn't exist:
@@ -102,73 +112,20 @@ scripts/check-e2e-prerequisites.sh --json
 
 **Goal**: Analyze architecture and define E2E test strategy and scope.
 
-1. **Analyze architecture and features**:
-   - Parse `architecture.md` to understand:
-     - System components (frontend, backend, database, external services)
-     - Integration points between components
-     - External dependencies (APIs, third-party services)
-     - Technology stack (web, mobile, desktop)
-     - Data flow and communication patterns
-
-   - Parse all `specs/*/spec.md` files to identify:
-     - User personas and roles
-     - Critical business workflows
-     - Feature dependencies and interactions
-     - Data requirements
-
-   - Review `ground-rules.md` for:
-     - Testing constraints (no production data, specific tools required)
-     - Security and privacy requirements
-     - Compliance requirements (HIPAA, GDPR, PCI-DSS)
+1. **Analyze architecture and features** - Parse `architecture.md` for system components, integration points, external dependencies, technology stack, and data flow. Review specs for user personas, critical workflows, feature dependencies. Check `ground-rules.md` for testing constraints and compliance requirements.
 
 2. **Define E2E test scope**:
-   - **IN SCOPE**: What will be tested E2E
-     - Critical business workflows (authentication, payment, core features)
-     - Integration points (UI ↔ API ↔ Database ↔ External Services)
-     - Cross-component data flows
-     - Security and authorization flows
-     - Data integrity across system
+   - **IN SCOPE**: Critical business workflows, integration points, cross-component data flows, security/authorization flows, data integrity
+   - **OUT OF SCOPE**: Unit-level logic, component functionality, performance/load testing (separate suites)
+   - **Testing Boundaries**: UI-to-database validation, API-to-external-service integration, end-user-visible functionality
 
-   - **OUT OF SCOPE**: What won't be tested E2E
-     - Unit-level logic (covered by unit tests)
-     - Component-level functionality (covered by integration tests)
-     - Performance testing (separate performance test suite)
-     - Load/stress testing (separate suite)
+3. **Select test approach** based on system type: Web (Cypress/Playwright), API (REST Assured/Supertest), Mobile (Appium/Detox), or Mixed (combined)
 
-   - **Testing Boundaries**: Define test coverage extent
-     - UI-to-database validation
-     - API-to-external-service integration
-     - End-user-visible functionality only
-     - System behavior under normal conditions
+4. **Determine test coverage goals**: Critical paths 100% (P0), Important features 80-90% (P1), Secondary 50-70% (P2), Edge cases best effort (P3)
 
-3. **Select test approach** based on system type:
-   - **Web Applications**: UI-driven E2E tests
-     - Tools: Cypress, Playwright, Selenium WebDriver
-     - Covers: Browser interactions, UI state, visual validation
+**For detailed test strategy patterns, see:** [`references/test-strategy-patterns.md`](references/test-strategy-patterns.md)
 
-   - **API Services**: API-driven E2E tests
-     - Tools: REST Assured, Supertest, Postman/Newman
-     - Covers: API contracts, data validation, integration flows
-
-   - **Mobile Applications**: Mobile E2E tests
-     - Tools: Appium, Detox, Maestro
-     - Covers: Mobile UI, gestures, native features
-
-   - **Mixed Systems**: Combined approach
-     - UI tests + API tests + Database validation
-     - Multiple tool integration
-
-4. **Determine test coverage goals**:
-   - Critical paths: 100% coverage (P0 scenarios)
-   - Important features: 80-90% coverage (P1 scenarios)
-   - Secondary features: 50-70% coverage (P2 scenarios)
-   - Edge cases: Best effort (P3 scenarios)
-
-**Output**:
-
-- Section 1 (Introduction) with project context
-- Section 2 (Test Strategy) with approach justification
-- Section 3 (Scope) with clear boundaries
+**Output**: Section 1 (Introduction), Section 2 (Test Strategy), Section 3 (Scope)
 
 ### Phase 1: User Journey & Scenario Identification
 
@@ -176,118 +133,21 @@ scripts/check-e2e-prerequisites.sh --json
 
 **Goal**: Extract user journeys from features and design detailed test scenarios.
 
-1. **Extract user journeys from feature specs**:
-   - **Identify user personas**: Parse all specs for persona definitions
-     - Examples: Admin, Customer, Guest, Manager, API Consumer
+1. **Extract user journeys from feature specs** - Identify user personas, map happy path workflows, identify alternative paths, document edge cases, and cross-feature user flows from spec files
 
-   - **Map happy path workflows** for each persona:
-     - Start-to-finish business processes
-     - Example: "Customer registers → browses products → adds to cart → checks out → receives confirmation"
+2. **Prioritize test scenarios** by business impact: Critical/P0 (authentication, payments, core workflows), High/P1 (major features), Medium/P2 (secondary features), Low/P3 (edge cases)
 
-   - **Identify alternative paths**:
-     - Conditional flows (if logged in vs guest)
-     - Different permission levels
-     - Various data scenarios
+3. **Design detailed test scenarios** with structure: Priority, Type, User Journey, Preconditions, Test Steps, Expected Results, Postconditions. Include coverage for positive, negative, boundary conditions, integration points, and state transitions.
 
-   - **Document edge cases**:
-     - Error conditions (invalid input, network failures)
-     - Boundary conditions (empty cart, max items)
-     - Unusual but valid paths
+**For comprehensive test scenario examples and patterns, see:** [`references/test-scenario-examples.md`](references/test-scenario-examples.md)
 
-   - **Cross-feature user flows**:
-     - Workflows spanning multiple features
-     - Example: "User profile update → triggers email → updates dashboard → reflects in reports"
-
-2. **Prioritize test scenarios** by business impact:
-   - **Critical (P0)**: Must work for system to be viable
-     - Authentication and authorization
-     - Payment and transaction processing
-     - Core business workflows
-     - Data integrity operations
-     - Security-critical paths
-
-   - **High (P1)**: Important but not immediately critical
-     - Major features with high usage
-     - Data modification operations
-     - Report generation
-     - User management
-
-   - **Medium (P2)**: Secondary features
-     - Nice-to-have features
-     - Less frequently used paths
-     - Cosmetic features with data impact
-
-   - **Low (P3)**: Edge cases and rare scenarios
-     - Unusual edge cases
-     - Deprecated features
-     - Admin-only rarely-used features
-
-3. **Design detailed test scenarios**:
-
-   For each user journey, create test scenario with:
-
-   **Scenario Structure:**
-
-   ```markdown
-   ### Test Scenario: [Descriptive Name]
-   
-   **Priority:** P0/P1/P2/P3
-   **Type:** Happy Path / Alternative Path / Error Path / Boundary
-   **User Journey:** [Related journey]
-   
-   **Preconditions:**
-   - User is logged in as [role]
-   - Database contains [test data]
-   - System is in [state]
-   
-   **Test Steps:**
-   1. Navigate to [page/endpoint]
-   2. Enter [data] in [field]
-   3. Click [button]
-   4. Verify [expected behavior]
-   5. ...
-   
-   **Expected Results:**
-   - [Expected outcome 1]
-   - [Expected outcome 2]
-   - UI displays [expected state]
-   - Database contains [expected data]
-   - API returns [expected response]
-   
-   **Postconditions:**
-   - User is redirected to [page]
-   - Data is saved in database
-   - Email is sent to user
-   ```
-
-   **Coverage Checklist:**
-   - ✅ Positive scenarios (valid input, expected behavior)
-   - ✅ Negative scenarios (invalid input, error handling)
-   - ✅ Boundary conditions (min/max values, empty/full)
-   - ✅ Integration points (UI → API → Database → External)
-   - ✅ State transitions (before/after operation)
-
-**Output**:
-
-- Section 4 (User Journeys) with persona-based workflows
-- Section 5 (Test Scenarios) with detailed scenario specifications
+**Output**: Section 4 (User Journeys), Section 5 (Test Scenarios)
 
 ### Phase 2: Test Data & Environment Strategy
 
 **Prerequisites:** Phase 1 complete
 
 **Goal**: Design test data management and environment configuration strategies.
-
-1. **Design test data management**:
-
-   **Identify required test data types**:
-   - User accounts (various roles and permissions)
-   - Business entities (products, orders, customers)
-   - Reference data (categories, settings, configurations)
-   - Transaction data (orders, payments, logs)
-   - File uploads (documents, images, videos)
-
-   **Define test data generation approach**:
    - **Fixtures**: Static JSON/YAML files for predictable data
 
      ```javascript
@@ -337,73 +197,15 @@ scripts/check-e2e-prerequisites.sh --json
      - Isolated database schemas
 
    **Document sensitive data handling**:
-   - PII (Personally Identifiable Information): Use fake data generators
-   - Passwords: Never hardcode, use environment variables
-   - API keys: Store in secrets management, not in code
-   - Payment data: Use test mode tokens, never real cards
-   - Compliance: Follow GDPR, HIPAA, PCI-DSS requirements
+1. **Design test data management** - Identify required test data types (user accounts, business entities, reference data), define generation approach (static fixtures, factory functions, mocked APIs, seeded databases), plan data cleanup and isolation (per-test isolation, setup/teardown, database transactions), manage sensitive data (environment variables, data masking, test-specific credentials)
 
-2. **Define test environments**:
+2. **Define test environments** - Configure environments (Local/Docker, CI/CD/ephemeral, Staging/production-like, Pre-production), define infrastructure requirements (database, cache, message queue, storage, monitoring), establish service mocking strategy (HTTP mocking, service virtualization, contract testing), design database seeding and reset procedures
 
-   **Environment configurations**:
-   - **Local Environment**: Developer machines
-     - Docker Compose setup for local services
-     - Mock external dependencies
-     - Fast feedback loop
+3. **Design test isolation strategy** - Parallel execution, data isolation, state management, automatic cleanup
 
-   - **CI/CD Environment**: Automated test runs
-     - Ephemeral environments per pipeline run
-     - Parallelized test execution
-     - Artifact storage for test results
+**For comprehensive test data and environment patterns, see:** [`references/test-strategy-patterns.md`](references/test-strategy-patterns.md) (sections: Test Data Management Strategies, Test Environment Requirements)
 
-   - **Staging/QA Environment**: Pre-production testing
-     - Production-like configuration
-     - Real external service connections (test mode)
-     - Stable for manual testing
-
-   - **Pre-production Environment**: Final validation
-     - Identical to production
-     - Limited access
-     - Production-scale data (sanitized)
-
-   **Infrastructure requirements**:
-   - Database: PostgreSQL 15, MongoDB 6, etc.
-   - Cache: Redis, Memcached
-   - Message Queue: RabbitMQ, Kafka
-   - Storage: S3-compatible object storage
-   - Monitoring: Logs, metrics, traces
-
-   **Service mocking/stubbing strategy**:
-   - **When to mock**:
-     - Expensive external APIs (payment gateways)
-     - Unreliable third-party services
-     - Services not available in test environment
-
-   - **Mocking approaches**:
-     - HTTP mocking (MSW, WireMock, Nock)
-     - Service virtualization (Hoverfly, Mountebank)
-     - Contract testing (Pact) for API contracts
-
-   **Database seeding and reset procedures**:
-
-   ```bash
-   # Seed database before test run
-   npm run db:seed:test
-   
-   # Reset database after test run
-   npm run db:reset:test
-   ```
-
-3. **Design test isolation strategy**:
-   - **Parallel execution**: Tests run concurrently without conflicts
-   - **Data isolation**: Each test has unique data, no shared state
-   - **State management**: Tests are independent, can run in any order
-   - **Cleanup**: Automatic rollback or deletion after test completion
-
-**Output**:
-
-- Section 6 (Test Data Management) with generation and cleanup strategies
-- Section 7 (Test Environments) with configuration and infrastructure requirements
+**Output**: Section 6 (Test Data Management), Section 7 (Test Environments)
 
 ### Phase 3: Test Automation Framework & Tools
 
@@ -412,232 +214,25 @@ scripts/check-e2e-prerequisites.sh --json
 **Goal**: Select testing framework, design test architecture, and define coding standards.
 
 1. **Select testing framework and tools** based on tech stack:
+   - UI Testing: Cypress (web apps, modern stack), Playwright (cross-browser, parallel), Selenium WebDriver (legacy, language flexibility)
+   - API Testing: Supertest (Node.js), REST Assured (Java), Postman/Newman (collection-based)
+   - Mobile Testing: Appium (cross-platform), Detox (React Native), XCUITest/Espresso (native)
+   - Visual Testing: Percy, Applitools, BackstopJS
+   - Performance: k6, JMeter, Gatling
 
-   **UI Testing Frameworks:**
-   - **Cypress**: Modern, developer-friendly, fast feedback
-     - Pros: Excellent DX, automatic waiting, time-travel debugging
-     - Cons: Chrome/Edge only (now Webkit too), no mobile
-     - Use when: Web apps, fast iteration, modern stack
+2. **Design test architecture** - Use Page Object Model (POM), organize by pages/fixtures/helpers/scenarios, create utility functions (database, API, assertions, waits), implement custom assertions, set up reporting/logging (HTML, JSON, JUnit XML, screenshots, videos), configure CI/CD integration (PR runs, parallel execution, artifacts, notifications)
 
-   - **Playwright**: Multi-browser, parallel, powerful
-     - Pros: All browsers, mobile web, parallel by default, auto-wait
-     - Cons: Steeper learning curve
-     - Use when: Cross-browser testing, headless CI, mobile web
+3. **Define coding standards for tests** - Naming conventions (descriptive test names, file naming patterns), test structure (AAA pattern: Arrange-Act-Assert), code reusability patterns (page objects, helper functions, fixtures, test hooks), documentation requirements (comments, data requirements, README)
 
-   - **Selenium WebDriver**: Industry standard, mature
-     - Pros: All browsers, mobile (Appium), language flexibility
-     - Cons: Manual waits, flaky tests, slower
-     - Use when: Legacy systems, specific language requirement
+**For framework patterns, architecture examples, and implementation details, see:** [`references/test-strategy-patterns.md`](references/test-strategy-patterns.md) (sections: Test Automation Framework Patterns, Test Organization Patterns)
 
-   **API Testing Frameworks:**
-   - **Supertest** (Node.js): Express/Node.js API testing
-   - **REST Assured** (Java): Java/Spring Boot API testing
-   - **Postman/Newman**: Collection-based API testing
-   - **Playwright** (API mode): API testing with Playwright
-
-   **Mobile Testing Frameworks:**
-   - **Appium**: Cross-platform mobile (iOS + Android)
-   - **Detox**: React Native E2E testing
-   - **Maestro**: Simple mobile testing with YAML
-   - **XCUITest / Espresso**: Native iOS / Android testing
-
-   **Visual Testing:**
-   - **Percy**: Visual regression testing
-   - **Applitools**: AI-powered visual testing
-   - **BackstopJS**: Screenshot comparison
-
-   **Performance Testing:**
-   - **k6**: Modern load testing (JavaScript)
-   - **JMeter**: Traditional load testing
-   - **Gatling**: Scala-based load testing
-
-   **Justification Example:**
-
-   ```markdown
-   **Selected Tools:**
-   - UI: Playwright (multi-browser support required, parallel execution)
-   - API: Supertest (Node.js stack, integrated with UI tests)
-   - Mobile: Detox (React Native app)
-   - Visual: Percy (CI integration, team familiarity)
-   
-   **Rationale:**
-   - Playwright supports all browsers required by business (Chrome, Firefox, Safari)
-   - Supertest allows API testing in same language as UI tests (TypeScript)
-   - Detox is official React Native testing framework with good community support
-   ```
-
-2. **Design test architecture**:
-
-   **Test Organization Pattern - Page Object Model (POM):**
-
-   ```
-   tests/e2e/
-   ├── pages/                    # Page objects
-   │   ├── BasePage.ts
-   │   ├── LoginPage.ts
-   │   ├── DashboardPage.ts
-   │   └── CheckoutPage.ts
-   ├── fixtures/                 # Test data
-   │   ├── users.json
-   │   ├── products.json
-   │   └── orders.json
-   ├── helpers/                  # Test utilities
-   │   ├── api.ts
-   │   ├── database.ts
-   │   └── assertions.ts
-   ├── scenarios/                # Test scenarios
-   │   ├── authentication/
-   │   │   ├── login.spec.ts
-   │   │   └── logout.spec.ts
-   │   ├── checkout/
-   │   │   └── complete-order.spec.ts
-   │   └── admin/
-   │       └── user-management.spec.ts
-   └── playwright.config.ts
-   ```
-
-   **Test Utility Functions:**
-   - Database helpers (seed, reset, query)
-   - API helpers (authenticate, CRUD operations)
-   - Assertion helpers (custom matchers)
-   - Wait helpers (waitForElement, waitForAPI)
-
-   **Custom Assertions:**
-
-   ```typescript
-   // helpers/assertions.ts
-   export async function expectDatabaseToContain(table, data) {
-     const result = await db.query(`SELECT * FROM ${table} WHERE ...`)
-     expect(result).toContainEqual(expect.objectContaining(data))
-   }
-   ```
-
-   **Reporting and Logging:**
-   - Test reporters: HTML, JSON, JUnit XML
-   - Screenshot on failure
-   - Video recording for debugging
-   - Detailed logs with timestamps
-   - Test execution metrics (duration, pass/fail rate)
-
-   **CI/CD Integration:**
-   - Run tests on PR creation
-   - Parallel execution across multiple machines
-   - Artifact upload (screenshots, videos, reports)
-   - Failure notifications (Slack, email)
-
-3. **Define coding standards for tests**:
-
-   **Test Naming Conventions:**
-   - Descriptive test names: `should allow user to complete checkout successfully`
-   - File naming: `{feature}.spec.ts` or `{feature}.test.ts`
-   - Page object naming: `{PageName}Page.ts`
-
-   **Test Structure (AAA Pattern):**
-
-   ```typescript
-   test('should display error for invalid email', async ({ page }) => {
-     // Arrange - Set up test data and initial state
-     await page.goto('/login')
-     const invalidEmail = 'not-an-email'
-     
-     // Act - Perform the action being tested
-     await page.fill('#email', invalidEmail)
-     await page.click('#submit')
-     
-     // Assert - Verify expected behavior
-     await expect(page.locator('.error')).toContainText('Invalid email')
-   })
-   ```
-
-   **Code Reusability Patterns:**
-   - Extract common actions into page objects
-   - Create helper functions for repeated operations
-   - Use fixtures for test data management
-   - Utilize test hooks (beforeEach, afterEach) for setup/teardown
-
-   **Documentation Requirements:**
-   - Comment complex test logic
-   - Document test data requirements
-   - Explain non-obvious waits or workarounds
-   - Provide README for running tests locally
-
-**Output**:
-
-- Section 8 (Test Framework) with tool selection and justification
-- Section 9 (Test Architecture) with patterns and code organization
+**Output**: Section 8 (Test Framework), Section 9 (Test Architecture)
 
 ### Phase 4: Execution Plan & Reporting
 
 **Prerequisites:** Phase 3 complete
 
 **Goal**: Create test execution plan, reporting strategy, and maintenance guidelines.
-
-1. **Create test execution plan**:
-
-   **Execution Schedule:**
-   - **Nightly Builds**: Full regression suite
-     - All P0, P1, P2 scenarios
-     - Runs overnight, results ready by morning
-     - Blocks release if critical tests fail
-
-   - **Pre-Release**: Smoke + critical tests
-     - P0 scenarios only
-     - Runs before each release candidate
-     - Must pass 100% to proceed
-
-   - **On-Demand**: Developer-triggered
-     - Run specific test suites
-     - Quick feedback during development
-     - Optional, doesn't block commits
-
-   **Execution Triggers:**
-   - **CI/CD Pipeline**:
-     - PR creation: Smoke tests (P0)
-     - Merge to main: Full regression (P0, P1)
-     - Release branch: Full suite (P0, P1, P2)
-
-   - **Scheduled**:
-     - Nightly: Full regression
-     - Weekly: Extended suite including P3
-
-   - **Manual**:
-     - Developer-triggered for debugging
-     - QA-triggered for validation
-
-   **Test Suite Organization:**
-   - **Smoke Suite**: Critical paths only (5-10 min)
-   - **Regression Suite**: All scenarios (30-60 min)
-   - **Full Suite**: Including edge cases (1-2 hours)
-   - **Feature-specific**: Tests for specific feature
-
-   **Execution Sequence:**
-   - Authentication tests first (setup for other tests)
-   - Independent tests in parallel
-   - Dependent tests sequentially
-   - Cleanup tests last
-
-2. **Design reporting strategy**:
-
-   **Test Result Reporting:**
-   - **HTML Report**: Human-readable, with screenshots
-
-     ```
-     test-results/
-     ├── index.html               # Overview
-     ├── passed/                  # Passed test details
-     ├── failed/                  # Failed test details
-     │   ├── screenshot-1.png
-     │   ├── video-1.webm
-     │   └── trace-1.zip
-     └── skipped/                 # Skipped tests
-     ```
-
-   - **JSON Report**: Machine-readable for CI integration
-   - **JUnit XML**: For Jenkins/Azure DevOps integration
-
-   **Dashboard and Visualization:**
-   - **Allure Report**: Comprehensive test reporting with history
-   - **ReportPortal**: Centralized test automation reporting
    - **Custom Dashboard**: Grafana + InfluxDB for metrics
 
    **Failure Notification:**
@@ -652,37 +247,15 @@ scripts/check-e2e-prerequisites.sh --json
    - **Coverage**: % of user journeys covered
    - **Trends**: Pass rate over time, flakiness trends
 
-3. **Plan maintenance and updates**:
+1. **Create test execution plan** - Define execution schedule (nightly builds, pre-release, on-demand), establish triggers (CI/CD pipeline: PR/merge/release, Scheduled: nightly/weekly, Manual: developer/QA), organize test suites (Smoke 5-10min, Regression 30-60min, Full 1-2hr, Feature-specific), set execution sequence (authentication first, parallel for independent, sequential for dependent)
 
-   **Test Suite Maintenance Schedule:**
-   - Weekly: Review failed tests, fix flaky tests
-   - Monthly: Update test data, remove obsolete tests
-   - Quarterly: Refactor test architecture, update dependencies
+2. **Design reporting strategy** - Configure test result reporting (HTML with screenshots, JSON for CI, JUnit XML for CI/CD tools), set up dashboards and visualization (Allure Report, ReportPortal, Grafana), define metrics tracking (pass rate >95%, execution time trends, flaky test rate <5%), establish notifications and alerts (Slack/email on failures, test health monitoring)
 
-   **Flaky Test Identification:**
-   - Track tests that fail <5% of time
-   - Investigate root cause (timing, race conditions, test data)
-   - Fix or skip until fixed
-   - Monitor flakiness metrics
+3. **Plan maintenance and updates** - Set maintenance schedule (weekly: fix flaky tests, monthly: update data/remove obsolete, quarterly: refactor architecture/update deps), implement flaky test identification and tracking, define refactoring guidelines (DRY, extract helpers, update page objects), establish update process for new features
 
-   **Test Refactoring Guidelines:**
-   - Keep tests DRY (Don't Repeat Yourself)
-   - Extract common actions into helpers
-   - Update page objects when UI changes
-   - Consolidate similar test scenarios
+**For execution patterns, reporting, and monitoring strategies, see:** [`references/test-strategy-patterns.md`](references/test-strategy-patterns.md) (sections: Test Execution Patterns, Reporting and Monitoring Patterns)
 
-   **Update Process for New Features:**
-   1. Feature spec created → identify test scenarios
-   2. Implement feature → write E2E tests
-   3. Add tests to appropriate suite (smoke/regression)
-   4. Update test data and fixtures
-   5. Update documentation
-
-**Output**:
-
-- Section 10 (Execution Plan) with schedule and triggers
-- Section 11 (Reporting) with dashboard and metrics strategy
-- Section 12 (Maintenance) with update process
+**Output**: Section 10 (Execution Plan), Section 11 (Reporting), Section 12 (Maintenance)
 
 ### Phase 5: Finalization & Supplementary Documents
 
@@ -690,102 +263,11 @@ scripts/check-e2e-prerequisites.sh --json
 
 **Goal**: Create detailed test scenarios, generate supplementary documents, and validate completeness.
 
-1. **Document test scenarios in detail**:
-   - Expand each test scenario with step-by-step instructions
-   - Include expected results at each step
-   - Add Mermaid diagrams for complex flows
-   - Document test data samples
-   - List prerequisite setup steps
+1. **Document test scenarios in detail** - Expand each scenario with step-by-step instructions, expected results at each step, Mermaid diagrams for complex flows, test data samples, prerequisite setup steps
 
-2. **Generate supplementary documents** (optional but recommended):
+2. **Generate supplementary documents** (optional but recommended) - `docs/e2e-test-scenarios.md` (scenario catalog), `docs/test-data-guide.md` (data management guide), `docs/e2e-test-setup.md` (environment setup), `tests/e2e/README.md` (developer quick start)
 
-   **docs/e2e-test-scenarios.md**: Catalog of all test scenarios
-
-   ```markdown
-   # E2E Test Scenario Catalog
-   
-   ## Authentication
-   ### TC-001: User Login - Happy Path
-   - Priority: P0
-   - Steps: ...
-   - Expected: ...
-   
-   ### TC-002: User Login - Invalid Credentials
-   - Priority: P0
-   - Steps: ...
-   - Expected: ...
-   ```
-
-   **docs/test-data-guide.md**: Test data management guide
-
-   ```markdown
-   # Test Data Management Guide
-   
-   ## Fixtures
-   Location: `tests/e2e/fixtures/`
-   Usage: Load with `import users from '../fixtures/users.json'`
-   
-   ## Database Seeding
-   Command: `npm run db:seed:test`
-   ```
-
-   **docs/e2e-test-setup.md**: Environment setup instructions
-
-   ```markdown
-   # E2E Test Setup Guide
-   
-   ## Prerequisites
-   - Node.js 18+
-   - Docker Desktop
-   
-   ## Setup Steps
-   1. Clone repository
-   2. Install dependencies: `npm install`
-   3. Start services: `docker-compose up -d`
-   4. Seed database: `npm run db:seed:test`
-   5. Run tests: `npm run test:e2e`
-   ```
-
-   **tests/e2e/README.md**: Quick start for developers
-
-   ```markdown
-   # E2E Tests - Quick Start
-   
-   ## Running Tests
-   ```bash
-   npm run test:e2e              # Run all tests
-   npm run test:e2e:ui           # Run with UI
-   npm run test:e2e:smoke        # Run smoke tests only
-   ```
-
-3. **Validate E2E test plan**:
-   - [ ] All critical user journeys have test scenarios
-   - [ ] Test scenarios cover all integration points from architecture
-   - [ ] Test data strategy addresses privacy and security
-   - [ ] Test framework selection is justified
-   - [ ] Test environment requirements are specified
-   - [ ] Execution plan includes CI/CD integration
-   - [ ] Reporting strategy is comprehensive
-   - [ ] Ground-rules constraints are respected (no production data, etc.)
-   - [ ] Architecture alignment is verified
-   - [ ] Standards alignment is checked (if standards.md exists)
-
-4. **Output file locations**:
-
-   ```
-   docs/
-   ├── e2e-test-plan.md         # Main E2E test document
-   ├── e2e-test-scenarios.md    # Optional: Detailed scenario catalog
-   ├── test-data-guide.md       # Optional: Test data management
-   └── e2e-test-setup.md        # Optional: Setup instructions
-   
-   tests/e2e/
-   ├── README.md                # Quick start guide
-   ├── fixtures/                # Test data
-   ├── helpers/                 # Test utilities
-   ├── pages/                   # Page objects (if UI testing)
-   └── scenarios/               # Test implementations
-   ```
+3. **Validate E2E test plan** - Verify critical user journeys have scenarios, test scenarios cover all integration points, data strategy addresses privacy/security, framework selection is justified, environment requirements specified, execution plan includes CI/CD, reporting is comprehensive, ground-rules constraints respected, architecture/standards alignment checked
 
 **Output**: Complete `docs/e2e-test-plan.md`, supplementary documents, test directory structure
 

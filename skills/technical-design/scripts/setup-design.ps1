@@ -59,7 +59,7 @@ function Write-WarningMessage {
     }
 }
 
-# Detect if we're in a git repository
+# Detect if we're in a git repository and on a feature branch
 $HasGit = $false
 $CurrentBranch = "main"
 $FeatureDir = ""
@@ -82,24 +82,34 @@ try {
                 $FeatureSpec = "$FeatureDir/spec.md"
                 Write-InfoMessage "Detected feature branch: $CurrentBranch"
             } else {
-                Write-WarningMessage "Not on a feature branch (expected format: N-feature-name)"
-                Write-WarningMessage "Design artifacts will be created in design/ directory"
+                Write-ErrorMessage "Not on a feature branch. Technical design requires a feature branch (format: N-feature-name)"
+                Write-ErrorMessage "Please create and checkout a feature branch first"
+                exit 1
             }
+        } else {
+            Write-ErrorMessage "Git repository required for technical design workflow"
+            Write-ErrorMessage "Please initialize git repository and create a feature branch (format: N-feature-name)"
+            exit 1
         }
+    } else {
+        Write-ErrorMessage "Git is not installed or not available"
+        Write-ErrorMessage "Technical design requires git and a feature branch (format: N-feature-name)"
+        exit 1
     }
 } catch {
-    Write-WarningMessage "Not in a git repository or git not available"
+    Write-ErrorMessage "Git repository required for technical design workflow"
+    Write-ErrorMessage "Please initialize git repository and create a feature branch (format: N-feature-name)"
+    exit 1
 }
 
-# Determine design directory location
+# Design directory location - always feature-specific
 if ($FeatureDir -and (Test-Path $FeatureDir)) {
-    # We're on a feature branch, use feature-specific design directory
     $DesignDir = "$FeatureDir/design"
     Write-InfoMessage "Using feature-specific design directory: $DesignDir"
 } else {
-    # Use project-level design directory
-    $DesignDir = "design"
-    Write-InfoMessage "Using project-level design directory: $DesignDir"
+    Write-ErrorMessage "Feature directory not found: $FeatureDir"
+    Write-ErrorMessage "Please ensure specs/$CurrentBranch directory exists"
+    exit 1
 }
 
 $FeatureDesign = "$DesignDir/design.md"

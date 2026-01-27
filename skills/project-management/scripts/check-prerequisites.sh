@@ -65,9 +65,9 @@ find_feature_dir() {
         return 0
     fi
     
-    # Check .sunrise/features/* subdirectories
-    if [[ -d "$current_dir/.sunrise/features" ]]; then
-        for subdir in "$current_dir/.sunrise/features"/*; do
+    # Check .phoenix/features/* subdirectories
+    if [[ -d "$current_dir/.phoenix/features" ]]; then
+        for subdir in "$current_dir/.phoenix/features"/*; do
             if [[ -d "$subdir" ]] && is_feature_dir "$subdir"; then
                 echo "$subdir"
                 return 0
@@ -205,7 +205,7 @@ output_json() {
         echo "  \"message\": \"Could not find feature directory. Looking for directory containing design.md or spec.md\","
         echo "  \"searched_paths\": ["
         echo "    \"$current_dir\","
-        echo "    \"$current_dir/.sunrise/features\","
+        echo "    \"$current_dir/.phoenix/features\","
         echo "    \"$current_dir/features\","
         echo "    \"$current_dir/docs/features\""
         echo "  ]"
@@ -242,7 +242,7 @@ output_human() {
         echo ""
         echo "Searched paths:"
         echo "  • $current_dir"
-        echo "  • $current_dir/.sunrise/features"
+        echo "  • $current_dir/.phoenix/features"
         echo "  • $current_dir/features"
         echo "  • $current_dir/docs/features"
     fi

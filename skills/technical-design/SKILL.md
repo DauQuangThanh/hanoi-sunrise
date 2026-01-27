@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0.0"
-  last-updated: "2026-01-24"
+  last-updated: "2026-01-27"
 ---
 
 # Technical Design Skill
@@ -24,6 +24,12 @@ This skill guides you through a structured implementation planning workflow to c
 - Documenting implementation approaches
 - When user requests "design this feature", "create technical plan", "plan implementation", or "design API"
 
+**Next Steps After Creating Technical Design:**
+- Use `project-management` skill to create task breakdown (tasks.md)
+- Use `e2e-test-design` skill for end-to-end test planning
+- Use `coding` skill to execute implementation
+- Use `bug-analysis` skill if issues are discovered during development
+
 ## Prerequisites
 
 **Required:**
@@ -31,14 +37,49 @@ This skill guides you through a structured implementation planning workflow to c
 - Feature specification or requirements document available
 - Templates provided with this skill (in `templates/` directory)
 - Scripts provided with this skill (in `scripts/` directory)
+- Git repository with feature branch (format: `N-feature-name`, e.g., `1-user-authentication`)
+- Feature directory at `specs/N-feature-name/` with `spec.md` file
 
 **Optional (workspace-level enhancements):**
 
 - `docs/ground-rules.md` - Project constraints and standards
 - `docs/architecture.md` - Architectural decisions and patterns
-- Git repository (for branch tracking and commits)
+
+**Important:** Technical design must be done on a feature branch. The design artifacts will be created in `specs/N-feature-name/design/` directory.
 
 ## Instructions
+
+### Step 0: Specification and Requirements Gathering
+
+**⚠️ IMPORTANT: Always request specification documents before starting technical design.**
+
+1. **Request specification documents:**
+   - Ask the user to provide feature specifications, requirements documents, or user stories
+   - Request any relevant documentation: feature specs, functional requirements, PRD (Product Requirements Document), or design specifications
+   - If no formal documentation exists, ask the user to describe:
+     - The feature or component to be designed
+     - User workflows and interactions
+     - Expected inputs and outputs
+     - Business logic and rules
+     - Integration requirements with other systems
+     - Performance and scalability needs
+     - Security and data privacy requirements
+
+2. **Verify project context exists:**
+   - Check if `docs/ground-rules.md` exists (for project standards and constraints)
+   - Check if `docs/architecture.md` exists (for architectural patterns and decisions)
+   - If missing, note that design may need additional guidance from user
+
+3. **Review and confirm understanding:**
+   - Summarize the requirements back to the user
+   - Clarify any ambiguities or missing details
+   - Confirm the scope and expected technical design deliverables
+   - Identify what needs to be designed (data models, APIs, components, workflows)
+
+4. **Only proceed to Step 1 after:**
+   - Specification documents are provided and reviewed
+   - Requirements are clearly understood
+   - User confirms readiness to start technical design
 
 ### Step 1: Setup and Context Loading
 
@@ -59,9 +100,15 @@ This skill guides you through a structured implementation planning workflow to c
    Replace `<SKILL_DIR>` with the absolute path to this skill directory.
 
    The script will:
-   - Create `design/` directory structure (or `specs/N-feature/design/` if on feature branch)
+   - Verify you're on a feature branch (format: `N-feature-name`)
+   - Create `specs/N-feature-name/design/` directory structure
    - Copy all templates from skill's `templates/` directory
    - Return JSON with paths: `feature_design`, `research_file`, `data_model_file`, `contracts_dir`
+
+   **Note:** The script will exit with an error if:
+   - Not in a git repository
+   - Not on a feature branch with format `N-feature-name`
+   - Feature directory `specs/N-feature-name/` doesn't exist
 
 2. **Load required context**:
    - Read feature specification/requirements (from JSON output: `feature_spec`)
@@ -209,20 +256,20 @@ This skill guides you through a structured implementation planning workflow to c
 
 ### Step 8: Commit Design Artifacts
 
-1. **Stage all design files**:
+1. **Stage all design files** (replace N-feature-name with actual feature branch name):
 
    ```bash
-   git add design/design.md
-   git add design/research/research.md
-   git add design/data-model.md
-   git add design/contracts/
-   git add design/quickstart.md
+   git add specs/N-feature-name/design/design.md
+   git add specs/N-feature-name/design/research/research.md
+   git add specs/N-feature-name/design/data-model.md
+   git add specs/N-feature-name/design/contracts/
+   git add specs/N-feature-name/design/quickstart.md
    ```
 
-2. **Create commit with 'docs:' prefix**:
+2. **Create commit with 'feat:' prefix**:
 
    ```bash
-   git commit -m "docs: add implementation plan for [feature-name]"
+   git commit -m "feat: add technical design for N-feature-name"
    ```
 
 3. **Report completion**:
@@ -250,7 +297,28 @@ Design user authentication with email/password and OAuth support
 5. contracts/ includes: POST /auth/login, POST /auth/register, GET /auth/me, POST /auth/oauth/callback
 6. quickstart.md outlines: auth middleware setup, token validation, refresh flow
 
-**Output**: Complete design package in design/ directory, committed to git
+**Output**: Complete design package in specs/N-feature-name/design/ directory, committed to git
+
+### Step 9: Quality Review (Recommended)
+
+**After completing the technical design, it's highly recommended to run a quality review:**
+
+1. **Run the technical-design-review skill** to validate:
+   - Alignment with architecture and specifications
+   - Completeness of technical decisions
+   - Feasibility and implementability
+   - Clarity of data models and API contracts
+   - Proper consideration of edge cases and error handling
+
+2. **Address any findings** from the review before starting implementation
+
+3. **If issues found**, update the design and repeat validation
+
+**Next Steps:**
+- If review passes, proceed to implementation using `coding` skill
+- **Recommended:** Ensure `coding-standards` skill has been used to establish code conventions before coding begins
+- Consider `e2e-test-design` skill for comprehensive test planning
+- Use `project-management` skill to break design into actionable tasks
 
 ### Example 2: Payment Processing Integration
 
@@ -365,7 +433,7 @@ All templates are automatically copied by the setup script to the appropriate de
 
 After completing the technical design, consider these follow-up actions:
 
-1. **Task Breakdown**: Use sunrise.taskify agent to break design into implementation tasks
-2. **Checklist Creation**: Use sunrise.checklist agent to create validation checklist
-3. **E2E Test Design**: Use sunrise.design-e2e-test agent to design end-to-end tests
+1. **Task Breakdown**: Use phoenix.taskify agent to break design into implementation tasks
+2. **Checklist Creation**: Use phoenix.checklist agent to create validation checklist
+3. **E2E Test Design**: Use phoenix.design-e2e-test agent to design end-to-end tests
 4. **Implementation**: Begin implementing according to quickstart.md and data models

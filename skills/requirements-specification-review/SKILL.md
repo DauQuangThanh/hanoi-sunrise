@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0.0"
-  last-updated: "2026-01-25"
+  last-updated: "2026-01-27"
 ---
 
 # Requirements Specification Review
@@ -71,119 +71,27 @@ Use this skill when:
 
 ### Step 2: Perform Structured Coverage Scan
 
-Scan the specification using this comprehensive taxonomy. For each category, assess status: **Clear** / **Partial** / **Missing**.
+Scan the specification using a comprehensive 12-category taxonomy. For each category, assess status: **Clear** / **Partial** / **Missing**. See [references/review-guide.md](references/review-guide.md) for detailed assessment criteria and examples for each category.
 
-#### Taxonomy Categories
+**Categories**: Functional Scope & Behavior, Domain & Data Model, Interaction & UX Flow, Non-Functional Quality Attributes, Integration & External Dependencies, Edge Cases & Failure Handling, Constraints & Tradeoffs, Architecture Alignment, Standards Compliance, Terminology & Consistency, Completion Signals, Placeholders & Ambiguities
 
-**1. Functional Scope & Behavior**
-
-- Core user goals & success criteria defined
-- Explicit out-of-scope declarations present
-- User roles / personas differentiation clear
-
-**2. Domain & Data Model**
-
-- Entities, attributes, relationships documented
-- Identity & uniqueness rules specified
-- Lifecycle/state transitions defined
-- Data volume / scale assumptions stated
-
-**3. Interaction & UX Flow**
-
-- Critical user journeys / sequences documented
-- Error/empty/loading states specified
-- Accessibility or localization notes included
-
-**4. Non-Functional Quality Attributes**
-
-- Performance targets (latency, throughput) specified
-- Scalability expectations (horizontal/vertical, limits) defined
-- Reliability & availability (uptime, recovery) stated
-- Observability needs (logging, metrics, tracing) documented
-- Security & privacy (authN/Z, data protection) specified
-- Compliance / regulatory constraints noted
-
-**5. Integration & External Dependencies**
-
-- External services/APIs and failure modes documented
-- Data import/export formats specified
-- Protocol/versioning assumptions stated
-
-**6. Edge Cases & Failure Handling**
-
-- Negative scenarios documented
-- Rate limiting / throttling behavior specified
-- Conflict resolution (e.g., concurrent edits) defined
-
-**7. Constraints & Tradeoffs**
-
-- Technical constraints documented
-- Explicit tradeoffs or rejected alternatives noted
-
-**8. Architecture Alignment** (if architecture.md exists)
-
-- Alignment with architectural patterns validated
-- Consistency with technology stack verified
-- Adherence to quality attribute requirements checked
-
-**9. Standards Compliance** (if standards.md exists)
-
-- Naming convention requirements checked
-- File structure alignment verified
-- Coding standard adherence validated
-
-**10. Terminology & Consistency**
-
-- Canonical glossary terms used consistently
-- No conflicting synonyms / deprecated terms
-
-**11. Completion Signals**
-
-- Acceptance criteria are testable
-- Measurable Definition of Done indicators present
-
-**12. Placeholders & Ambiguities**
-
-- No TODO markers remain
-- Ambiguous adjectives ("robust", "intuitive") are quantified
-
-**Create internal coverage map** (do not output unless no questions will be asked):
-
-- List each category with its status
-- Note specific gaps or ambiguities found
-- Calculate priority score: Impact × Uncertainty
+**Create internal coverage map**:
+- List each category with status
+- Note specific gaps/ambiguities
+- Calculate priority: Impact × Uncertainty
 
 ### Step 3: Generate Prioritized Question Queue
 
-Based on the coverage scan, generate an internal prioritized queue of clarification questions:
+Based on coverage scan, generate internal prioritized queue. See [references/review-guide.md](references/review-guide.md) for:
+- Detailed prioritization matrix (Impact × Uncertainty)
+- Question formulation guidelines
+- Integration strategies by answer type
 
-**Constraints:**
+**Constraints**: Max 5 questions per session, max 10 total. Each question must be multiple-choice (2-5 options) OR short phrase (≤5 words).
 
-- **Maximum 5 questions** per review session
-- **Maximum 10 questions** across all sessions for this spec
-- Each question must be answerable with:
-  - Multiple-choice (2-5 options), OR
-  - Short phrase answer (≤5 words)
+**Prioritization**: Impact × Uncertainty, favor high-risk items, ensure category diversity.
 
-**Prioritization Criteria:**
-
-1. **Impact**: Will the answer materially change architecture, data modeling, testing, or UX?
-2. **Uncertainty**: Is this highly ambiguous or missing?
-3. **Risk**: Will lack of clarity cause downstream rework?
-4. **Coverage balance**: Spread questions across high-impact categories
-
-**Exclusion Rules:**
-
-- Skip if already answered in spec
-- Skip if trivial stylistic preference
-- Skip if better deferred to planning phase
-- Skip if doesn't block correctness
-
-**Selection Strategy:**
-
-- If >5 categories unresolved, select top 5 by (Impact × Uncertainty)
-- Favor questions that reduce rework risk
-- Ensure category diversity
+**Exclusion**: Skip if already answered, trivial, or better deferred to planning.
 
 ### Step 4: Interactive Questioning Loop
 
@@ -253,56 +161,22 @@ Present questions one at a time in an interactive loop:
 
 ### Step 5: Integrate Each Answer (Incremental Updates)
 
-After EACH accepted answer, immediately update the spec:
+After EACH accepted answer, immediately update the spec. See [references/review-guide.md](references/review-guide.md) for detailed integration strategies and target sections by answer type.
 
-1. **Ensure Clarifications section exists**:
-   - Add `## Clarifications` section if not present (after overview/context section)
-   - Create `### Session YYYY-MM-DD` subheading for today
-
-2. **Record the Q&A**:
-   - Append: `- Q: [question] → A: [final answer]`
-
-3. **Apply clarification to appropriate section(s)**:
-
-   | Answer Type | Target Section | Action |
-   |-------------|----------------|--------|
-   | Functional requirement | Functional Requirements | Add/update requirement bullet |
-   | User interaction/actor | User Scenarios or Actors | Update role, constraint, or scenario |
-   | Data model | Key Entities or Data Model | Add fields, types, relationships |
-   | Non-functional | Non-Functional / Quality Attributes | Add measurable criteria |
-   | Edge case | Edge Cases / Error Handling | Add new bullet or subsection |
-   | Terminology | Throughout spec | Normalize term, note old usage once |
-
-4. **Replace, don't duplicate**:
-   - If answer invalidates an earlier ambiguous statement, replace it
-   - Remove obsolete contradictory text
-   - Keep each clarification minimal and testable
-
-5. **Save the spec file** after each integration (atomic write)
-
-6. **Preserve formatting**:
-   - Don't reorder unrelated sections
-   - Keep heading hierarchy intact
-   - Maintain consistent style
+1. **Ensure Clarifications section exists**: Add `## Clarifications` with `### Session YYYY-MM-DD` if not present
+2. **Record Q&A**: Append `- Q: [question] → A: [answer]`
+3. **Apply to appropriate section(s)**: Update relevant sections based on answer type
+4. **Replace, don't duplicate**: Remove contradictory statements
+5. **Save file** after each integration (atomic write)
+6. **Preserve formatting**: Don't reorder unrelated sections
 
 ### Step 6: Validation
 
-After EACH write and at final completion, validate:
+After EACH write and at final completion, validate. See [references/review-guide.md](references/review-guide.md) for detailed validation checklists.
 
-**Per-Integration Checks:**
+**Per-Integration**: Single bullet per answer, no vague placeholders, no contradictions, valid markdown, consistent terminology
 
-- [ ] Clarifications session has exactly one bullet per answer (no duplicates)
-- [ ] Updated section contains no lingering vague placeholders
-- [ ] No contradictory earlier statement remains
-- [ ] Markdown structure is valid
-- [ ] Terminology is consistent across updated sections
-
-**Final Validation:**
-
-- [ ] Total asked (accepted) questions ≤ 5
-- [ ] Only allowed new headings: `## Clarifications`, `### Session YYYY-MM-DD`
-- [ ] All integrated answers are reflected in appropriate sections
-- [ ] Spec is internally consistent
+**Final Validation**: Question limits respected, only allowed new headings added, all answers integrated, spec internally consistent
 
 ### Step 7: Commit Changes
 
@@ -349,73 +223,29 @@ Provide a completion report with:
 
 4. **Recommendations**:
    - If Outstanding or Deferred items remain: Suggest whether to proceed or run review again
-   - Suggest next command: `/sunrise.design`, `/sunrise.architect`, or another review
+   - Suggest next command: `/phoenix.design`, `/phoenix.architect`, or another review
 
 5. **Next steps**: Guide user on what to do next based on spec completeness
 
 ## Examples
 
+See [references/review-guide.md](references/review-guide.md) for detailed coverage scan examples and question formulation patterns.
+
 ### Example 1: Data Model Clarification
 
-**Input**: Review spec for user authentication feature
+**Coverage Scan**: Data Model Partial, Security Partial, Edge Cases Missing
 
-**Coverage Scan Findings**:
-
-- Functional Scope: Clear
-- Data Model: Partial (missing password storage details)
-- Security: Partial (no password policy specified)
-- Edge Cases: Missing (no account lockout policy)
-
-**Questions Asked**:
-
-```markdown
-## Question 1: Password Storage
-
-**Context**: Spec mentions "store user passwords" but doesn't specify hashing method.
-
-**Recommended:** Option B - Industry standard with excellent security track record
-
-| Option | Description |
-|--------|-------------|
-| A | bcrypt with cost factor 10 |
-| B | bcrypt with cost factor 12 (recommended) |
-| C | argon2id with default parameters |
-```
-
-**User Answer**: "B"
-
-**Integration**:
-
-- Clarifications section: `- Q: Password storage method? → A: bcrypt with cost factor 12`
-- Security section: Added "Passwords hashed using bcrypt (cost factor 12)"
-- Data Model: Updated User entity to note "password_hash: string (bcrypt)"
-
-**Output**: Spec updated, 1 question asked, 4 sections touched, ready for next questions
+**Question**: Password storage method?
+**User Answer**: "B" (bcrypt cost factor 12)
+**Integration**: Updated Security section, Data Model, Clarifications
 
 ### Example 2: Performance Requirements
 
-**Input**: Review spec for analytics dashboard
+**Coverage Scan**: Non-functional partially specified
 
-**Coverage Scan**: Non-functional requirements partially specified
-
-**Question**:
-
-```markdown
-## Question 1: Query Performance
-
-**Context**: Spec says "dashboard should load quickly" but lacks measurable target.
-
-**Suggested:** Initial load under 2 seconds - Standard for good UX
-
-Format: Short answer (≤5 words). Accept suggestion or provide alternative.
-```
-
-**User Answer**: "yes"
-
-**Integration**:
-
-- Clarifications: `- Q: Dashboard load time target? → A: Initial load under 2 seconds`
-- Success Criteria: Added "Dashboard initial load completes in under 2 seconds for 95th percentile"
+**Question**: Dashboard load time target?
+**User Answer**: "yes" (accepted suggestion: under 2 seconds)
+**Integration**: Updated Success Criteria, Non-Functional Requirements
 
 ## Edge Cases
 
@@ -437,7 +267,7 @@ Format: Short answer (≤5 words). Accept suggestion or provide alternative.
 
 1. Report: "No critical ambiguities detected worth formal clarification"
 2. Output compact coverage summary showing all Clear
-3. Suggest: "Spec is ready for next phase: /sunrise.design or /sunrise.architect"
+3. Suggest: "Spec is ready for next phase: /phoenix.design or /phoenix.architect"
 
 ### User Terminates Early
 
@@ -486,50 +316,19 @@ Format: Short answer (≤5 words). Accept suggestion or provide alternative.
 
 ## Error Handling
 
+See [references/review-guide.md](references/review-guide.md) for detailed error recovery strategies.
+
 ### Error: Spec File Not Readable
-
-**Cause**: File permissions or encoding issue
-
-**Action**:
-
-1. Report: "Cannot read spec file at [path]"
-2. Check file exists and is readable
-3. Suggest: "Verify file permissions or encoding"
-4. Exit with error
+**Action**: Report error, check permissions/encoding, suggest fix, exit with error
 
 ### Error: Invalid Markdown Structure
-
-**Cause**: Spec has malformed markdown that breaks parsing
-
-**Action**:
-
-1. Report: "Spec file has invalid markdown structure"
-2. Attempt to identify problematic section
-3. Suggest: "Fix markdown syntax and retry"
-4. Proceed with best-effort parsing if critical sections readable
+**Action**: Report error, identify problematic section, suggest fix, proceed with best-effort parsing
 
 ### Error: Git Commit Fails
-
-**Cause**: Git error when committing changes
-
-**Action**:
-
-1. Ensure changes are saved to file (priority)
-2. Report: "Spec updated but commit failed: [error]"
-3. Show git error message
-4. Suggest: "Manually commit with: git add [spec] && git commit"
-5. Continue with completion report
+**Action**: Ensure file saved (priority), report error, suggest manual commit, continue with completion report
 
 ### Error: Integration Conflict
-
-**Cause**: Can't determine where to integrate answer in spec
-
-**Action**:
-
-1. Save answer in Clarifications section only
-2. Report: "Answer recorded in Clarifications but couldn't auto-integrate"
-3. Note: "Manual integration needed in [section name]"
-4. Continue with next question
+**Action**: Save in Clarifications only, report manual integration needed, continue with next question
 
 ## Guidelines
 
@@ -572,8 +371,8 @@ After completing the specification review, consider:
 1. **If Outstanding items remain**: Run another review session
 2. **If all Critical items resolved**: Proceed to technical design
 3. **Use technical-design skill**: Create implementation plan
-4. **Use sunrise.architect**: Build architectural design
-5. **Use sunrise.design**: Create detailed technical design
+4. **Use phoenix.architect**: Build architectural design
+5. **Use phoenix.design**: Create detailed technical design
 
 ## Notes
 

@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0.0"
-  last-updated: "2026-01-25"
+  last-updated: "2026-01-27"
 ---
 
 # Requirements Specification
@@ -20,6 +20,11 @@ Use this skill when:
 - Validating specification quality and completeness
 - Ensuring requirements are testable and unambiguous
 - User mentions: specs, requirements, feature definition, user stories, acceptance criteria
+
+**Next Steps After Creating Specifications:**
+- Use `coding-standards` skill to establish product-level coding conventions
+- Use `architecture-design` skill for system architecture documentation
+- Use `technical-design` skill for feature-level implementation planning
 
 ## Prerequisites
 
@@ -41,6 +46,34 @@ Use this skill when:
 - `docs/standards.md` (for naming conventions and coding standards)
 
 ## Instructions
+
+### Step 0: Ground Rules Verification
+
+**⚠️ IMPORTANT: Always verify ground rules exist before creating feature specifications.**
+
+1. **Check for ground rules document:**
+   - Look for `docs/ground-rules.md` in the workspace
+   - Ground rules define project principles, constraints, and standards
+   - These are essential for creating aligned specifications
+
+2. **If ground rules are missing:**
+   - **STOP** and inform the user: "Ground rules document not found at `docs/ground-rules.md`"
+   - Recommend: "Please set up project ground rules first using the `project-ground-rules-setup` skill"
+   - Ask: "Would you like me to help set up ground rules before creating this specification?"
+   - Wait for user decision:
+     - If user wants to set up ground rules → guide them to use `project-ground-rules-setup` skill
+     - If user wants to proceed anyway → ask for confirmation and document this decision
+     - If unsure → explain the importance of ground rules for consistency
+
+3. **If ground rules exist:**
+   - Read and review `docs/ground-rules.md`
+   - Extract key principles and constraints
+   - Note any relevant standards or conventions
+   - Use these to guide specification creation
+
+4. **Only proceed to Step 1 after:**
+   - Ground rules are reviewed (if they exist), OR
+   - User explicitly confirms to proceed without ground rules (with understanding of risks)
 
 ### Step 1: Extract Feature Short Name
 
@@ -183,7 +216,7 @@ The script creates the initial spec file from `templates/spec-template.md`. Now 
 
 ### Step 7: Validate Specification Quality
 
-Create and use a quality checklist to validate the specification:
+Create and use a quality checklist to validate the specification. For detailed validation criteria and examples, see [references/specification-guide.md](references/specification-guide.md).
 
 #### 7a. Create Spec Quality Checklist
 
@@ -228,54 +261,15 @@ Generate a checklist file at `<FEATURE_DIR>/checklists/requirements.md`:
 
 #### 7b. Run Validation Check
 
-Review the spec against each checklist item:
-
-- For each item, determine pass or fail
-- Document specific issues found (quote relevant spec sections)
+Review the spec against each checklist item. See [references/specification-guide.md](references/specification-guide.md) for detailed validation criteria, common failures, and fix strategies.
 
 #### 7c. Handle Validation Results
 
-**If all items pass:**
+**If all items pass:** Mark checklist complete and proceed to final commit.
 
-- Mark checklist complete
-- Proceed to final commit
+**If items fail:** Update spec to address issues, re-run validation (max 3 iterations). See [references/specification-guide.md](references/specification-guide.md) for iteration strategy.
 
-**If items fail (excluding [NEEDS CLARIFICATION]):**
-
-1. List the failing items and specific issues
-2. Update the spec to address each issue
-3. Re-run validation until all items pass (max 3 iterations)
-4. If still failing after 3 iterations, document remaining issues in checklist notes and warn user
-
-**If [NEEDS CLARIFICATION] markers remain:**
-
-1. Extract all [NEEDS CLARIFICATION: ...] markers from the spec
-2. **LIMIT CHECK**: If more than 3 markers exist, keep only the 3 most critical (by scope/security/UX impact) and make informed guesses for the rest
-3. For each clarification needed (max 3), present options to user:
-
-```markdown
-## Question [N]: [Topic]
-
-**Context**: [Quote relevant spec section]
-
-**What we need to know**: [Specific question from NEEDS CLARIFICATION marker]
-
-**Suggested Answers**:
-
-| Option | Answer | Implications |
-|--------|--------|--------------|
-| A      | [First suggested answer] | [What this means for the feature] |
-| B      | [Second suggested answer] | [What this means for the feature] |
-| C      | [Third suggested answer] | [What this means for the feature] |
-| Custom | Provide your own answer | [Explain how to provide custom input] |
-
-**Your choice**: _[Wait for user response]_
-```
-
-1. Present all questions together before waiting for responses
-2. Wait for user to respond with their choices (e.g., "Q1: A, Q2: Custom - [details], Q3: B")
-3. Update the spec by replacing each [NEEDS CLARIFICATION] marker with the user's answer
-4. Re-run validation after all clarifications are resolved
+**If [NEEDS CLARIFICATION] markers remain:** Present clarification questions to user (max 3). See [references/specification-guide.md](references/specification-guide.md) for question format.
 
 #### 7d. Update Checklist
 
@@ -297,249 +291,128 @@ Report to user with:
 - Branch name
 - Spec file path
 - Checklist results summary
-- Readiness for next phase (`/sunrise.clarify`, `/sunrise.architect`, or `/sunrise.design`)
+- Readiness for next phase (`/phoenix.clarify`, `/phoenix.architect`, or `/phoenix.design`)
+
+### Step 10: Quality Review (Recommended)
+
+**After completing the specification, it's highly recommended to run a quality review:**
+
+1. **Run the requirements-specification-review skill** to validate:
+   - Completeness of all sections
+   - Consistency with ground rules and architecture
+   - Testability of requirements
+   - Clarity and lack of ambiguity
+   - Proper acceptance criteria
+
+2. **Address any findings** from the review before proceeding to technical design
+
+3. **If issues found**, update the specification and repeat validation
+
+**Next Steps:**
+- If review passes, proceed to architecture (if new product) or technical design (if adding feature)
+- Use `architecture-design` skill for new product architecture
+- Use `technical-design` skill for feature implementation planning
 
 ## Examples
 
 ### Example 1: Simple Feature
 
-**Input:**
+**Input**: "Add user login with email and password"
 
-```
-Add user login with email and password
-```
-
-**Processing:**
-
+**Processing**:
 1. Short name: `user-login`
-2. Check existing: No existing branches found
-3. Branch number: 1
-4. Run: `scripts/bash/create-new-feature.sh --json --number 1 --short-name "user-login" "Add user login with email and password"`
-5. Create spec with:
-   - User scenario: User enters email/password to access account
-   - Functional requirements: Email validation, password hashing, session management
-   - Success criteria: "95% of users can log in within 10 seconds"
+2. Branch: `1-user-login` (no existing branches)
+3. Spec created with user scenarios, functional requirements, success criteria
+4. All validations pass
 
-**Output:**
-
-- Branch: `1-user-login`
-- Spec: `specs/1-user-login/spec.md`
-- Checklist: `specs/1-user-login/checklists/requirements.md`
-- All validations pass
-- Ready for `/sunrise.design`
+**Output**: Ready for `/phoenix.design`
 
 ### Example 2: Feature Requiring Clarification
 
-**Input:**
+**Input**: "Add payment processing"
 
-```
-Add payment processing
-```
+**Processing**:
+1. Initial spec created with [NEEDS CLARIFICATION] for payment methods
+2. User responds with choice
+3. Spec updated and re-validated
 
-**Processing:**
+**Output**: Ready for next phase
 
-1. Short name: `payment-processing`
-2. Initial spec created with [NEEDS CLARIFICATION] markers
-3. Present questions:
-
-```markdown
-## Question 1: Payment Methods
-
-**Context**: The feature requires payment processing but doesn't specify which methods to support.
-
-**What we need to know**: Which payment methods should be supported?
-
-| Option | Answer | Implications |
-|--------|--------|--------------|
-| A | Credit/debit cards only | Simplest implementation, covers 80% of users |
-| B | Credit cards + PayPal | Wider user coverage, requires PayPal integration |
-| C | Multiple methods (cards, PayPal, bank transfer) | Maximum flexibility, more complex |
-| Custom | Specify your own set | Provide specific payment methods |
-
-**Your choice**: _[Wait for user response]_
-```
-
-**User responds**: "Q1: B"
-
-**Output:**
-
-- Spec updated with "Support credit/debit cards and PayPal" requirement
-- Re-validated and passes
-- Ready for next phase
+See [references/specification-guide.md](references/specification-guide.md) for detailed examples of good vs bad specifications.
 
 ## Edge Cases
 
 ### Case 1: Branch Already Exists
-
-**Scenario**: User tries to create a feature with short-name that already has active branches.
-
-**Handling:**
-
-1. Find highest existing number (e.g., `3-user-auth` exists)
-2. Increment to next number: `4-user-auth`
-3. Create new branch with incremented number
-4. Document in spec: "Related to feature 3-user-auth"
+Find highest existing number and increment. Document relationship in spec.
 
 ### Case 2: Empty or Vague Description
-
-**Scenario**: User provides minimal description like "Add feature"
-
-**Handling:**
-
-1. Identify the description is too vague
-2. Ask clarifying questions about:
-   - What the feature should do
-   - Who will use it
-   - What problem it solves
-3. Once clarified, proceed with spec creation
+Ask clarifying questions about what the feature should do, who will use it, and what problem it solves.
 
 ### Case 3: Script Execution Fails
-
-**Scenario**: Feature creation script returns an error.
-
-**Handling:**
-
-1. Check script output for specific error message
-2. Common issues:
-   - Git not installed: "Please install git"
-   - Template not found: "Template file missing at path X"
-   - Permission denied: "Check file permissions"
-3. Resolve issue and retry
-4. If unresolvable, create branch and directories manually
+Check error output, resolve common issues, or create branch/directories manually.
 
 ### Case 4: Too Many Clarification Markers
+Prioritize by impact (scope > security > UX > technical), keep top 3, make informed guesses for rest. Document assumptions.
 
-**Scenario**: Initial spec generation creates more than 3 [NEEDS CLARIFICATION] markers.
-
-**Handling:**
-
-1. Prioritize by impact: scope > security/privacy > UX > technical
-2. Keep top 3 most critical markers
-3. For remaining items, make informed guesses based on:
-   - Industry standards
-   - Similar features in the product
-   - Common patterns
-4. Document assumptions in Assumptions section
+See [references/specification-guide.md](references/specification-guide.md) for detailed edge case handling.
 
 ## Guidelines
 
 ### Focus on WHAT and WHY, Not HOW
 
-**DO:**
+Specifications should describe user needs and business value, not implementation details. See [references/specification-guide.md](references/specification-guide.md) for detailed examples of good vs bad specifications.
 
+**DO:**
 - "Users can reset their password via email"
 - "System supports 10,000 concurrent users"
 - "Search results appear in under 1 second"
 
 **DON'T:**
-
 - "Use bcrypt for password hashing" (implementation detail)
 - "Store sessions in Redis" (technology choice)
 - "Implement with React hooks" (framework-specific)
 
-### Success Criteria Must Be
+### Success Criteria Requirements
+
+See [references/specification-guide.md](references/specification-guide.md) for detailed criteria properties and examples.
 
 1. **Measurable**: Include specific metrics (time, percentage, count, rate)
 2. **Technology-agnostic**: No frameworks, languages, databases, or tools
 3. **User-focused**: Outcomes from user/business perspective
 4. **Verifiable**: Can be tested without knowing implementation
 
-### Reasonable Defaults (Don't Ask About These)
+### Reasonable Defaults and Clarification Usage
 
-- **Data retention**: Industry-standard practices for the domain
-- **Performance targets**: Standard web/mobile app expectations unless specified
-- **Error handling**: User-friendly messages with appropriate fallbacks
-- **Authentication method**: Standard session-based or OAuth2 for web apps
-- **Integration patterns**: RESTful APIs unless specified otherwise
+See [references/specification-guide.md](references/specification-guide.md) for comprehensive lists of reasonable defaults and detailed clarification guidelines.
 
-### When to Use [NEEDS CLARIFICATION]
+**Reasonable Defaults** (don't ask about these):
+- Data retention, performance targets, error handling
+- Authentication methods, integration patterns
+- Standard industry practices
 
-Only use when:
-
-- **Scope impact**: Decision significantly changes feature scope
-- **Security/privacy**: Legal or financial implications
-- **Multiple interpretations**: No clear reasonable default exists
-- **User experience**: Fundamentally different UX approaches possible
-
-**Don't use for:**
-
-- Technical implementation details (make reasonable technical assumptions)
-- Standard industry practices (use common patterns)
-- Minor UX details (use best practices)
-- Performance targets (use industry standards)
+**Use [NEEDS CLARIFICATION] only when**:
+- Scope impact, security/privacy implications
+- Multiple valid interpretations, fundamental UX differences
+- **Limit**: Maximum 3 clarification markers per feature
 
 ## Error Handling
 
+For common errors and their resolutions:
+
 ### Error: "No feature description provided"
-
-**Cause**: User ran command without providing a description.
-
-**Action:**
-
-1. Prompt user: "Please provide a feature description. What should this feature do?"
-2. Wait for user input
-3. Proceed with provided description
+**Action**: Prompt user for feature description and proceed once provided.
 
 ### Error: "Cannot determine user scenarios"
-
-**Cause**: Feature description is too technical or lacks user context.
-
-**Action:**
-
-1. Ask user: "Who will use this feature and what are they trying to accomplish?"
-2. Example prompt: "Describe the user's goal and the steps they'll take"
-3. Once clarified, generate user scenarios
+**Action**: Ask user who will use the feature and what they're trying to accomplish.
 
 ### Error: "Template file not found"
-
-**Cause**: Spec template doesn't exist at expected path.
-
-**Action:**
-
-1. Check if `.sunrise/templates/templates-for-commands/spec-template.md` exists
-2. If missing, prompt user to create it or provide alternative template path
-3. Alternatively, use a generic spec structure with these sections:
-   - Feature Name
-   - Overview
-   - User Scenarios
-   - Functional Requirements
-   - Success Criteria
-   - Assumptions
-   - Out of Scope
+**Action**: Check skill templates folder, or use generic spec structure with required sections.
 
 ### Error: "Script execution failed"
-
-**Cause**: Feature creation script returned non-zero exit code.
-
-**Action:**
-
-1. Parse script output for specific error message
-2. Common resolutions:
-   - Git not configured: `git config --global user.name "Your Name"`
-   - Permission denied: `chmod +x scripts/bash/create-new-feature.sh`
-   - Invalid arguments: Check JSON formatting and escape characters
-3. If script fails repeatedly, create branch and directories manually:
-   cp <SKILL_DIR>/templates/spec-template.md specs/<number>-<short-name>/spec.md
-   cp <SKILL_DIR>/templates/checklist-template.md specs/<number>-<short-name>/checklists/requirements.md
-   git checkout -b <number>-<short-name>
-   mkdir -p specs/<number>-<short-name>/checklists
-   touch specs/<number>-<short-name>/spec.md
-
-   ```
+**Action**: Parse output for error, resolve common issues (git config, permissions, invalid args), or create branch/directories manually if needed.
 
 ### Error: "Validation failed after 3 iterations"
-
-**Cause**: Spec quality issues persist after multiple correction attempts.
-
-**Action:**
-
-1. Document specific failing checklist items in checklist notes
-2. Provide detailed explanation of each failure to user
-3. Suggest manual review of:
-   - Requirements clarity
-   - Success criteria measurability
-   - Implementation detail leakage
-4. Offer to proceed with warnings or ask user to manually fix issues
+**Action**: Document failing items in checklist notes, provide detailed explanation to user, suggest manual review. See [references/specification-guide.md](references/specification-guide.md) for detailed validation guidance and common failure fixes.
 
 This skill includes:
 

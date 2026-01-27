@@ -4,7 +4,7 @@ description: Create comprehensive system architecture documentation for products
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-25"
+  last-updated: "2026-01-27"
 license: MIT
 ---
 
@@ -38,6 +38,39 @@ license: MIT
 - Existing architecture documentation to update
 
 ## Instructions
+
+### Step 0: Specification and Requirements Gathering
+
+**⚠️ IMPORTANT: Always request specification documents before starting architecture design.**
+
+1. **Request specification documents:**
+   - Ask the user to provide requirements specifications, feature documentation, or product requirements
+   - Request any relevant documentation: PRD (Product Requirements Document), feature specs, user stories, or business requirements
+   - If no formal documentation exists, ask the user to describe:
+     - The product or system to be architected
+     - Key features and functionalities
+     - Expected users and stakeholders
+     - Business goals and objectives
+     - Technical constraints or preferences
+     - Performance and scalability requirements
+     - Security and compliance needs
+
+2. **Verify ground rules exist:**
+   - Check if `docs/ground-rules.md` exists in the project
+   - If missing, recommend creating it first using the `project-ground-rules-setup` skill
+   - Ground rules are essential for architecture design
+
+3. **Review and confirm understanding:**
+   - Summarize the requirements back to the user
+   - Clarify any ambiguities or missing details
+   - Confirm the scope and expected architecture deliverables
+   - Identify what needs to be designed (new system, system enhancement, specific components)
+
+4. **Only proceed to Step 1 after:**
+   - Specification documents are provided and reviewed
+   - Ground rules file exists or creation is confirmed
+   - Requirements are clearly understood
+   - User confirms readiness to start architecture design
 
 ### Step 1: Setup and Initialization
 
@@ -121,50 +154,12 @@ Follow the architecture design phases systematically:
 
 **Prerequisites**: Phase 0 complete
 
-1. **Create System Context View (C4 Level 1)**:
-   - Identify all user types from feature specs
-   - List all external systems and integrations
-   - Generate Mermaid context diagram
-   - Document system responsibilities
+Create four levels of architecture diagrams using Mermaid format. See [references/c4-and-adr-guide.md](references/c4-and-adr-guide.md) for detailed C4 model guidance, diagram examples, and when to use each level.
 
-   ```mermaid
-   graph TB
-       Users[End Users] --> System[SYSTEM NAME]
-       Admins[Admin Users] --> System
-       System --> ExtAPI[External API]
-   ```
-
-2. **Design Container View (C4 Level 2)**:
-   - Identify technical containers (web app, API, database, cache)
-   - Determine technology stack for each container
-   - Define inter-container communication protocols
-   - Generate Mermaid container diagram
-
-   ```mermaid
-   graph TB
-       Users -->|HTTPS| WebApp[Web App]
-       WebApp -->|REST| API[API]
-       API --> DB[(PostgreSQL)]
-       API --> Cache[(Redis)]
-   ```
-
-3. **Design Component View (C4 Level 3)**:
-   - Break down critical containers into components
-   - Define component responsibilities and interfaces
-   - Document component interaction patterns
-   - Generate Mermaid component diagrams
-
-   ```mermaid
-   graph TB
-       Controller --> Service
-       Service --> Repository
-       Service --> EventBus
-   ```
-
-4. **Define Code View (C4 Level 4)** (optional):
-   - Document code organization and directory structure
-   - Define naming conventions
-   - List key design patterns
+1. **System Context (C4 Level 1)**: User types, external systems, system boundaries
+2. **Container View (C4 Level 2)**: Technical containers, technology stack, communication protocols
+3. **Component View (C4 Level 3)**: Component breakdown for critical containers
+4. **Code View (C4 Level 4)**: Optional - directory structure, design patterns
 
 **Output**: Complete "System Overview (C4)" section with all Mermaid diagrams
 
@@ -174,22 +169,11 @@ Follow the architecture design phases systematically:
 
 **Prerequisites**: Phase 1 complete
 
-1. **Design deployment architecture**:
-   - Define production environment topology
-   - Identify infrastructure components (compute, storage, networking)
-   - Design multi-region/multi-AZ setup if needed
-   - Generate Mermaid deployment diagram
+Design deployment topology, CI/CD pipeline, and disaster recovery. See [references/c4-and-adr-guide.md](references/c4-and-adr-guide.md) for deployment architecture patterns (single-region, multi-region active-passive, multi-region active-active).
 
-2. **Design CI/CD pipeline**:
-   - Define build, test, and deployment stages
-   - Choose deployment strategy (blue/green, canary, rolling)
-   - Document Infrastructure as Code approach
-   - Generate Mermaid pipeline diagram
-
-3. **Plan disaster recovery**:
-   - Define backup strategy
-   - Set RTO (Recovery Time Objective) and RPO (Recovery Point Objective)
-   - Document recovery procedures
+1. **Deployment architecture**: Environment topology, infrastructure components, multi-AZ setup
+2. **CI/CD pipeline**: Build/test/deploy stages, deployment strategy, IaC approach
+3. **Disaster recovery**: Backup strategy, RTO/RPO, recovery procedures
 
 **Output**: Complete "Deployment Summary" section
 
@@ -199,31 +183,15 @@ Follow the architecture design phases systematically:
 
 **Prerequisites**: Phase 2 complete
 
-1. **Document Architecture Decision Records (ADRs)**:
-   - For each major architectural choice:
-     - Microservices vs monolith
-     - Database choice (SQL vs NoSQL)
-     - API design (REST, GraphQL, gRPC)
-     - Authentication/authorization approach
-     - Caching strategy
-   - Include for each ADR:
-     - **Context**: What prompted this decision
-     - **Decision**: What was decided
-     - **Rationale**: Why this choice was made
-     - **Consequences**: Positive and negative impacts
-     - **Alternatives**: What else was considered
+Document ADRs for major architectural choices and map quality strategies to requirements. See [references/c4-and-adr-guide.md](references/c4-and-adr-guide.md) for:
+- Detailed ADR template and examples
+- When to create ADRs
+- Quality attribute strategies (performance, scalability, availability, security, maintainability)
+- Common architecture patterns (event-driven, API gateway, CQRS, strangler fig)
 
-2. **Map quality strategies to requirements**:
-   - **Performance**: Caching, optimization, async processing, CDN
-   - **Scalability**: Horizontal scaling, sharding, load balancing
-   - **Availability**: Redundancy, health checks, circuit breakers, multi-AZ
-   - **Security**: Authentication, encryption, input validation, RBAC
-   - **Maintainability**: Testing, observability, documentation
-
-3. **Identify risks and technical debt**:
-   - Architecture risks with mitigation strategies
-   - Known technical debt with remediation plans
-   - Open questions and future considerations
+1. **Document ADRs**: For each major decision, include context, decision, rationale, consequences, alternatives
+2. **Map quality strategies**: Performance, scalability, availability, security, maintainability
+3. **Identify risks**: Architecture risks, technical debt, open questions
 
 **Output**: Complete "Architecture Decisions (ADR Log)", "Quality Attributes", and "Risks & Technical Debt" sections
 
@@ -288,6 +256,26 @@ git add docs/architecture.md docs/adr/
 git commit -m "docs: add system architecture documentation"
 ```
 
+### Step 6: Quality Review (Recommended)
+
+**After completing the architecture, it's highly recommended to run a quality review:**
+
+1. **Run the architecture-design-review skill** to validate:
+   - Alignment with ground rules and project goals
+   - Technical feasibility and scalability
+   - Completeness of architectural decisions
+   - Clarity of component descriptions
+   - Proper documentation of trade-offs
+
+2. **Address any findings** from the review before proceeding to feature specifications
+
+3. **If issues found**, update the architecture and repeat validation
+
+**Next Steps:**
+- If review passes, proceed to create feature specifications using `requirements-specification` skill
+- Use `coding-standards` skill to establish code conventions
+- Use `technical-design` skill for individual feature implementation planning
+
 ## Examples
 
 ### Example 1: E-Commerce Platform Architecture
@@ -342,44 +330,15 @@ git commit -m "docs: add system architecture documentation"
 
 ## Architecture Decision Record (ADR) Format
 
-Each ADR should follow this structure:
+See [references/c4-and-adr-guide.md](references/c4-and-adr-guide.md) for detailed ADR template with complete example.
 
-```markdown
-# ADR-XXX: [Decision Title]
-
-**Status**: [Proposed | Accepted | Deprecated | Superseded]  
-**Date**: YYYY-MM-DD  
-**Deciders**: [Who was involved]
-
-## Context
-
-[What is the issue or situation prompting this decision?]
-
-## Decision
-
-[What is the change or approach we're taking?]
-
-## Rationale
-
-[Why did we choose this approach?]
-- [Reason 1]
-- [Reason 2]
-
-## Consequences
-
-**Positive**:
-- [Benefit 1]
-- [Benefit 2]
-
-**Negative**:
-- [Trade-off 1]
-- [Trade-off 2]
-
-## Alternatives Considered
-
-1. **[Alternative 1]**: [Why rejected]
-2. **[Alternative 2]**: [Why rejected]
-```
+Each ADR should include:
+- **Status**, **Date**, **Deciders**
+- **Context**: Issue prompting decision
+- **Decision**: Chosen approach
+- **Rationale**: Why this choice
+- **Consequences**: Positive and negative impacts
+- **Alternatives Considered**: Other options and why rejected
 
 ## Edge Cases
 

@@ -46,10 +46,10 @@ function Find-FeatureDir {
         return $currentDir.Path
     }
     
-    # Check .sunrise/features/* subdirectories
-    $sunriseFeaturesDir = Join-Path $currentDir ".sunrise\features"
-    if (Test-Path $sunriseFeaturesDir) {
-        $dirs = Get-ChildItem -Path $sunriseFeaturesDir -Directory
+    # Check .phoenix/features/* subdirectories
+    $phoenixFeaturesDir = Join-Path $currentDir ".phoenix\features"
+    if (Test-Path $phoenixFeaturesDir) {
+        $dirs = Get-ChildItem -Path $phoenixFeaturesDir -Directory
         foreach ($dir in $dirs) {
             if (Test-FeatureDir $dir.FullName) {
                 return $dir.FullName
@@ -171,7 +171,7 @@ function Write-JsonOutput {
             message = "Could not find feature directory. Looking for directory containing design.md or spec.md"
             searched_paths = @(
                 $currentDir.Path,
-                (Join-Path $currentDir ".sunrise\features"),
+                (Join-Path $currentDir ".phoenix\features"),
                 (Join-Path $currentDir "features"),
                 (Join-Path $currentDir "docs\features")
             )
@@ -211,7 +211,7 @@ function Write-HumanOutput {
         Write-Host ""
         Write-Host "Searched paths:"
         Write-Host "  • $($currentDir.Path)"
-        Write-Host "  • $(Join-Path $currentDir '.sunrise\features')"
+        Write-Host "  • $(Join-Path $currentDir '.phoenix\features')"
         Write-Host "  • $(Join-Path $currentDir 'features')"
         Write-Host "  • $(Join-Path $currentDir 'docs\features')"
     }

@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-26"
+  last-updated: "2026-01-27"
 ---
 
 # Tasks to GitHub Issues Skill
@@ -106,331 +106,55 @@ skills/tasks-to-github-issues/scripts/check-tasks-to-issues-prerequisites.sh --j
 
 ### Phase 1: Task Parsing
 
-**Goal**: Parse tasks.md and extract task definitions with dependencies.
+**Goal**: Parse tasks.md and extract task definitions with dependencies. See [references/workflow-details.md](references/workflow-details.md) for detailed task format examples and parsing strategies.
 
-1. **Read tasks.md file**:
-   - Parse the entire file
-   - Identify task sections (typically markdown headers or numbered lists)
-   - Extract task metadata
+1. **Read tasks.md file** and parse structure (headers, lists, or tables)
+2. **Parse task structure**: Extract title, description, priority, effort, dependencies, acceptance criteria, technical notes, labels
+3. **Extract task attributes** for each task
+4. **Build dependency graph**: Map dependencies, create topologically sorted list, detect circular dependencies
+5. **Validate task structure**: Check dependencies exist, verify required fields, check task numbering
 
-2. **Parse task structure**:
-
-   **Expected task format in tasks.md:**
-
-   ```markdown
-   ## Tasks
-   
-   ### Task 1: Implement User Authentication
-   
-   **Priority:** High
-   **Estimated Effort:** 5 hours
-   **Dependencies:** None
-   
-   **Description:**
-   Implement JWT-based authentication for the API.
-   
-   **Acceptance Criteria:**
-   - [ ] User can login with email and password
-   - [ ] JWT token is returned on successful login
-   - [ ] Token expires after 24 hours
-   
-   **Technical Notes:**
-   - Use bcrypt for password hashing
-   - Store tokens in Redis with TTL
-   
-   ---
-   
-   ### Task 2: Create User Dashboard
-   
-   **Priority:** Medium
-   **Estimated Effort:** 3 hours
-   **Dependencies:** Task 1
-   
-   **Description:**
-   Create a dashboard page showing user information and recent activity.
-   
-   **Acceptance Criteria:**
-   - [ ] Dashboard displays user name and email
-   - [ ] Shows last 10 activities
-   - [ ] Accessible only when authenticated
-   ```
-
-   **Alternative format (simple list):**
-
-   ```markdown
-   ## Tasks
-   
-   1. Implement User Authentication (Priority: High, Effort: 5h)
-      - User can login with email and password
-      - JWT token is returned on successful login
-      - Token expires after 24 hours
-      - Dependencies: None
-   
-   2. Create User Dashboard (Priority: Medium, Effort: 3h)
-      - Dashboard displays user information
-      - Shows recent activity
-      - Dependencies: Task 1
-   ```
-
-3. **Extract task attributes**:
-
-   For each task, extract:
-   - **Title**: Task name (from header or list item)
-   - **Description**: Main task description text
-   - **Priority**: High, Medium, Low (default: Medium if not specified)
-   - **Estimated Effort**: Time estimate (e.g., "5 hours", "2 days")
-   - **Dependencies**: References to other tasks (by number or name)
-   - **Acceptance Criteria**: Checklist of requirements
-   - **Technical Notes**: Implementation guidance
-   - **Labels**: Relevant labels (feature, bug, enhancement, etc.)
-
-4. **Build dependency graph**:
-   - Map task dependencies
-   - Identify task ordering based on dependencies
-   - Detect circular dependencies (error if found)
-   - Create topologically sorted task list
-
-5. **Validate task structure**:
-   - Ensure all referenced dependencies exist
-   - Check for missing required fields (at minimum: title)
-   - Verify task numbering is sequential (if numbered)
+**Supported Formats**: Structured headers, numbered lists, table format
 
 **Output**: Structured task list with dependencies resolved
 
 ### Phase 2: Issue Creation
 
-**Goal**: Create GitHub issues for each task in dependency order.
+**Goal**: Create GitHub issues for each task in dependency order. See [references/workflow-details.md](references/workflow-details.md) for:
+- Issue body template generation
+- Label mapping rules
+- Dependency linking strategy
+- API call patterns
+- Error handling strategies
 
-1. **Prepare issue content** using template:
-
-   Use the GitHub issue template from `templates/github-issue.md` to format each task as an issue.
-
-   **Issue structure:**
-
-   ```markdown
-   ## Description
-   
-   [Task description]
-   
-   ## Acceptance Criteria
-   
-   - [ ] [Criterion 1]
-   - [ ] [Criterion 2]
-   - [ ] [Criterion 3]
-   
-   ## Technical Notes
-   
-   [Technical implementation guidance]
-   
-   ## Dependencies
-   
-   - Blocked by: #[issue-number] ([task-name])
-   
-   ## Metadata
-   
-   - **Priority:** [High/Medium/Low]
-   - **Estimated Effort:** [effort]
-   - **Feature:** [feature-name]
-   - **Source:** tasks.md
-   ```
-
-2. **Determine issue labels**:
-
-   **Default labels:**
-   - `task` - Always applied to task-created issues
-   - `feature` - If task is part of feature development
-   - Priority labels: `priority: high`, `priority: medium`, `priority: low`
-   - Effort labels: `effort: small`, `effort: medium`, `effort: large`
-
-   **Custom labels** (from task metadata):
-   - `backend`, `frontend`, `database`, `api`, etc.
-   - `bug`, `enhancement`, `documentation`
-
+1. **Prepare issue content** using template from `templates/github-issue.md`
+2. **Determine issue labels**: Default labels (task, feature, priority, effort) + custom labels
 3. **Create issues in dependency order**:
-
-   **Important**: Create issues in topologically sorted order so that dependencies can be referenced.
-
-   **For each task:**
-
-   a. **Prepare issue data:**
-
-   ```javascript
-   {
-     title: "Task 1: Implement User Authentication",
-     body: [formatted issue content from template],
-     labels: ["task", "feature", "priority: high", "backend"],
-     assignees: [], // Optional
-     milestone: null // Optional
-   }
-   ```
-
-   b. **Create issue via GitHub MCP server:**
-
-   ```typescript
-   // Use GitHub MCP server tool: issue_write
-   await mcp.github.issue_write({
-     method: 'create',
-     owner: repoOwner,
-     repo: repoName,
-     title: issueData.title,
-     body: issueData.body,
-     labels: issueData.labels
-   })
-   ```
-
-   c. **Capture issue number:**
-   - Store the created issue number
-   - Map task ID to issue number for dependency linking
-
-   d. **Update dependent task references:**
-   - If subsequent tasks depend on this task, update their issue bodies to reference the created issue number
-   - Example: "Blocked by: #42 (Implement User Authentication)"
-
-4. **Handle errors gracefully**:
-
-   **If issue creation fails:**
-   - Log the error with task details
-   - Continue creating remaining issues
-   - Report all failures at the end
-   - Do NOT commit tracking metadata if any issues failed
-
-   **Common errors:**
-   - **Rate limit exceeded**: Wait and retry with exponential backoff
-   - **Authentication failed**: Verify GitHub credentials and permissions
-   - **Invalid label**: Create label first or skip if not critical
-   - **Network error**: Retry up to 3 times
-
-5. **Link dependent issues**:
-
-   After all issues are created:
-   - Update issue bodies to include dependency links
-   - Add comments to dependent issues referencing blockers
-   - Optionally update issue descriptions with dependency graph
+   - Prepare issue data (title, body, labels)
+   - Create via GitHub MCP: `mcp.github.issue_write()`
+   - Capture issue numbers and map to task IDs
+   - Update dependent task references
+4. **Handle errors gracefully**: Log errors, continue with remaining issues, report failures
+5. **Link dependent issues**: Update issue bodies with dependency links after all created
 
 **Output**: GitHub issues created for all tasks with proper dependency links
 
 ### Phase 3: Metadata Tracking
 
-**Goal**: Record issue creation metadata for future synchronization.
+**Goal**: Record issue creation metadata for future synchronization. See [references/workflow-details.md](references/workflow-details.md) for complete JSON schema and field descriptions.
 
-1. **Create issue tracking file**:
-
-   **File location**: `.github/issue-tracking.json`
-
-   **Structure:**
-
-   ```json
-   {
-     "sync_date": "2026-01-26T10:30:00Z",
-     "source_file": "features/user-auth/tasks.md",
-     "repository": "owner/repo",
-     "tasks_to_issues": {
-       "task-1": {
-         "task_title": "Implement User Authentication",
-         "issue_number": 42,
-         "issue_url": "https://github.com/owner/repo/issues/42",
-         "created_at": "2026-01-26T10:30:00Z",
-         "labels": ["task", "feature", "priority: high"],
-         "dependencies": []
-       },
-       "task-2": {
-         "task_title": "Create User Dashboard",
-         "issue_number": 43,
-         "issue_url": "https://github.com/owner/repo/issues/43",
-         "created_at": "2026-01-26T10:31:00Z",
-         "labels": ["task", "feature", "priority: medium"],
-         "dependencies": [42]
-       }
-     },
-     "summary": {
-       "total_tasks": 2,
-       "issues_created": 2,
-       "issues_failed": 0
-     }
-   }
-   ```
-
-2. **Update tasks.md with issue links** (optional):
-
-   Add issue references to tasks.md for easy cross-referencing:
-
-   ```markdown
-   ### Task 1: Implement User Authentication
-   
-   **GitHub Issue:** [#42](https://github.com/owner/repo/issues/42)
-   
-   **Priority:** High
-   ...
-   ```
-
-3. **Create summary report**:
-
-   Generate a summary of the sync operation:
-
-   ```markdown
-   # Task to GitHub Issue Sync Report
-   
-   **Date:** 2026-01-26 10:30:00
-   **Repository:** owner/repo
-   **Source:** features/user-auth/tasks.md
-   
-   ## Summary
-   
-   - **Total Tasks:** 2
-   - **Issues Created:** 2
-   - **Issues Failed:** 0
-   
-   ## Created Issues
-   
-   - #42: Task 1: Implement User Authentication (Priority: High)
-   - #43: Task 2: Create User Dashboard (Priority: Medium)
-   
-   ## Dependencies
-   
-   - Issue #43 depends on #42
-   ```
+1. **Create issue tracking file** at `.github/issue-tracking.json` with: sync_date, source_file, repository info, tasks_to_issues mapping, summary
+2. **Update tasks.md with issue links** (optional): Add GitHub issue references
+3. **Create summary report**: Total tasks, issues created/failed, dependencies
 
 ### Phase 4: Commit Changes
 
-**Goal**: Commit tracking metadata to version control.
+**Goal**: Commit tracking metadata to version control. See [references/workflow-details.md](references/workflow-details.md) for commit message format examples.
 
-1. **Stage tracking files**:
-
-   ```bash
-   git add .github/issue-tracking.json
-   git add features/*/tasks.md  # If updated with issue links
-   ```
-
-2. **Generate commit message**:
-
-   **Format**: `chore: sync tasks to GitHub issues`
-
-   **Full message example:**
-
-   ```
-   chore: sync tasks to GitHub issues
-   
-   - Created 2 GitHub issues from tasks.md
-   - Feature: user-auth
-   - Issues: #42, #43
-   - Tracked in .github/issue-tracking.json
-   ```
-
-3. **Commit changes**:
-
-   ```bash
-   git commit -m "chore: sync tasks to GitHub issues
-
-   - Created 2 GitHub issues from tasks.md
-   - Feature: user-auth
-   - Issues: #42, #43
-   - Tracked in .github/issue-tracking.json"
-   ```
-
-4. **Verify commit**:
-   - Check that commit was successful
-   - Verify tracking file is included
-   - Confirm commit message follows convention
+1. **Stage tracking files**: `git add .github/issue-tracking.json` (and updated tasks.md if modified)
+2. **Generate commit message**: Format `chore: sync tasks to GitHub issues` with details
+3. **Commit changes** with full message including created issues and feature name
+4. **Verify commit**: Check success, verify tracking file included, confirm message format
 
 **Output**: Changes committed to version control with tracking metadata
 
@@ -450,31 +174,16 @@ The tasks-to-github-issues process is complete when:
 
 ## Error Handling
 
-**Common Errors and Solutions:**
+See [references/workflow-details.md](references/workflow-details.md) for detailed error handling strategies including rate limits, authentication, partial failures, and circular dependencies.
 
-1. **Error**: `tasks.md not found`
-   - **Cause**: No task file exists
-   - **Action**: Run `taskify` command to create tasks.md first
+**Common Errors:**
 
-2. **Error**: `Not a GitHub repository`
-   - **Cause**: Git remote is not a GitHub URL
-   - **Action**: This skill only works with GitHub repositories. Use manual issue creation for other platforms.
-
-3. **Error**: `GitHub authentication failed`
-   - **Cause**: No GitHub credentials or invalid token
-   - **Action**: Configure GitHub MCP server with valid authentication token
-
-4. **Error**: `Circular dependency detected`
-   - **Cause**: Task A depends on Task B, and Task B depends on Task A
-   - **Action**: Fix tasks.md to remove circular dependency
-
-5. **Error**: `Rate limit exceeded`
-   - **Cause**: Too many API requests to GitHub
-   - **Action**: Wait for rate limit reset (check headers for reset time) and retry
-
-6. **Error**: `Issue creation failed for task X`
-   - **Cause**: Network error, invalid data, or API error
-   - **Action**: Log the error, skip the task, report at the end. Do not commit tracking metadata.
+1. **tasks.md not found**: Run taskify command to create tasks.md first
+2. **Not a GitHub repository**: Skill only works with GitHub repositories
+3. **GitHub authentication failed**: Configure GitHub MCP server with valid token
+4. **Circular dependency detected**: Fix tasks.md to remove cycle
+5. **Rate limit exceeded**: Wait for reset time and retry
+6. **Issue creation failed**: Log error, skip task, report at end, don't commit tracking metadata
 
 ## Templates
 

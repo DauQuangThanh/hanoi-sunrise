@@ -56,10 +56,10 @@ function Find-ArchitectureFile {
         return $currentArch
     }
     
-    # Check .sunrise\docs\ (alternative location)
-    $sunriseArch = Join-Path $currentDir ".sunrise\docs\architecture.md"
-    if (Test-Path $sunriseArch) {
-        return $sunriseArch
+    # Check .phoenix\docs\ (alternative location)
+    $phoenixArch = Join-Path $currentDir ".phoenix\docs\architecture.md"
+    if (Test-Path $phoenixArch) {
+        return $phoenixArch
     }
     
     return $null
@@ -159,7 +159,7 @@ function Write-JsonOutput {
             searched_paths = @(
                 (Join-Path $currentDir "docs\architecture.md"),
                 (Join-Path $currentDir "architecture.md"),
-                (Join-Path $currentDir ".sunrise\docs\architecture.md")
+                (Join-Path $currentDir ".phoenix\docs\architecture.md")
             )
         }
         
@@ -207,7 +207,7 @@ function Write-HumanOutput {
         Write-Host "Searched paths:"
         Write-Host "  • $(Join-Path $currentDir 'docs\architecture.md')"
         Write-Host "  • $(Join-Path $currentDir 'architecture.md')"
-        Write-Host "  • $(Join-Path $currentDir '.sunrise\docs\architecture.md')"
+        Write-Host "  • $(Join-Path $currentDir '.phoenix\docs\architecture.md')"
     }
 }
 

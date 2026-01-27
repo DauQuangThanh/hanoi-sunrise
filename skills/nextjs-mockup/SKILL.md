@@ -61,6 +61,31 @@ Creates interactive UI mockups and prototypes using the latest Next.js (v16), Re
 
 ## Instructions
 
+### Phase 0: Specification and Requirements Gathering
+
+**⚠️ IMPORTANT: Always request specification documents before starting implementation.**
+
+1. **Request specification documents:**
+   - Ask the user to provide design specifications, wireframes, or requirements documents
+   - Request any relevant documentation: UI/UX designs, mockups, user stories, or feature descriptions
+   - If no formal documentation exists, ask the user to describe:
+     - Target pages or screens to be created
+     - Key UI components needed
+     - User interactions and flows
+     - Branding guidelines (colors, fonts, style preferences)
+     - Any example references or inspiration
+
+2. **Review and confirm understanding:**
+   - Summarize the requirements back to the user
+   - Clarify any ambiguities or missing details
+   - Confirm the scope and expected deliverables
+   - Ask about any technical constraints or preferences
+
+3. **Only proceed to Phase 1 after:**
+   - Specification documents are provided and reviewed
+   - Requirements are clearly understood
+   - User confirms readiness to start implementation
+
 ### Phase 1: Project Setup and Initialization
 
 1. **Run prerequisite check:**

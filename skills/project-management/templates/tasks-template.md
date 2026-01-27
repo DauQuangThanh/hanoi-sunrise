@@ -14,13 +14,25 @@
 ## Task Format
 
 ```
-- [ ] [TaskID] [P?] [Story?] Description with file path
+- [ ] [TaskID] [P?] [Story?] Action verb + specific component + in precise/file/path.ext
 ```
+
+**Components:**
 
 - **TaskID**: Sequential identifier (T001, T002, T003...)
 - **[P]**: Parallelizable task (different files, no dependencies)
 - **[Story]**: User story label ([US1], [US2], etc.) - only for user story phases
-- **Description**: Action with specific file path
+- **Action verb**: Create, Implement, Add, Update, Configure, Write, Build
+- **Specific component**: Exact class/function/endpoint name
+- **Precise path**: Full relative path from project root
+
+**AI Implementation Guidelines:**
+
+- Use clear action verbs that indicate exactly what to do
+- Specify exact components (class names, function names, endpoints)
+- Include full file paths from project root (e.g., `src/models/user.py`)
+- Reference design artifacts for context (e.g., "per design.md")
+- Make tasks independently verifiable
 
 ## Phase 1: Setup (Project Initialization)
 
@@ -28,17 +40,17 @@
 
 **Tasks**:
 
-- [ ] T001 Create project directory structure per design.md
-- [ ] T002 Initialize [BUILD_TOOL] configuration
-- [ ] T003 [P] Install core dependencies: [DEPENDENCY_LIST]
-- [ ] T004 [P] Set up environment configuration files
-- [ ] T005 Create README.md with setup instructions
+- [ ] T001 Create project directory structure with src/, tests/, docs/ folders per design.md
+- [ ] T002 Initialize [BUILD_TOOL] with [CONFIG_FILE] configuration file
+- [ ] T003 [P] Install core dependencies: [DEPENDENCY_LIST] using [PACKAGE_MANAGER]
+- [ ] T004 [P] Create environment configuration in .env.example with required variables
+- [ ] T005 Add project setup instructions to README.md with installation steps
 
 **Completion Criteria**:
 
-- [ ] Project structure matches design.md
-- [ ] All dependencies install successfully
-- [ ] Configuration files validated
+- [ ] Project structure matches design.md specification
+- [ ] All dependencies install successfully with `[INSTALL_COMMAND]`
+- [ ] Configuration files are valid and documented
 
 ---
 
@@ -48,16 +60,16 @@
 
 **Tasks**:
 
-- [ ] T006 [P] Implement [SHARED_COMPONENT_1] in [FILE_PATH]
-- [ ] T007 [P] Implement [SHARED_COMPONENT_2] in [FILE_PATH]
-- [ ] T008 Create base [UTILITY_CLASS] in [FILE_PATH]
-- [ ] T009 Set up [DATABASE/API/SERVICE] connection in [FILE_PATH]
+- [ ] T006 [P] Create [SHARED_COMPONENT_1] base class in [FILE_PATH]
+- [ ] T007 [P] Implement [SHARED_COMPONENT_2] utility functions in [FILE_PATH]
+- [ ] T008 Add base [UTILITY_CLASS] with common methods in [FILE_PATH]
+- [ ] T009 Configure [DATABASE/API/SERVICE] connection with credentials in [FILE_PATH]
 
 **Completion Criteria**:
 
-- [ ] All shared components tested
-- [ ] Foundation ready for user story implementation
-- [ ] No blocking dependencies remain
+- [ ] All shared components have unit tests passing
+- [ ] Foundation components are importable and functional
+- [ ] No blocking dependencies remain for user story implementation
 
 ---
 
@@ -69,48 +81,48 @@
 
 **Independent Test Criteria**:
 
-- [ ] [TEST_CRITERION_1]
-- [ ] [TEST_CRITERION_2]
-- [ ] [TEST_CRITERION_3]
+- [ ] Can [SPECIFIC_ACTION] successfully (e.g., "POST to /api/register with valid email/password")
+- [ ] Returns [EXPECTED_RESPONSE] (e.g., "201 status with user ID and token")
+- [ ] Data persists correctly (e.g., "User record stored in database with hashed password")
 
 **Tasks**:
 
 ### Tests (if applicable)
 
-- [ ] T010 [P] [US1] Write unit tests for [COMPONENT] in tests/unit/[TEST_FILE]
-- [ ] T011 [P] [US1] Write integration tests for [FEATURE] in tests/integration/[TEST_FILE]
+- [ ] T010 [P] [US1] Write unit tests for [COMPONENT_NAME] class in tests/unit/test_[component].py
+- [ ] T011 [P] [US1] Write integration tests for [FEATURE_NAME] flow in tests/integration/test_[feature].py
 
 ### Models/Entities
 
-- [ ] T012 [P] [US1] Create [ENTITY_1] model in [FILE_PATH]
-- [ ] T013 [P] [US1] Create [ENTITY_2] model in [FILE_PATH]
-- [ ] T014 [US1] Implement [ENTITY_RELATIONSHIP] in [FILE_PATH]
+- [ ] T012 [P] [US1] Create [ENTITY_1] model class with [FIELD_LIST] in [FILE_PATH]
+- [ ] T013 [P] [US1] Create [ENTITY_2] model class with [FIELD_LIST] in [FILE_PATH]
+- [ ] T014 [US1] Add [RELATIONSHIP_NAME] relationship between [ENTITY_1] and [ENTITY_2] in [FILE_PATH]
 
 ### Services/Business Logic
 
-- [ ] T015 [US1] Implement [SERVICE_1] in [FILE_PATH]
-- [ ] T016 [P] [US1] Implement [HELPER_FUNCTION] in [FILE_PATH]
-- [ ] T017 [US1] Add [BUSINESS_LOGIC] to [SERVICE] in [FILE_PATH]
+- [ ] T015 [US1] Implement [SERVICE_1] class with [METHOD_LIST] in [FILE_PATH]
+- [ ] T016 [P] [US1] Add HELPER_FUNCTION_NAME() utility function in [FILE_PATH]
+- [ ] T017 [US1] Implement [BUSINESS_LOGIC_NAME] validation in [SERVICE].validate() method
 
 ### Endpoints/UI
 
-- [ ] T018 [US1] Create [ENDPOINT_1] in [FILE_PATH]
-- [ ] T019 [P] [US1] Create [UI_COMPONENT] in [FILE_PATH]
-- [ ] T020 [US1] Wire [COMPONENT] to [SERVICE] in [FILE_PATH]
+- [ ] T018 [US1] Add [HTTP_METHOD] [ENDPOINT_PATH] endpoint with [REQUEST/RESPONSE] in [FILE_PATH]
+- [ ] T019 [P] [US1] Create [UI_COMPONENT_NAME] component with [PROPS] in [FILE_PATH]
+- [ ] T020 [US1] Connect [COMPONENT_NAME] to [SERVICE_NAME] in [FILE_PATH]
 
 ### Integration
 
-- [ ] T021 [US1] Integrate [COMPONENT_A] with [COMPONENT_B]
-- [ ] T022 [US1] End-to-end test of User Story 1
+- [ ] T021 [US1] Connect [COMPONENT_A] with [COMPONENT_B] by implementing [INTEGRATION_POINT]
+- [ ] T022 [US1] Verify User Story 1 end-to-end: [SPECIFIC_TEST_SCENARIO]
 
 **Parallel Execution Example**:
 
 ```
-Round 1: T010, T011, T012, T013, T016, T019 (all [P] tasks)
-Round 2: T014, T015
-Round 3: T017, T018
-Round 4: T020
-Round 5: T021, T022
+Round 1: T010, T011, T012, T013, T016, T019 (all [P] tasks - independent)
+Round 2: T014, T015 (depends on models)
+Round 3: T017, T018 (depends on services)
+Round 4: T020 (depends on endpoints and UI)
+Round 5: T021, T022 (integration and verification)
 ```
 
 ---

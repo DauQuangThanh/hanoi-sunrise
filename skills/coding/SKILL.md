@@ -4,7 +4,7 @@ description: Executes feature implementation by processing tasks.md files, valid
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-26"
+  last-updated: "2026-01-27"
 license: MIT
 ---
 
@@ -24,6 +24,12 @@ This skill executes feature implementations by processing structured task lists 
 - Tracking implementation progress
 - User mentions: "implement tasks", "execute implementation", "code feature", "follow task breakdown", "implement from tasks.md"
 
+**Related Skills:**
+- **Before coding**: Use `technical-design` and `project-management` skills for planning
+- **After coding**: Use `code-review` skill for quality validation
+- **During coding**: Use `bug-analysis` skill if issues discovered
+- **Standards**: Use `coding-standards` skill if standards.md is missing
+
 ## Prerequisites
 
 - **Required documents in feature directory**:
@@ -32,7 +38,7 @@ This skill executes feature implementations by processing structured task lists 
   - `spec.md` - Feature requirements and user stories (Optional but recommended)
 - **Product-level documentation** (Optional but recommended):
   - `docs/architecture.md` - System architecture, patterns, ADRs
-  - `docs/standards.md` - Coding conventions and standards
+  - `docs/standards.md` - Coding conventions and standards (**Recommended:** use `coding-standards` skill to create if missing)
 - **Optional supporting documents**:
   - `data-model.md` - Entity definitions and relationships
   - `contracts/` - API specifications
@@ -41,6 +47,52 @@ This skill executes feature implementations by processing structured task lists 
 - **Tools**: bash (Unix/Linux/macOS) or PowerShell (Windows) for running prerequisite checks
 
 ## Instructions
+
+### Step 0: Technical Design and Task Plan Verification
+
+**⚠️ IMPORTANT: Always request technical design and task breakdown before starting implementation.**
+
+1. **Request required documents:**
+   - Ask the user to provide the technical design document (`design.md`)
+   - Request the task breakdown file (`tasks.md`) with detailed implementation tasks
+   - If missing, ask the user to provide or confirm the location of:
+     - Technical specifications and design decisions
+     - Implementation plan with task breakdown by phase
+     - Task dependencies and execution order
+     - Data models and API contracts (if applicable)
+
+2. **Verify task breakdown completeness:**
+   - Confirm `tasks.md` exists with:
+     - Clear task breakdown organized by phases (Setup, Tests, Core, Integration, Polish)
+     - Task IDs and descriptions
+     - File paths for each task
+     - Dependencies between tasks
+     - Parallelization markers ([P]) where applicable
+   - Verify tasks are actionable and specific
+
+3. **Verify technical design completeness:**
+   - Confirm `design.md` exists with:
+     - Technology stack and libraries to be used
+     - Project structure and file organization
+     - Component architecture and design patterns
+     - Technical decisions and rationale
+   - Check if `spec.md` (feature requirements) is available
+   - Verify if product-level docs exist (`docs/architecture.md`, `docs/standards.md`)
+
+4. **Review and confirm understanding:**
+   - Summarize the feature to be implemented
+   - Review the task breakdown, phases, and dependencies
+   - Clarify any ambiguities in the technical design
+   - Confirm the implementation approach and technology stack
+   - Identify which phase or task to start with
+   - Ask about any specific concerns or constraints
+
+5. **Only proceed to Step 1 after:**
+   - Technical design document (`design.md`) is provided and reviewed
+   - Task breakdown (`tasks.md`) is provided and reviewed with clear phases and dependencies
+   - Implementation approach is clearly understood
+   - Starting point (phase/task) is confirmed
+   - User confirms readiness to start implementation
 
 ### Step 1: Check Prerequisites and Load Context
 
@@ -69,39 +121,13 @@ Parse the output to extract:
 
 ### Step 2: Validate Quality Checklists (If Present)
 
-If `FEATURE_DIR/checklists/` exists, validate all checklists before proceeding:
+If `FEATURE_DIR/checklists/` exists, validate all checklists before proceeding. See [references/implementation-patterns.md](references/implementation-patterns.md#checklist-validation-process) for detailed validation process.
 
-**Checklist Validation Process:**
-
-1. **Scan all checklist files**:
-   - Count total items: Lines matching `- [ ]` or `- [X]` or `- [x]`
-   - Count completed: Lines matching `- [X]` or `- [x]`
-   - Count incomplete: Lines matching `- [ ]`
-
-2. **Create status table**:
-
-   ```
-   | Checklist    | Total | Completed | Incomplete | Status |
-   |--------------|-------|-----------|------------|--------|
-   | ux.md        | 12    | 12        | 0          | ✓ PASS |
-   | test.md      | 8     | 5         | 3          | ✗ FAIL |
-   | security.md  | 6     | 6         | 0          | ✓ PASS |
-   ```
-
-3. **Determine overall status**:
-   - **PASS**: All checklists have 0 incomplete items → Proceed automatically
-   - **FAIL**: One or more checklists have incomplete items → Ask user permission
-
-4. **If checklists incomplete**:
-   - Display table with incomplete counts
-   - **STOP** and ask: "Some checklists are incomplete. Do you want to proceed with implementation anyway? (yes/no)"
-   - Wait for user response:
-     - If "no" / "wait" / "stop" → Halt execution
-     - If "yes" / "proceed" / "continue" → Continue to Step 3
-
-5. **If all checklists complete**:
-   - Display table showing all passed
-   - Proceed automatically to Step 3
+**Quick Summary:**
+- Scan all checklist files and count completed vs incomplete items
+- Create status table showing pass/fail for each checklist
+- If all pass → proceed automatically
+- If any incomplete → ask user permission to proceed or halt
 
 ### Step 3: Load Implementation Context
 
@@ -162,53 +188,27 @@ Read all available documents to build complete implementation context:
 
 ### Step 4: Project Setup Verification
 
-Verify and create project infrastructure before implementation:
+Verify and create project infrastructure before implementation. See [references/implementation-patterns.md](references/implementation-patterns.md#ignore-files-management) for detailed ignore file patterns.
+
+**Key Tasks:**
 
 #### Architecture Alignment (If architecture.md exists)
 
-- [ ] Verify directory structure matches code organization from architecture.md
-- [ ] Ensure deployment configuration aligns with deployment architecture
-- [ ] Follow component organization patterns from C4 Component View
-- [ ] Apply architectural patterns from ADRs
+- Verify directory structure matches code organization
+- Ensure deployment configuration aligns with architecture
+- Follow component organization patterns from C4 Component View
 
 #### Standards Compliance (If standards.md exists)
 
-- [ ] Follow file and directory naming conventions
-- [ ] Apply code naming conventions (UI, backend, database)
-- [ ] Follow project structure standards
-- [ ] Prepare for API design standards
-- [ ] Prepare for testing standards
+- Follow file and directory naming conventions
+- Apply code naming conventions (UI, backend, database)
+- Follow project structure standards
 
 #### Ignore Files Management
 
-Detect project technology and create/verify ignore files:
-
-**Detection Logic**:
-
-- Check if git repository → create/verify `.gitignore`
-- Check if Dockerfile exists → create/verify `.dockerignore`
-- Check if ESLint config exists → create/verify `.eslintignore`
-- Check if Prettier config exists → create/verify `.prettierignore`
-- Check if npm project → create/verify `.npmignore` (if publishing)
-- Check if Terraform files → create/verify `.terraformignore`
-- Check if Helm charts → create/verify `.helmignore`
-
-**Ignore File Creation Rules**:
-
-- If file exists → Verify essential patterns, append only missing critical ones
-- If file missing → Create with full pattern set for detected technology
-
-**Technology-Specific Patterns**:
-
-- **Node.js/JavaScript/TypeScript**: `node_modules/`, `dist/`, `build/`, `*.log`, `.env*`
-- **Python**: `__pycache__/`, `*.pyc`, `.venv/`, `venv/`, `dist/`, `*.egg-info/`
-- **Java**: `target/`, `*.class`, `*.jar`, `.gradle/`, `build/`
-- **C#/.NET**: `bin/`, `obj/`, `*.user`, `*.suo`, `packages/`
-- **Go**: `*.exe`, `*.test`, `vendor/`, `*.out`
-- **Ruby**: `.bundle/`, `log/`, `tmp/`, `*.gem`, `vendor/bundle/`
-- **PHP**: `vendor/`, `*.log`, `*.cache`, `*.env`
-- **Rust**: `target/`, `*.rs.bk`, `*.rlib`, `*.log`, `.env*`
-- **Universal**: `.DS_Store`, `Thumbs.db`, `*.tmp`, `*.swp`, `.vscode/`, `.idea/`
+- Detect project technology (Node.js, Python, Java, etc.)
+- Create/verify ignore files (.gitignore, .dockerignore, etc.)
+- Apply technology-specific patterns (see references/implementation-patterns.md)
 
 ### Step 5: Parse Tasks Structure
 
@@ -239,125 +239,40 @@ Extract task organization from tasks.md:
 
 ### Step 6: Execute Implementation Plan
 
-Follow phase-by-phase execution with proper workflow:
+Follow phase-by-phase execution with proper workflow. See [references/implementation-patterns.md](references/implementation-patterns.md#phase-by-phase-implementation-workflow) for detailed phase workflows and execution patterns.
 
-#### Implementation Workflow
+**Phase Overview:**
 
-**Phase 1: Setup** (Project Initialization)
+1. **Phase 1: Setup** - Project initialization and configuration
+2. **Phase 2: Foundational** - Shared infrastructure and base classes
+3. **Phase 3+: User Story Implementation** - Feature implementation using TDD:
+   - Tests first (if requested)
+   - Models/Entities
+   - Services/Business Logic
+   - Endpoints/UI
+   - Integration
+   - Validation
+4. **Final Phase: Polish** - Documentation, optimization, security
 
-- Create directory structure (follow standards.md if exists)
-- Initialize configuration files
-- Install dependencies
-- Set up development environment
-- Create ignore files
+**Task Execution Rules** (see [references/implementation-patterns.md](references/implementation-patterns.md#task-execution-rules)):
 
-**Phase 2: Foundational** (Blocking Prerequisites)
-
-- Implement shared infrastructure
-- Create base classes and utilities
-- Set up middleware and common services
-- Establish database connections
-
-**Phase 3+: User Story Implementation**
-
-For each user story phase, follow TDD approach:
-
-1. **Tests First** (if tests requested):
-   - Write unit tests for models/entities
-   - Write integration tests for services
-   - Write contract tests for APIs
-   - Follow testing standards from standards.md
-
-2. **Models/Entities**:
-   - Create data models following data-model.md
-   - Apply database naming conventions from standards.md
-   - Implement entity relationships
-
-3. **Services/Business Logic**:
-   - Implement business logic following design.md
-   - Apply code naming conventions from standards.md
-   - Implement architectural patterns from architecture.md
-
-4. **Endpoints/UI**:
-   - Create API endpoints following contracts/
-   - Apply UI naming conventions from standards.md
-   - Apply API design standards from standards.md
-
-5. **Integration**:
-   - Wire components together
-   - Implement integration patterns from architecture.md
-   - Apply quality strategies (security, performance) from architecture.md
-
-6. **Validation**:
-   - Run tests (if implemented)
-   - Verify acceptance criteria from spec.md
-   - Mark tasks as complete in tasks.md: `- [X]`
-
-**Final Phase: Polish**
-
-- Add documentation (follow standards.md)
-- Optimize performance
-- Security hardening
-- Code review and cleanup
-
-#### Task Execution Rules
-
-1. **Respect Dependencies**:
-   - Sequential tasks: Run in order, one at a time
-   - Parallel tasks [P]: Can execute simultaneously (different files)
-   - Same-file tasks: Must be sequential regardless of [P] marker
-
-2. **Error Handling**:
-   - Non-parallel task fails → Halt execution
-   - Parallel task fails → Continue with successful, report failed
-   - Provide clear error context for debugging
-
-3. **Progress Tracking**:
-   - Report after each completed task
-   - Update tasks.md: Change `- [ ]` to `- [X]` for completed tasks
-   - Show phase completion status
-
-4. **Commit Strategy**:
-   - Commit after each logical unit of work
-   - Use appropriate prefixes: `feat:`, `fix:`, `test:`, `docs:`, `refactor:`
-   - Follow commit conventions from standards.md (if exists)
-   - Reference task IDs in commit messages
+- Respect dependencies (sequential vs parallel tasks)
+- Handle errors appropriately (halt on critical, continue on parallel)
+- Track progress (update tasks.md, report status)
+- Commit frequently (after each logical unit, use proper prefixes)
 
 ### Step 7: Completion Validation
 
-Verify implementation quality and completeness:
+Verify implementation quality and completeness. See [references/implementation-patterns.md](references/implementation-patterns.md#implementation-verification-checklist) for complete validation checklist.
 
-#### Implementation Verification
+**Quick Checks:**
 
-- [ ] All required tasks completed (marked as [X] in tasks.md)
-- [ ] Implementation matches specifications from spec.md
-- [ ] Tests pass (if tests were implemented)
-- [ ] Code coverage meets requirements (if specified)
-
-#### Architecture Alignment (If architecture.md exists)
-
-- [ ] Implementation follows architectural patterns
-- [ ] Component organization matches C4 Component View
-- [ ] Technology stack matches architecture decisions
-- [ ] Quality attribute requirements met (performance, security, scalability)
-- [ ] ADRs (Architecture Decision Records) respected
-
-#### Standards Compliance (If standards.md exists)
-
-- [ ] UI naming conventions followed (for UI components)
-- [ ] Code naming conventions applied consistently
-- [ ] File and directory structure matches standards
-- [ ] API design standards followed
-- [ ] Database naming conventions applied
-- [ ] Testing standards followed
-- [ ] Git commit messages follow conventions
-- [ ] Documentation standards met
-
-#### Quality Checklist Validation (If checklists exist)
-
-- [ ] Re-run checklist validation
-- [ ] All checklist items should now be complete
-- [ ] Address any remaining incomplete items
+- [ ] All tasks completed (marked as [X] in tasks.md)
+- [ ] Implementation matches specifications
+- [ ] Tests pass (if tests implemented)
+- [ ] Architecture alignment validated (if architecture.md exists)
+- [ ] Standards compliance validated (if standards.md exists)
+- [ ] Checklists all passed (if checklists exist)
 
 ### Step 8: Generate Implementation Report
 
@@ -387,39 +302,29 @@ Provide concise summary including:
 - Checklist status (all passed/some incomplete)
 - Next steps or recommendations
 
+### Step 10: Quality Review (Recommended)
+
+After completing the implementation, it's highly recommended to run additional validation. See [references/implementation-patterns.md](references/implementation-patterns.md#next-steps-recommendations) for detailed next steps.
+
+**Recommended:**
+1. **Run `code-review` skill** to validate code quality, error handling, test coverage, and security
+2. **Address findings** from review before creating PR/MR
+3. **Consider `e2e-test-design` skill** if E2E tests needed
+4. **Use `bug-analysis` skill** if issues discovered during testing
+
+## Additional Resources
+
+- [references/implementation-patterns.md](references/implementation-patterns.md) - Detailed implementation patterns and workflows
+- `templates/implementation-report.md` - Implementation completion report structure
+- `templates/progress-tracker.md` - Progress tracking template
+
 ## Task Execution Patterns
 
-### Sequential Execution (Default)
+See [references/implementation-patterns.md](references/implementation-patterns.md#task-execution-patterns) for complete patterns including:
 
-```
-Task T001 → Complete → Mark [X] → Commit
-Task T002 → Complete → Mark [X] → Commit
-Task T003 → Complete → Mark [X] → Commit
-```
-
-### Parallel Execution (Tasks marked with [P])
-
-```
-Round 1:
-  T010 [P] → Complete → Mark [X] ┐
-  T011 [P] → Complete → Mark [X] ├→ Commit all together
-  T012 [P] → Complete → Mark [X] ┘
-
-Round 2:
-  T013 → Complete → Mark [X] → Commit
-```
-
-### TDD Execution (Tests → Implementation)
-
-```
-Phase: User Story 1
-  T010 [P] [US1] Write unit tests → Complete → Mark [X]
-  T011 [P] [US1] Write integration tests → Complete → Mark [X]
-  T012 [P] [US1] Create model → Complete → Mark [X]
-  T013 [US1] Implement service → Complete → Mark [X]
-  T014 [US1] Create endpoint → Complete → Mark [X]
-  T015 [US1] Run tests → Validate → Complete
-```
+- Sequential execution
+- Parallel execution (tasks marked with [P])
+- TDD execution (Tests → Implementation)
 
 ## Examples
 

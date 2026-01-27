@@ -119,9 +119,9 @@
 
 **Recommendation**:
 
-- [ ] Ready to proceed to `/sunrise.clarify`
-- [ ] Ready to proceed to `/sunrise.architect`
-- [ ] Ready to proceed to `/sunrise.design`
+- [ ] Ready to proceed to `/phoenix.clarify`
+- [ ] Ready to proceed to `/phoenix.architect`
+- [ ] Ready to proceed to `/phoenix.design`
 - [ ] Requires additional clarification before proceeding
 - [ ] Requires spec revision before proceeding
 

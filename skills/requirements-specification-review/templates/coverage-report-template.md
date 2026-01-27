@@ -318,7 +318,7 @@ Items deferred to planning/design phase:
 **If all critical items resolved**:
 
 - ✅ Spec is ready for technical design
-- Suggested next command: `/sunrise.design` or use technical-design skill
+- Suggested next command: `/phoenix.design` or use technical-design skill
 
 **If Outstanding items remain**:
 

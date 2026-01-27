@@ -76,9 +76,9 @@ find_architecture_file() {
         return 0
     fi
     
-    # Check .sunrise/docs/ (alternative location)
-    if [[ -f "$current_dir/.sunrise/docs/architecture.md" ]]; then
-        echo "$current_dir/.sunrise/docs/architecture.md"
+    # Check .phoenix/docs/ (alternative location)
+    if [[ -f "$current_dir/.phoenix/docs/architecture.md" ]]; then
+        echo "$current_dir/.phoenix/docs/architecture.md"
         return 0
     fi
     
@@ -180,7 +180,7 @@ output_json() {
         echo "  \"searched_paths\": ["
         echo "    \"$current_dir/docs/architecture.md\","
         echo "    \"$current_dir/architecture.md\","
-        echo "    \"$current_dir/.sunrise/docs/architecture.md\""
+        echo "    \"$current_dir/.phoenix/docs/architecture.md\""
         echo "  ]"
         echo "}"
     fi
@@ -225,7 +225,7 @@ output_human() {
         echo "Searched paths:"
         echo "  • $current_dir/docs/architecture.md"
         echo "  • $current_dir/architecture.md"
-        echo "  • $current_dir/.sunrise/docs/architecture.md"
+        echo "  • $current_dir/.phoenix/docs/architecture.md"
     fi
 }
 

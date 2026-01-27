@@ -769,7 +769,7 @@ Total Score: [X/100]
 **Typical Feature Addition Workflow**:
 
 1. **Create Feature Specification**:
-   - Use `/sunrise.specify` with brownfield context
+   - Use `/phoenix.specify` with brownfield context
    - Align with existing patterns documented here
 
 2. **Design Technical Implementation**:
@@ -876,7 +876,7 @@ Total Score: [X/100]
 
 **Next Steps**:
 
-1. [Next action - e.g., "Use /sunrise.specify to create feature specification"]
+1. [Next action - e.g., "Use /phoenix.specify to create feature specification"]
 2. [Follow-up action]
 3. [Additional consideration]
 

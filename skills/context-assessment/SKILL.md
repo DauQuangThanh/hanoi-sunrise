@@ -4,7 +4,7 @@ description: Analyze existing codebases to understand architecture, patterns, an
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-25"
+  last-updated: "2026-01-27"
 license: MIT
 ---
 

@@ -140,16 +140,16 @@ Apply semantic versioning rules:
 
 #### Templates to check and update (if present)
 
-1. **Design Template** (`.sunrise/templates/templates-for-commands/design-template.md`)
+1. **Design Template** (in `technical-design` skill)
    - Ensure "Ground-rules Check" sections align with updated principles
    - Update any hardcoded rule references
 
-2. **Specification Template** (`.sunrise/templates/templates-for-commands/spec-template.md`)
+2. **Specification Template** (in `requirements-specification` skill)
    - Verify scope/requirements alignment
    - Update if ground-rules adds/removes mandatory sections
    - Check constraints match new principles
 
-3. **Tasks Template** (`.sunrise/templates/templates-for-commands/tasks-template.md`)
+3. **Tasks Template** (in `project-management` skill)
    - Update task categorization for new/removed principles
    - Ensure principle-driven task types are current (e.g., observability, versioning, testing)
 
@@ -234,7 +234,6 @@ mkdir -p memory
 
 ```bash
 git add docs/ground-rules.md
-git add .sunrise/templates/templates-for-commands/*.md
 git commit -m "docs: [generated message]"
 ```
 
@@ -279,8 +278,6 @@ Create ground rules for our TypeScript API project with focus on:
 
 Files created/updated:
 - docs/ground-rules.md (created)
-- .sunrise/templates/templates-for-commands/design-template.md (updated)
-- .sunrise/templates/templates-for-commands/spec-template.md (updated)
 
 Principles established:
 - Clean Code: Readability and maintainability first
@@ -310,7 +307,6 @@ Changes:
 
 Files updated:
 - docs/ground-rules.md
-- .sunrise/templates/templates-for-commands/design-template.md
 
 Committed as: "docs: update ground rules to v1.1.0 (security principle)"
 ```
@@ -520,4 +516,4 @@ The ground-rules template typically includes:
 
 ---
 
-**Note**: This skill automates the workflow described in `agent-commands/set-ground-rules.md` and ensures consistency across project documentation.
+**Note**: This skill automates the workflow for setting up and maintaining project ground rules, ensuring consistency across project documentation.

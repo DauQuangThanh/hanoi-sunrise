@@ -5,7 +5,7 @@ license: MIT
 metadata:
   author: Dau Quang Thanh
   version: "1.0"
-  last-updated: "2026-01-26"
+  last-updated: "2026-01-27"
 ---
 
 # Coding Standards Generation Skill
@@ -160,83 +160,24 @@ scripts/check-standards-prerequisites.sh --json
 **Applicability Check**:
 
 - ✅ REQUIRED: Web apps, mobile apps, desktop GUI apps, design systems, component libraries
-- ✅ REQUIRED: Projects with HTML/CSS, React/Vue/Angular, iOS/Android UI, Electron/Tauri
-- ✅ REQUIRED: Projects with UI mockups, wireframes, or design specifications
-- ❌ SKIP: Pure REST APIs, CLI tools, background services, data pipelines, microservices without UI
+- ❌ SKIP: Pure REST APIs, CLI tools, background services, data pipelines
 
-**If UI project, document the following comprehensively:**
+**If UI project, document comprehensively:**
 
-1. **Component/Widget naming conventions**:
-   - Component names format (PascalCase, kebab-case, etc.)
-     - Examples: `UserProfile.tsx`, `user-profile.vue`
-   - Props/Attributes naming (camelCase, etc.)
-     - Examples: `userName`, `isVisible`, `onClick`
-   - Event handler naming (handle*, on*)
-     - Examples: `handleSubmit`, `onUserClick`
-   - State variable naming (descriptive, boolean prefixes)
-     - Examples: `isLoading`, `userData`, `hasError`
+1. **Component/Widget naming** - Name format (PascalCase/kebab-case), Props/Attributes (camelCase), Event handlers (handle*/on*), State variables
+2. **CSS/Styling naming** - Methodology (BEM/utility/semantic), ID rules, CSS-in-JS, Style files
+3. **File naming for UI** - Component files, Style files, Test files, Story files
+4. **Directory structure** - Component patterns, Asset organization, Shared components
+5. **Accessibility naming** - ARIA attributes, Roles, Label associations, Landmarks
+6. **Framework-specific** - React (hooks, Context, HOC), Vue (composables, directives), Angular (services, pipes), Native mobile
+7. **Do's and Don'ts** - Clear examples vs cryptic anti-patterns
+8. **Common anti-patterns** - Generic names, inconsistent casing, missing semantics
 
-2. **CSS/Styling naming conventions**:
-   - CSS class naming methodology (BEM, utility-first, semantic, etc.)
-     - BEM: `.block__element--modifier`
-     - Utility: `.flex`, `.text-center`, `.bg-blue-500`
-   - ID attribute naming rules (when to use, format)
-   - CSS-in-JS naming (styled-components, emotion)
-   - Style file naming (`.module.css`, `.styles.ts`)
-
-3. **File naming for UI components**:
-   - Component files: `ComponentName.tsx`, `component-name.vue`
-   - Style files: `ComponentName.module.css`, `component-name.styles.ts`
-   - Test files: `ComponentName.test.tsx`, `component-name.spec.ts`
-   - Story files: `ComponentName.stories.tsx`
-
-4. **Directory structure for UI code**:
-   - Component directory patterns:
-
-     ```
-     src/components/
-       UserProfile/
-         UserProfile.tsx
-         UserProfile.styles.ts
-         UserProfile.test.tsx
-         index.ts
-     ```
-
-   - Asset organization (images, icons, fonts)
-   - Layout component patterns
-   - Shared/common component organization
-
-5. **Accessibility naming conventions**:
-   - ARIA attribute naming (`aria-label`, `aria-describedby`)
-   - Role naming (`role="navigation"`, `role="button"`)
-   - Label associations (`htmlFor`, `id`)
-   - Landmark naming (`<nav>`, `<main>`, `<aside>`)
-
-6. **Framework-specific conventions**:
-   - **React**: Hook naming (`use` prefix), Context naming, HOC naming
-     - Examples: `useUserData`, `UserContext`, `withAuth`
-   - **Vue**: Composable naming, Directive naming, Plugin naming
-     - Examples: `useCounter`, `v-focus`, `myPlugin`
-   - **Angular**: Service naming, Directive naming, Pipe naming
-     - Examples: `UserService`, `HighlightDirective`, `DatePipe`
-   - **Native mobile**: ViewController/Activity naming, View naming
-     - Examples: `UserProfileViewController`, `MainActivity`
-
-7. **Do's and Don'ts** with examples:
-   - ✅ DO: `<UserProfile userId={123} />` (clear, descriptive)
-   - ❌ DON'T: `<UP uid={123} />` (cryptic abbreviations)
-   - ✅ DO: `.user-profile__avatar--large` (BEM structure)
-   - ❌ DON'T: `.UP-av-lg` (unclear abbreviations)
-
-8. **Common anti-patterns to avoid**:
-   - Generic names: `Component1`, `thing`, `data`
-   - Inconsistent casing: mixing PascalCase and kebab-case
-   - Missing semantic meaning: `div1`, `container3`
-   - Non-descriptive event handlers: `handle`, `onClick1`
+**For detailed examples and patterns, see:** [`references/ui-naming-patterns.md`](references/ui-naming-patterns.md)
 
 **If backend-only project:**
 
-- Document: "## 2. UI Naming Conventions\n\n**N/A** - This project has no UI layer. It is a backend-only service providing APIs without frontend components."
+- Document: "## 2. UI Naming Conventions\n\n**N/A** - This project has no UI layer."
 
 **Output**: Section 2 (UI Naming Conventions) - comprehensive for UI projects, or "N/A" for backend-only
 
@@ -246,45 +187,14 @@ scripts/check-standards-prerequisites.sh --json
 
 **Goal**: Define naming conventions for all code elements (variables, functions, classes, modules).
 
-1. **Variable naming conventions**:
-   - Local variables: `camelCase` or `snake_case` (language-dependent)
-     - Examples: `userName`, `user_name`, `isValid`
-   - Constants: `SCREAMING_SNAKE_CASE`
-     - Examples: `MAX_RETRIES`, `API_BASE_URL`, `DEFAULT_TIMEOUT`
-   - Global variables: When allowed, how named
-   - Class/Instance variables: Prefix conventions (if any)
-     - Examples: `_privateField`, `this.userName`
+Document the following categories:
 
-2. **Function/Method naming conventions**:
-   - Function names: Verb-based, descriptive, `camelCase` or `snake_case`
-     - Examples: `getUserData()`, `calculateTotal()`, `validate_email()`
-   - Method names: Same as functions
-   - Constructor names: Match class name (language-dependent)
-   - Getter/Setter naming: `getProperty()`, `setProperty()` or property access
-     - Examples: `getName()`, `setName()`, or `user.name`
-   - Boolean function prefixes: `is`, `has`, `should`, `can`, `will`
-     - Examples: `isValid()`, `hasPermission()`, `canEdit()`, `shouldRetry()`
+1. **Variable naming** - Local variables (camelCase/snake_case), Constants (SCREAMING_SNAKE_CASE), Global variables, Class/Instance variables
+2. **Function/Method naming** - Verb-based descriptive names, Getter/Setter conventions, Boolean function prefixes (is/has/should/can), Constructor naming
+3. **Class/Type naming** - Classes (PascalCase, noun-based), Interfaces (with/without 'I' prefix), Enums, Type aliases, Generic parameters
+4. **Module/Package naming** - Module names (language-specific format), Package hierarchies, Namespace conventions, Import aliases
 
-3. **Class/Type naming conventions**:
-   - Class names: `PascalCase`, noun-based
-     - Examples: `UserProfile`, `PaymentProcessor`, `DataValidator`
-   - Interface names: `PascalCase`, with or without 'I' prefix (language-dependent)
-     - Examples: `IUserRepository`, `UserRepository`, `Drawable`
-   - Enum names: `PascalCase`, singular or plural (language-dependent)
-     - Examples: `UserRole`, `HttpMethod`, `OrderStatus`
-   - Type alias names: `PascalCase`
-     - Examples: `UserId`, `Timestamp`, `Coordinates`
-   - Generic type parameter names: `T`, `TKey`, `TValue`, `TResult`
-     - Examples: `List<T>`, `Map<TKey, TValue>`, `Result<TData, TError>`
-
-4. **Module/Package naming conventions**:
-   - Module names: `lowercase`, `snake_case`, or `kebab-case` (language-dependent)
-     - Examples: `user_service`, `payment-processor`, `datavalidator`
-   - Package names: Hierarchical, reverse domain (Java) or flat (Python)
-     - Examples: `com.example.user`, `user.service`, `payment_processor`
-   - Namespace conventions: PascalCase or lowercase (language-dependent)
-   - Import alias conventions: Meaningful abbreviations
-     - Examples: `import numpy as np`, `import pandas as pd`
+**For detailed examples and language-specific patterns, see:** [`references/code-naming-patterns.md`](references/code-naming-patterns.md)
 
 **Output**: Section 3 (Code Naming Conventions) completed with language-specific examples
 
@@ -294,56 +204,13 @@ scripts/check-standards-prerequisites.sh --json
 
 **Goal**: Define file naming and directory organization standards.
 
-1. **File naming conventions**:
-   - Source code files: Match class/module name, appropriate extension
-     - Examples: `UserService.java`, `user_service.py`, `user-service.ts`
-   - Test files: Suffix or prefix convention
-     - Examples: `UserService.test.ts`, `test_user_service.py`, `UserServiceTest.java`
-   - Configuration files: Lowercase, descriptive
-     - Examples: `.eslintrc.js`, `jest.config.js`, `pytest.ini`
-   - Documentation files: Uppercase or capitalized
-     - Examples: `README.md`, `CONTRIBUTING.md`, `API.md`
+Document the following:
 
-2. **Directory structure standards**:
-   - Source code organization (feature-based or layer-based):
-     - **Feature-based**:
+1. **File naming** - Source code files (match class/module name), Test files (suffix/prefix), Configuration files (lowercase), Documentation files (uppercase)
+2. **Directory structure** - Source organization (feature-based vs layer-based), Test directory structure, Asset/config/docs directories
+3. **Project structure patterns** - Monorepo vs multi-repo criteria, Shared code organization, Build output directories, Vendor code
 
-       ```
-       src/
-         features/
-           user/
-             UserService.ts
-             UserRepository.ts
-             user.test.ts
-           payment/
-             PaymentService.ts
-             payment.test.ts
-       ```
-
-     - **Layer-based**:
-
-       ```
-       src/
-         controllers/
-           UserController.ts
-         services/
-           UserService.ts
-         repositories/
-           UserRepository.ts
-         models/
-           User.ts
-       ```
-
-   - Test directory structure: Mirror source structure or separate `tests/`
-   - Asset directories: `assets/`, `public/`, `static/`
-   - Configuration directories: `config/`, `.config/`
-   - Documentation directories: `docs/`, `documentation/`
-
-3. **Project structure patterns**:
-   - Monorepo vs multi-repo decision criteria
-   - Shared code organization: `common/`, `shared/`, `lib/`
-   - Build output directories: `dist/`, `build/`, `out/`
-   - Vendor/third-party code: `vendor/`, `third_party/`
+**For detailed examples and structure patterns, see:** [`references/file-api-patterns.md`](references/file-api-patterns.md)
 
 **Output**: Section 4 (File and Directory Structure) completed with project-specific patterns
 
@@ -353,220 +220,48 @@ scripts/check-standards-prerequisites.sh --json
 
 **Goal**: Define API design and database naming standards.
 
-1. **API design standards** (if REST):
-   - Endpoint naming: Plural nouns, lowercase, hyphens
-     - Examples: `/users`, `/orders/{id}`, `/user-profiles`
-   - HTTP methods usage:
-     - GET: Retrieve resources (idempotent)
-     - POST: Create new resources
-     - PUT: Full update of existing resource (idempotent)
-     - PATCH: Partial update of existing resource
-     - DELETE: Remove resource (idempotent)
-   - Query parameter naming: `camelCase` or `snake_case`
-     - Examples: `?sortBy=name&pageSize=20`, `?sort_by=name&page_size=20`
-   - Request/Response body structure: JSON, consistent field naming
-   - Error response format: Consistent structure with error codes
+Document based on project's integration patterns:
 
-     ```json
-     {
-       "error": {
-         "code": "INVALID_INPUT",
-         "message": "Email format is invalid",
-         "field": "email"
-       }
-     }
-     ```
+1. **REST API standards** (if applicable) - Endpoint naming (plural nouns), HTTP methods usage, Query parameters, Request/Response structure, Error formats, Versioning
+2. **GraphQL standards** (if applicable) - Type naming (PascalCase), Field naming (camelCase), Query/Mutation naming, Input type naming
+3. **Database conventions** (if applicable) - Table names (plural, snake_case), Column names (singular), Primary/Foreign keys, Index naming, Constraint naming, View/Procedure naming
 
-   - API versioning strategy: URL path (`/v1/users`) or header-based
+**For detailed examples and patterns, see:** [`references/file-api-patterns.md`](references/file-api-patterns.md)
 
-2. **API design standards** (if GraphQL):
-   - Type naming: `PascalCase`
-     - Examples: `User`, `Order`, `PaymentMethod`
-   - Field naming: `camelCase`
-     - Examples: `firstName`, `createdAt`, `orderItems`
-   - Query naming: Descriptive, verb-based
-     - Examples: `getUser`, `listOrders`, `searchProducts`
-   - Mutation naming: Verb + object
-     - Examples: `createUser`, `updateOrder`, `deletePayment`
-   - Input type naming: `{Type}Input`
-     - Examples: `UserInput`, `OrderInput`, `PaymentInput`
+**Output**: Section 5 (API and Database Standards) completed with applicable patterns
 
-3. **Database naming conventions**:
-   - Table names: Plural, `snake_case` or `lowercase`
-     - Examples: `users`, `order_items`, `payment_methods`
-   - Column names: Singular, `snake_case` or `camelCase`
-     - Examples: `user_id`, `first_name`, `created_at`
-   - Primary key naming: `id` or `{table}_id`
-     - Examples: `id`, `user_id`
-   - Foreign key naming: `{referenced_table}_id`
-     - Examples: `user_id`, `order_id`, `customer_id`
-   - Index naming: `idx_{table}_{columns}`
-     - Examples: `idx_users_email`, `idx_orders_user_id_created_at`
-   - Constraint naming: `{type}_{table}_{columns}`
-     - Examples: `fk_orders_user_id`, `uk_users_email`, `chk_orders_amount`
-   - View naming: `v_{descriptive_name}` or same as tables
-     - Examples: `v_active_users`, `v_monthly_sales`
-   - Stored procedure naming: `sp_{action}_{entity}` or verb-based
-     - Examples: `sp_get_user_orders`, `calculate_totals`
-
-4. **Integration conventions**:
-   - Message queue naming: `{service}.{entity}.{action}`
-     - Examples: `user.profile.created`, `order.payment.processed`
-   - Event naming: Past tense, `PascalCase` or `SCREAMING_SNAKE_CASE`
-     - Examples: `UserCreated`, `OrderShipped`, `USER_PROFILE_UPDATED`
-   - Webhook naming: `/webhooks/{service}/{event}`
-     - Examples: `/webhooks/stripe/payment-success`, `/webhooks/github/push`
-
-**Output**: Section 5 (API Design Standards) and Section 6 (Database Standards) completed
-
-### Phase 5: Testing, Git & Documentation Standards
+### Phase 5: Testing, Git, Documentation & Code Style Standards
 
 **Prerequisites:** Phase 4 complete
 
-**Goal**: Define testing, Git workflow, and documentation standards.
+**Goal**: Define testing conventions, Git workflow, documentation, and code quality standards in a unified phase.
 
-1. **Testing standards**:
-   - Test file naming: Suffix or prefix with test framework convention
-     - Examples: `UserService.test.ts`, `test_user_service.py`, `UserServiceTest.java`
-   - Test case naming: Descriptive, structure: `should_{expected}_when_{condition}`
-     - Examples: `should_return_user_when_id_exists`, `should_throw_error_when_user_not_found`
-   - Test suite naming: Match source file or feature
-     - Examples: `describe('UserService', ...)`, `class TestUserService:`
-   - Test data naming: Descriptive constants
-     - Examples: `VALID_USER_DATA`, `INVALID_EMAIL`, `MOCK_API_RESPONSE`
-   - Mock/Stub naming: Prefix with `mock` or `stub`
-     - Examples: `mockUserRepository`, `stubPaymentGateway`
-   - Fixture naming: Descriptive, in `fixtures/` directory
-     - Examples: `user-data.json`, `sample-orders.csv`
-   - Coverage requirements: Minimum percentage, critical path coverage
-     - Examples: "80% overall, 100% for business logic"
+Document these comprehensive standards:
 
-2. **Git workflow standards**:
-   - Branch naming conventions:
-     - Feature branches: `feature/{ticket-id}-{description}` or `feat/{description}`
-       - Examples: `feature/USER-123-add-profile-page`, `feat/user-authentication`
-     - Bugfix branches: `bugfix/{ticket-id}-{description}` or `fix/{description}`
-       - Examples: `bugfix/BUG-456-fix-login-error`, `fix/payment-validation`
-     - Hotfix branches: `hotfix/{description}`
-       - Examples: `hotfix/critical-security-patch`
-     - Release branches: `release/{version}`
-       - Examples: `release/1.2.0`, `release/v2.0.0-beta`
+1. **Testing Standards**:
+   - Test naming (should_expect_when_condition pattern), File naming (.test., .spec.), Coverage targets (80% minimum)
+   - Test organization (AAA pattern), Framework-specific patterns (Jest, Pytest, JUnit, Go testing)
 
-   - Commit message format (Conventional Commits):
+2. **Git Workflow**:
+   - Branch naming (feat/, fix/, chore/), Commit messages (Conventional Commits format), PR/MR templates, Tag naming (semantic versioning)
 
-     ```
-     <type>(<scope>): <subject>
-     
-     <body>
-     
-     <footer>
-     ```
+3. **Documentation**:
+   - README structure, Code comments (when/why not what), Docstrings/JSDoc format, API documentation (OpenAPI/Swagger)
 
-     - Types: `feat`, `fix`, `docs`, `style`, `refactor`, `test`, `chore`
-     - Examples:
-       - `feat(auth): add OAuth2 login support`
-       - `fix(payment): resolve duplicate charge issue`
-       - `docs(api): update endpoint documentation`
+4. **Code Style & Quality**:
+   - Formatting (indentation, line length, brace style), Import organization (standard→third-party→local)
+   - Quality limits (complexity <10, function length <50 lines, file length <500 lines)
+   - Linting tools by language (ESLint, Pylint, Checkstyle, golint), Formatter configs (Prettier, Black, gofmt)
 
-   - PR/MR naming: Match commit message format or ticket number
-     - Examples: `feat: Add user profile page`, `[USER-123] Add profile page`
+**Output**: Sections 6-10 (Testing, Git, Documentation, Code Quality, Code Style) completed
 
-   - PR/MR description format: Template with sections
-
-     ```markdown
-     ## Description
-     Brief description of changes
-     
-     ## Type of Change
-     - [ ] Bug fix
-     - [ ] New feature
-     - [ ] Breaking change
-     
-     ## Testing
-     How was this tested?
-     
-     ## Checklist
-     - [ ] Tests added/updated
-     - [ ] Documentation updated
-     ```
-
-   - Tag naming for releases: Semantic versioning
-     - Examples: `v1.2.3`, `v2.0.0-beta.1`
-
-3. **Documentation standards**:
-   - Code comment conventions: When to comment, avoid obvious comments
-     - Comment: Complex logic, non-obvious decisions, workarounds
-     - Don't comment: Self-explanatory code, what code does (comment why)
-
-   - Docstring/JSDoc format: Consistent structure with parameters and return values
-     - **Python (docstring)**:
-
-       ```python
-       def get_user(user_id: int) -> User:
-           """
-           Retrieves a user by ID.
-           
-           Args:
-               user_id: The unique identifier of the user.
-           
-           Returns:
-               User object if found.
-           
-           Raises:
-               UserNotFoundError: If user does not exist.
-           """
-       ```
-
-     - **TypeScript (JSDoc)**:
-
-       ```typescript
-       /**
-        * Retrieves a user by ID.
-        * 
-        * @param userId - The unique identifier of the user
-        * @returns User object if found
-        * @throws {UserNotFoundError} If user does not exist
-        */
-       function getUser(userId: number): User {
-       ```
-
-   - README structure: Standard sections
-
-     ```markdown
-     # Project Name
-     Brief description
-     
-     ## Features
-     ## Prerequisites
-     ## Installation
-     ## Usage
-     ## Configuration
-     ## Testing
-     ## Contributing
-     ## License
-     ```
-
-   - Inline documentation: Explain complex algorithms, business rules
-
-   - API documentation format: OpenAPI/Swagger for REST, GraphQL schema for GraphQL
-
-**Output**: Sections 7 (Testing Standards), 8 (Git Workflow), 9 (Documentation Standards) completed
-
-### Phase 6: Code Quality & Style Guide
+### Phase 6: Finalization & Quick Reference Guides
 
 **Prerequisites:** Phase 5 complete
 
-**Goal**: Define code formatting, quality standards, and enforcement tools.
+**Goal**: Generate enforcement configurations and quick reference guides.
 
-1. **Code formatting standards**:
-   - Indentation: Spaces or tabs, size (2 spaces, 4 spaces, etc.)
-   - Line length limits: 80, 100, or 120 characters
-   - Blank line usage: Between functions, classes, logical blocks
-   - Brace style: K&R, Allman, or language-default
-     - K&R: `function() {` (opening brace on same line)
-     - Allman: `function()\n{` (opening brace on new line)
-   - Import/Include ordering: Standard library, third-party, local
-     - Example (Python):
+1. **Generate enforcement configs** - `.editorconfig`, Linter configs (`.eslintrc.js`, `.pylintrc`, etc.), Formatter configs (`.prettierrc`, `pyproject.toml`), Pre-commit hooks (Husky, pre-commit)
 
        ```python
        # Standard library
@@ -583,183 +278,43 @@ scripts/check-standards-prerequisites.sh --json
        ```
 
 2. **Code quality standards**:
-   - Complexity limits:
-     - Cyclomatic complexity: < 10 (recommended), < 15 (maximum)
-     - Cognitive complexity: < 15
-   - Function/Method length limits: < 50 lines (recommended), < 100 lines (max)
-   - File length limits: < 500 lines (recommended), < 1000 lines (max)
-   - Duplication thresholds: < 3% duplicate code
-   - Code smell detection: Enabled with specific rules
-     - Long parameter lists (> 5 parameters)
-     - Deep nesting (> 4 levels)
-     - God classes (> 500 lines, > 20 methods)
+   - Complexity limits (cyclomatic <10, cognitive <15)
+   - Length limits (functions <50 lines, files <500 lines)
+   - Duplication thresholds (<3% duplicate code)
+   - Code smell detection (long parameters >5, deep nesting >4, God classes >500 lines/20 methods)
 
 3. **Linting and formatting tools**:
-   - Linter configurations by language:
-     - **JavaScript/TypeScript**: ESLint with config
-       - `.eslintrc.js` with Airbnb, Standard, or custom ruleset
-     - **Python**: Pylint, Flake8, or Ruff
-       - `.pylintrc`, `.flake8`, or `ruff.toml`
-     - **Java**: Checkstyle or SpotBugs
-       - `checkstyle.xml`
-     - **Go**: golint or staticcheck
-     - **Ruby**: RuboCop
-       - `.rubocop.yml`
-
-   - Code formatter configurations:
-     - **JavaScript/TypeScript**: Prettier
-       - `.prettierrc.json`
-     - **Python**: Black or autopep8
-       - `pyproject.toml` with Black config
-     - **Go**: gofmt or goimports (built-in)
-     - **Java**: google-java-format or prettier-java
-     - **Rust**: rustfmt
-       - `rustfmt.toml`
-
-   - Pre-commit hooks: Run linters and formatters before commit
-     - Tools: Husky (JS), pre-commit (Python), lefthook
-     - Example (Python with pre-commit):
-
-       ```yaml
-       # .pre-commit-config.yaml
-       repos:
-         - repo: https://github.com/psf/black
-           rev: 23.1.0
-           hooks:
-             - id: black
-         - repo: https://github.com/PyCQA/flake8
-           rev: 6.0.0
-           hooks:
-             - id: flake8
-       ```
+   - Linter configs per language (ESLint/.eslintrc.js, Pylint/.pylintrc, Checkstyle/checkstyle.xml, golint, RuboCop/.rubocop.yml)
+   - Formatter configs (Prettier/.prettierrc.json, Black/pyproject.toml, gofmt, google-java-format, rustfmt/rustfmt.toml)
+   - Pre-commit hooks (Husky for JS, pre-commit for Python, lefthook) to run linters/formatters before commit
 
 **Output**: Section 10 (Code Style Guide) completed with language-specific configurations
 
-### Phase 7: Finalization & Quick Reference Guides
+### Phase 6: Finalization & Quick Reference Guides
 
-**Prerequisites:** Phase 6 complete
+**Prerequisites:** Phase 5 complete
 
 **Goal**: Generate enforcement configurations, quick reference guides, and finalize standards document.
 
 1. **Generate enforcement tool configurations**:
 
-   - **`.editorconfig`** (cross-editor settings):
-
-     ```ini
-     root = true
-     
-     [*]
-     charset = utf-8
-     end_of_line = lf
-     insert_final_newline = true
-     trim_trailing_whitespace = true
-     
-     [*.{js,ts,jsx,tsx}]
-     indent_style = space
-     indent_size = 2
-     
-     [*.{py}]
-     indent_style = space
-     indent_size = 4
-     
-     [*.{yml,yaml}]
-     indent_style = space
-     indent_size = 2
-     ```
-
-   - **Linter configuration files** (language-specific):
-     - Create `.eslintrc.js`, `.pylintrc`, etc. based on project languages
-     - Include rules that enforce naming conventions and code style
-
-   - **Formatter configuration files**:
-     - Create `.prettierrc.json`, `pyproject.toml` (with Black), etc.
-     - Configure line length, indentation, trailing commas
-
-   - **Pre-commit hook scripts**:
-     - Create `.husky/pre-commit` or `.pre-commit-config.yaml`
-     - Run linters, formatters, and tests before commit
+   - **`.editorconfig`** (cross-editor settings) with charset, EOL, indentation rules per file type
+   - **Linter configuration files** (`.eslintrc.js`, `.pylintrc`, etc.) based on project languages with naming and style rules
+   - **Formatter configuration files** (`.prettierrc.json`, `pyproject.toml`) with line length, indentation settings
+   - **Pre-commit hook scripts** (`.husky/pre-commit` or `.pre-commit-config.yaml`) to run linters, formatters, and tests
 
 2. **Create quick reference guides**:
 
-   - **`docs/standards-cheatsheet.md`**: One-page condensed reference
-
-     ```markdown
-     # Coding Standards Cheat Sheet
-     
-     ## Naming Conventions
-     - Variables: `camelCase` / `snake_case`
-     - Constants: `SCREAMING_SNAKE_CASE`
-     - Functions: `verbNoun()` / `verb_noun()`
-     - Classes: `PascalCase`
-     - Files: `PascalCase.ext` / `kebab-case.ext`
-     
-     ## Code Style
-     - Indentation: 2/4 spaces (language-dependent)
-     - Line length: 100 characters max
-     - Imports: stdlib, third-party, local
-     
-     ## Git Workflow
-     - Branches: `feat/description`, `fix/description`
-     - Commits: `type(scope): subject`
-     - Tags: `v1.2.3`
-     
-     ## Testing
-     - Coverage: 80% minimum
-     - Naming: `should_{expected}_when_{condition}`
-     ```
-
-   - **`docs/ui-naming-quick-ref.md`** (if UI project): UI-specific quick reference
-
-     ```markdown
-     # UI Naming Quick Reference
-     
-     ## Components
-     - Names: `PascalCase` (e.g., `UserProfile`)
-     - Files: `ComponentName.tsx`
-     - Props: `camelCase` (e.g., `userName`, `onClick`)
-     
-     ## CSS
-     - Classes: BEM (`.block__element--modifier`)
-     - IDs: Avoid except for unique elements
-     
-     ## Event Handlers
-     - Format: `handle{Event}` (e.g., `handleSubmit`, `handleClick`)
-     
-     ## State
-     - Booleans: `is*`, `has*`, `should*`
-     - Data: Descriptive nouns
-     ```
+   - **`docs/standards-cheatsheet.md`**: One-page condensed reference with naming conventions, code style, Git workflow, testing standards
+   - **`docs/ui-naming-quick-ref.md`** (if UI project): UI-specific quick reference for components, CSS, event handlers, state
 
 3. **Validate standards document**:
-   - Ensure all sections are complete:
-     - [ ] Introduction (with project context)
-     - [ ] UI Naming Conventions (comprehensive if UI project, "N/A" if backend-only)
-     - [ ] Code Naming Conventions
-     - [ ] File and Directory Structure
-     - [ ] API Design Standards
-     - [ ] Database Standards
-     - [ ] Testing Standards
-     - [ ] Git Workflow
-     - [ ] Documentation Standards
-     - [ ] Code Style Guide
+   - Ensure all sections complete: Introduction, UI Naming (if applicable), Code Naming, File Structure, API/Database (if applicable), Testing, Git, Documentation, Code Style
    - Check consistency with architecture.md and ground-rules.md
    - Verify all examples use project-specific technologies
    - Ensure UI naming conventions are detailed (MANDATORY for frontend/UI projects)
 
-4. **Output file locations**:
-
-   ```
-   docs/
-   ├── standards.md              # Main standards document
-   ├── standards-cheatsheet.md   # One-page quick reference
-   └── ui-naming-quick-ref.md    # UI naming quick reference (if UI project)
-   
-   # Root level configuration files
-   .editorconfig                 # Editor configuration
-   .eslintrc.js / .pylintrc      # Linter config (language-specific)
-   .prettierrc / pyproject.toml  # Formatter config (language-specific)
-   .husky/ or .pre-commit-config.yaml  # Pre-commit hooks
-   ```
+4. **Output file locations**: `docs/standards.md` (main document), `docs/standards-cheatsheet.md` (quick reference), `docs/ui-naming-quick-ref.md` (if UI), `.editorconfig`, linter configs, formatter configs, pre-commit hooks
 
 **Output**: Complete `docs/standards.md`, quick reference guides, enforcement configurations
 
@@ -770,19 +325,17 @@ The standards document is complete and ready when:
 - [ ] **UI naming conventions** are comprehensive and detailed (MANDATORY for frontend/UI projects)
 - [ ] For backend-only projects, Section 2 documents "N/A - No UI layer"
 - [ ] All code elements have naming conventions defined with examples
-- [ ] File and directory structure is documented with project-specific patterns
-- [ ] API design standards are specified (if applicable)
-- [ ] Database naming conventions are established (if applicable)
-- [ ] Testing standards are documented with coverage requirements
-- [ ] Git workflow and commit message conventions are defined
-- [ ] Documentation standards are specified with templates
-- [ ] Code style guide is complete with formatting rules
-- [ ] All conventions have concrete, language-specific examples
-- [ ] All examples use project-specific technologies (from architecture.md)
-- [ ] Enforcement tool configurations are generated
-- [ ] Quick reference guides are created
-- [ ] Standards are consistent with architecture.md and ground-rules.md
-- [ ] `docs/standards.md` is committed with "docs: add coding standards" message
+- [ ] File/directory structure documented with project-specific patterns
+- [ ] API/database standards specified (if applicable)
+- [ ] Testing standards documented with coverage requirements
+- [ ] Git workflow and commit message conventions defined
+- [ ] Documentation standards specified with templates
+- [ ] Code style guide complete with formatting rules
+- [ ] All conventions have concrete, language-specific examples using project technologies
+- [ ] Enforcement tool configurations generated
+- [ ] Quick reference guides created
+- [ ] Standards consistent with architecture.md and ground-rules.md
+- [ ] `docs/standards.md` committed with "docs: add coding standards" message
 
 ## Error Handling
 

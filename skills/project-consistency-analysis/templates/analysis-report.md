@@ -329,7 +329,7 @@
 
 1. **Resolve Technology Stack Conflict** (ID: I1)
    - **Action:** Align spec.md:L34 and design.md:L78 on single framework (Next.js or Vue.js)
-   - **Command:** Edit conflicting document manually or run `/sunrise.specify` to refine
+   - **Command:** Edit conflicting document manually or run `/phoenix.specify` to refine
    - **Estimated Effort:** 30 minutes
 
 2. **Add Missing Encryption Tasks** (ID: C1)
@@ -339,14 +339,14 @@
 
 3. **Fix Ground-Rules Violation** (ID: G1)
    - **Action:** Update design.md:L150 to use TypeScript instead of JavaScript
-   - **Command:** Edit design.md manually or run `/sunrise.design` to regenerate
+   - **Command:** Edit design.md manually or run `/phoenix.design` to regenerate
    - **Estimated Effort:** 1 hour
 
 ### High Priority (Should Address Before Implementation)
 
 1. **Resolve Ambiguous Requirements** (IDs: A1, A2, A3)
    - **Action:** Replace vague terms with measurable criteria
-   - **Command:** Run `/sunrise.specify` with refinement focus
+   - **Command:** Run `/phoenix.specify` with refinement focus
    - **Estimated Effort:** 2 hours
 
 2. **Fix Task Ordering Issues** (ID: I2)
@@ -380,16 +380,16 @@
 # Manual edits to resolve conflicts and add missing tasks
 
 # 2. Refine specifications
-/sunrise.specify --focus ambiguity-resolution
+/phoenix.specify --focus ambiguity-resolution
 
 # 3. Update design if needed
-/sunrise.design --update-architecture
+/phoenix.design --update-architecture
 
 # 4. Re-run analysis to verify
-/sunrise.analyze
+/phoenix.analyze
 
 # 5. Proceed with implementation when clear
-/sunrise.implement
+/phoenix.implement
 ```
 
 ---

@@ -73,6 +73,7 @@ Run the prerequisite check script to verify design documentation exists and iden
 ```
 
 **Note**: Replace `/path/to/technical-design-review` with the actual path where this skill is located:
+
 - Global installation: `~/.copilot/skills/technical-design-review`
 - Project installation: `.github/skills/technical-design-review`
 - Or wherever your agent stores skills (see agent-skills-folder-mapping.md for your specific tool)
@@ -119,6 +120,7 @@ For detailed checklists, see [references/review-checklist.md](references/review-
 #### Review Phase 1: Document Completeness
 
 Check if all required sections and documents are present and complete:
+
 - Main Design Document (design.md): Executive summary, feature context, technical context, implementation approach, technology choices, file structure, testing strategy, deployment considerations, timeline
 - Research Document (research.md): Research findings, decisions with rationale, architecture alignment, trade-offs, references
 - Data Model Document (data-model.md): Entity definitions, field specifications, relationships, state machines, diagrams
@@ -128,6 +130,7 @@ Check if all required sections and documents are present and complete:
 #### Review Phase 2: Research Validation
 
 Validate research findings for quality and completeness:
+
 - Each decision has clear problem statement, explicit choice, rationale, alternatives considered
 - Architecture alignment documented
 - Trade-offs captured with advantages and disadvantages
@@ -138,6 +141,7 @@ Validate research findings for quality and completeness:
 #### Review Phase 3: Data Model Validation
 
 Validate data models for correctness and completeness:
+
 - **Entity Definitions**: All domain concepts covered, clear naming, no redundancy
 - **Field Specifications**: All fields defined with types, constraints, defaults, nullable handling
 - **Relationships**: All relationships defined with cardinality, foreign keys, cascade behavior
@@ -147,6 +151,7 @@ Validate data models for correctness and completeness:
 #### Review Phase 4: API Contract Validation
 
 Validate API contracts for completeness and consistency:
+
 - **Endpoint Design**: RESTful conventions, consistent naming, appropriate HTTP methods, idempotency, versioning
 - **Request Specifications**: Path parameters, query parameters, request body schema, required fields, content-type
 - **Response Specifications**: Success responses, response body schema, pagination, HTTP status codes
@@ -157,6 +162,7 @@ Validate API contracts for completeness and consistency:
 #### Review Phase 5: Requirements Traceability
 
 Verify all requirements are addressed in the design:
+
 - **Functional Requirements**: Each requirement covered with entities, endpoints, and implementation approach
 - **Non-Functional Requirements**: Performance, security, scalability, availability, monitoring documented
 - **User Stories/Use Cases**: User flows documented with endpoints, data flow, and error scenarios
@@ -164,6 +170,7 @@ Verify all requirements are addressed in the design:
 #### Review Phase 6: Ground Rules Compliance
 
 Validate design adheres to project constraints and standards (if ground-rules.md exists):
+
 - Compliance verified for each ground rule
 - Exceptions documented and justified
 - Common checks: technology stack, security standards, data privacy, API standards, error handling, logging, testing requirements
@@ -171,6 +178,7 @@ Validate design adheres to project constraints and standards (if ground-rules.md
 #### Review Phase 7: Architecture Alignment
 
 Verify design aligns with established architecture (if architecture.md exists):
+
 - Architectural patterns, container selection, component responsibilities
 - Communication patterns, technology choices, data flow, integration patterns, deployment model
 - Architecture Decision Records (ADRs) reviewed and followed
@@ -178,6 +186,7 @@ Verify design aligns with established architecture (if architecture.md exists):
 #### Review Phase 8: Implementation Feasibility
 
 Assess whether the design is implementable:
+
 - **Technical Feasibility**: No blockers, dependencies available, technologies mature, performance realistic, complexity manageable
 - **Team Capability**: Skills available, reasonable learning curve, sufficient documentation, good support
 - **Timeline Realism**: Estimate provided and reasonable, dependencies identified, risk buffer included
@@ -185,6 +194,7 @@ Assess whether the design is implementable:
 #### Review Phase 9: Quality and Clarity
 
 Assess overall quality of the design documentation:
+
 - **Writing Quality**: Clear language, consistent terminology, no ambiguity, no TODOs, proper formatting
 - **Completeness**: No missing sections, all questions resolved, all references valid, examples provided
 - **Diagrams**: Present where appropriate, accurate, and readable
@@ -390,5 +400,5 @@ After completing the technical design review, consider these actions:
 2. **Update Design**: Revise design documents based on recommendations
 3. **Re-review** (if needed): Conduct follow-up review after major revisions
 4. **Proceed to Implementation**: If design passes review, begin implementation
-5. **Create Tasks**: Use sunrise.taskify to break design into implementation tasks
-6. **Design Tests**: Use sunrise.design-e2e-test to create test scenarios
+5. **Create Tasks**: Use phoenix.taskify to break design into implementation tasks
+6. **Design Tests**: Use phoenix.design-e2e-test to create test scenarios

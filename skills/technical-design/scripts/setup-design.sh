@@ -76,7 +76,7 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Detect if we're in a git repository
+# Detect if we're in a git repository and on a feature branch
 HAS_GIT="false"
 CURRENT_BRANCH="main"
 FEATURE_DIR=""
@@ -92,22 +92,24 @@ if command -v git &> /dev/null && git rev-parse --git-dir &> /dev/null 2>&1; the
         FEATURE_SPEC="$FEATURE_DIR/spec.md"
         print_info "Detected feature branch: $CURRENT_BRANCH"
     else
-        print_warning "Not on a feature branch (expected format: N-feature-name)"
-        print_warning "Design artifacts will be created in design/ directory"
+        print_error "Not on a feature branch. Technical design requires a feature branch (format: N-feature-name)"
+        print_error "Please create and checkout a feature branch first"
+        exit 1
     fi
 else
-    print_warning "Not in a git repository or git not available"
+    print_error "Git repository required for technical design workflow"
+    print_error "Please initialize git repository and create a feature branch (format: N-feature-name)"
+    exit 1
 fi
 
-# Determine design directory location
+# Design directory location - always feature-specific
 if [[ -n "$FEATURE_DIR" && -d "$FEATURE_DIR" ]]; then
-    # We're on a feature branch, use feature-specific design directory
     DESIGN_DIR="$FEATURE_DIR/design"
     print_info "Using feature-specific design directory: $DESIGN_DIR"
 else
-    # Use project-level design directory
-    DESIGN_DIR="design"
-    print_info "Using project-level design directory: $DESIGN_DIR"
+    print_error "Feature directory not found: $FEATURE_DIR"
+    print_error "Please ensure specs/$CURRENT_BRANCH directory exists"
+    exit 1
 fi
 
 FEATURE_DESIGN="$DESIGN_DIR/design.md"
