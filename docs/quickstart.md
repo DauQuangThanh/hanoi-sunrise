@@ -1,6 +1,6 @@
 # ⚡ Quick Start Guide
 
-**Build your first project with Spec-Driven Development in 8 steps.**
+**Build your first project with Spec-Driven Development in 9 steps.**
 
 > **Note:** All scripts come in both Bash (`.sh`) and PowerShell (`.ps1`) versions. Sunrise CLI automatically picks the right one for your system unless you specify `--script sh|ps`.
 
@@ -14,13 +14,15 @@ Follow this order for best results:
 
 | Step | Command | Purpose |
 | ------ | --------- |----------|
-| 1️⃣ | `/sunrise.set-ground-rules` | Set ground rules |
+| 1️⃣ | `/sunrise.set-ground-rules` | Set ground rules (or use `/sunrise.assess-context` for existing projects) |
 | 2️⃣ | `/sunrise.specify` | Define requirements |
-| 3️⃣ | `/sunrise.architect` | Design system architecture (optional, once per product) |
-| 4️⃣ | `/sunrise.standardize` | Create coding standards (optional, once per product) |
-| 5️⃣ | `/sunrise.design` | Create implementation plan |
-| 6️⃣ | `/sunrise.taskify` | Break down into tasks |
-| 7️⃣ | `/sunrise.implement` | Build it! |
+| 3️⃣ | `/sunrise.clarify` | Clarify unclear requirements |
+| 4️⃣ | `/sunrise.architect` | Design system architecture |
+| 5️⃣ | `/sunrise.standardize` | Create coding standards |
+| 6️⃣ | `/sunrise.design` | Create implementation plan |
+| 7️⃣ | `/sunrise.taskify` | Break down into tasks |
+| 8️⃣ | `/sunrise.analyze` | Validate consistency and coverage |
+| 9️⃣ | `/sunrise.implement` | Build it! |
 
 > **💡 Smart Context:** Sunrise automatically detects your active feature from your Git branch (like `001-feature-name`). To work on different features, just switch branches.
 

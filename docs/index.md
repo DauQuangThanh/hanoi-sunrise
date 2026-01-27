@@ -1,4 +1,4 @@
-# 🌈 Hanoi Sunrise
+# 🌅 Hanoi Sunrise
 
 ## *Build Better Software with AI-Powered Specifications*
 
@@ -62,31 +62,36 @@ This separation enables:
 
 ### Core Workflow Commands
 
+Follow this complete workflow for Spec-Driven Development:
+
 | Command | Purpose |
 | --------- | ---------- |
-| `/sunrise.set-ground-rules` | Set project principles and ground rules |
+| `/sunrise.set-ground-rules` | Set project principles and ground rules (Greenfield) |
+| `/sunrise.assess-context` | Analyze existing codebase (Brownfield alternative to set-ground-rules) |
 | `/sunrise.specify` | Define requirements and user stories |
+| `/sunrise.clarify` | Clarify underspecified areas through structured questioning |
+| `/sunrise.architect` | Design system architecture with C4 diagrams |
+| `/sunrise.standardize` | Create coding standards and conventions |
 | `/sunrise.design` | Create technical implementation plans |
 | `/sunrise.taskify` | Break down into actionable tasks |
+| `/sunrise.analyze` | Check consistency across specifications |
 | `/sunrise.implement` | Execute all tasks and build the feature |
 
 ### Product-Level Commands
 
-Run these once per product, not per feature:
+Run these once per product for end-to-end testing:
 
 | Command | Purpose |
 | --------- | ---------- |
-| `/sunrise.architect` | Design system architecture with C4 diagrams |
-| `/sunrise.standardize` | Create coding standards and conventions |
 | `/sunrise.design-e2e-test` | Design end-to-end test specifications |
 | `/sunrise.perform-e2e-test` | Execute end-to-end tests |
 
-### Quality & Enhancement Commands
+### Enhancement Commands
+
+Additional commands for project management and integration:
 
 | Command | Purpose |
 | --------- | ---------- |
-| `/sunrise.clarify` | Clarify unclear requirements |
-| `/sunrise.analyze` | Check consistency across specifications |
 | `/sunrise.checklist` | Generate quality validation checklists |
 | `/sunrise.tasks-to-issues` | Convert tasks to GitHub issues |
 | `/sunrise.tasks-to-ado` | Convert tasks to Azure DevOps work items |

@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🌈 Hanoi Sunrise
+# 🌅 Hanoi Sunrise
 
 ## *Drive Quality Together with AI-Powered Framework*
 
@@ -88,7 +88,7 @@ flowchart LR
 | **Focus** | Establish foundations first | Integrate with existing patterns |
 | **Timeline** | 2-4 weeks (MVP) | 1-2 weeks per feature |
 | **Flexibility** | Complete freedom in design | Must maintain consistency |
-| **Commands Used** | Full workflow (8 core commands) | Streamlined (6 core commands) |
+| **Commands Used** | Full workflow (9 core + 2 product-level) | Streamlined (7 core commands) |
 
 ### Install Sunrise CLI
 
@@ -141,7 +141,7 @@ uvx --native-tls --from git+https://github.com/dauquangthanh/hanoi-sunrise.git s
 
 ---
 
-### Your First Project in 8 Steps
+### Your First Project in 9 Steps
 
 > **💡 Automatic Version Control:** All Sunrise commands automatically generate appropriate git commit messages and commit changes upon completion. Commands use semantic commit prefixes (`docs:`, `feat:`, `test:`, `chore:`) to maintain a clear project history.
 
@@ -165,15 +165,23 @@ Users can drag-and-drop albums to reorganize them. Albums show photos in a tile 
 No nested albums allowed.
 ```
 
-#### 3️⃣ **Design System Architecture** *(Optional)*
+#### 3️⃣ **Clarify Requirements** *(Recommended)*
 
-Document your system architecture once per product:
+Use structured questioning to clarify underspecified areas:
+
+```bash
+/sunrise.clarify Focus on edge cases, data validation, and user experience details
+```
+
+#### 4️⃣ **Design System Architecture** *(Optional, once per product)*
+
+Document your system architecture:
 
 ```bash
 /sunrise.architect Create C4 diagrams, document tech stack decisions and architecture patterns
 ```
 
-#### 4️⃣ **Set Coding Standards** *(Optional)*
+#### 5️⃣ **Set Coding Standards** *(Optional, once per product)*
 
 Create coding standards for your team:
 
@@ -181,7 +189,7 @@ Create coding standards for your team:
 /sunrise.standardize Define naming conventions, file organization, and best practices
 ```
 
-#### 5️⃣ **Create Technical Design**
+#### 6️⃣ **Create Technical Design**
 
 Now specify **how** to build it (tech stack and architecture):
 
@@ -190,7 +198,7 @@ Now specify **how** to build it (tech stack and architecture):
 Keep libraries minimal. Store metadata in local SQLite. No image uploads.
 ```
 
-#### 6️⃣ **Break Down Tasks**
+#### 7️⃣ **Break Down Tasks**
 
 Generate an actionable task list:
 
@@ -198,7 +206,15 @@ Generate an actionable task list:
 /sunrise.taskify
 ```
 
-#### 7️⃣ **Build It**
+#### 8️⃣ **Validate the Plan** *(Recommended)*
+
+Check consistency and coverage before implementation:
+
+```bash
+/sunrise.analyze
+```
+
+#### 9️⃣ **Build It**
 
 Execute all tasks automatically:
 
@@ -206,7 +222,7 @@ Execute all tasks automatically:
 /sunrise.implement
 ```
 
-#### 8️⃣ **Test & Iterate**
+#### 🧪 **Test & Iterate**
 
 Run your application and fix any issues. Your AI assistant will help debug.
 
@@ -322,9 +338,9 @@ sunrise version
 
 After running `sunrise init`, your AI coding agent will have access to **15 slash commands** organized into three categories:
 
-- **6 Core Workflow Commands** - Essential development cycle (set-ground-rules/assess-context → specify → design → taskify → implement)
-- **4 Product-Level Commands** - Run once per product (architecture, standards, E2E tests)
-- **5 Quality & Enhancement Commands** - Validation, analysis, and project management
+- **9 Core Workflow Commands** - Complete development cycle (set-ground-rules/assess-context → specify → clarify → architect → standardize → design → taskify → analyze → implement)
+- **2 Product-Level Commands** - Run once per product (E2E test design and execution)
+- **4 Enhancement Commands** - Project management and integration tools
 
 #### How It Works: Commands + Skills Architecture
 
@@ -348,36 +364,36 @@ After running `sunrise init`, your AI coding agent will have access to these sla
 
 #### Core Workflow Commands
 
-Essential commands for the Spec-Driven Development workflow:
+Essential commands for the complete Spec-Driven Development workflow:
 
 | Command                  | Description                                                           | Auto Commit Prefix |
 | -------------------------- | ----------------------------------------------------------------------- |--------------------|
 | `/sunrise.set-ground-rules`      | Create or update project governing principles and development guidelines (Greenfield) | `docs:` |
 | `/sunrise.assess-context` | Analyze existing codebase to understand architecture, patterns, and conventions (Brownfield) | `docs:` |
 | `/sunrise.specify`       | Define what you want to build (requirements and user stories)        | `docs:` |
+| `/sunrise.clarify`       | Clarify underspecified areas through structured questioning (recommended after `/sunrise.specify`) | `docs:` |
+| `/sunrise.architect`         | Create comprehensive system architecture documentation for the entire product | `docs:` |
+| `/sunrise.standardize`       | Create comprehensive coding standards and conventions documentation | `docs:` |
 | `/sunrise.design`        | Create technical implementation plans with your chosen tech stack     | `docs:` |
 | `/sunrise.taskify`       | Generate actionable task lists for implementation                     | `docs:` |
+| `/sunrise.analyze`       | Cross-artifact consistency & coverage analysis (run after `/sunrise.taskify`, before `/sunrise.implement`) | `docs:` |
 | `/sunrise.implement`     | Execute all tasks to build the feature according to the plan         | `feat:`, `fix:`, `test:` (context-dependent) |
 
 #### Product-Level Commands
 
-Commands for comprehensive product-wide documentation (run once per product, not per feature):
+Commands for end-to-end testing (run once per product, not per feature):
 
 | Command                      | Description                                                           | Auto Commit Prefix |
 | ------------------------------ | ----------------------------------------------------------------------- |--------------------|
-| `/sunrise.architect`         | Create comprehensive system architecture documentation for the entire product | `docs:` |
-| `/sunrise.standardize`       | Create comprehensive coding standards and conventions documentation | `docs:` |
 | `/sunrise.design-e2e-test`   | Design comprehensive end-to-end test specifications for the entire product | `test:` |
 | `/sunrise.perform-e2e-test`  | Execute end-to-end tests and generate detailed test result reports | `test:` |
 
-#### Quality & Enhancement Commands
+#### Enhancement Commands
 
-Additional commands for enhanced quality, validation, and project management:
+Additional commands for project management and integration:
 
 | Command                  | Description                                                           | Auto Commit Prefix |
 | -------------------------- | ----------------------------------------------------------------------- |--------------------|
-| `/sunrise.clarify`       | Clarify underspecified areas (recommended before `/sunrise.design`; formerly `/quizme`) | `docs:` |
-| `/sunrise.analyze`       | Cross-artifact consistency & coverage analysis (run after `/sunrise.taskify`, before `/sunrise.implement`) | `docs:` |
 | `/sunrise.checklist`     | Generate custom quality checklists that validate requirements completeness, clarity, and consistency | `docs:` |
 | `/sunrise.tasks-to-issues` | Convert existing tasks into actionable GitHub issues with dependency tracking | `chore:` |
 | `/sunrise.tasks-to-ado`  | Convert existing tasks into actionable Azure DevOps work items with dependency tracking | `chore:` |
