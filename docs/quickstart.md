@@ -24,6 +24,19 @@ Follow this order for best results:
 
 > **💡 Smart Context:** Sunrise automatically detects your active feature from your Git branch (like `001-feature-name`). To work on different features, just switch branches.
 
+### 🧩 Behind the Scenes: Commands + Skills
+
+Sunrise uses a modular architecture:
+
+- **Agent Commands** (`agent-commands/`) - The `/sunrise.*` slash commands you use
+- **Agent Skills** (`skills/`) - Reusable modules that power the commands (18 total)
+
+When you run `sunrise init`, both are installed to your project in agent-specific folders:
+- Commands → `.github/agents/`, `.claude/commands/`, `.gemini/commands/`, etc.
+- Skills → `.github/skills/`, `.claude/skills/`, `.gemini/extensions/`, etc.
+
+This design supports 20+ AI agents from a single codebase while keeping commands customizable and skills reusable.
+
 ---
 
 ## 🎭 Role-Based Agents

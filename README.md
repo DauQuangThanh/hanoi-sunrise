@@ -326,6 +326,22 @@ After running `sunrise init`, your AI coding agent will have access to **15 slas
 - **4 Product-Level Commands** - Run once per product (architecture, standards, E2E tests)
 - **5 Quality & Enhancement Commands** - Validation, analysis, and project management
 
+#### How It Works: Commands + Skills Architecture
+
+**Sunrise uses a two-layer architecture:**
+
+1. **Agent Commands** (in `agent-commands/`) - User-facing slash commands like `/sunrise.specify`, `/sunrise.design`
+2. **Agent Skills** (in `skills/`) - Reusable capabilities that power the commands (e.g., `requirements-specification`, `technical-design`)
+
+When you run `sunrise init`, both layers are installed into your project:
+- Commands go to agent-specific folders (`.github/agents/`, `.claude/commands/`, `.gemini/commands/`, etc.)
+- Skills go to agent-specific skill folders (`.github/skills/`, `.claude/skills/`, `.gemini/extensions/`, etc.)
+
+This modular design lets you:
+- **Customize commands** without changing core skills
+- **Reuse skills** across different commands or projects
+- **Add new agents** easily (18 skills support 20+ AI agents)
+
 After running `sunrise init`, your AI coding agent will have access to these slash commands for structured development:
 
 > **💡 Automatic Commits:** All commands automatically generate semantic commit messages and commit their changes upon completion, maintaining a clear project history without manual intervention.
@@ -900,8 +916,35 @@ After running `sunrise init`, your project will have the following structure:
 
 - **`.sunrise/`** - Framework core (memory, scripts, templates)
 - **`.<agent>/commands/`** - AI agent slash commands (`.claude/`, `.github/agents/` or `.github/prompts/`, etc.)
-- **`.<agent>/skills/`** - Reusable capabilities for specialized tasks
+- **`.<agent>/skills/`** - Reusable capabilities that power the commands (18 modular skills)
 - **`specs/`** - Your feature specifications (grows as you build)
+
+### 🧩 Available Skills
+
+Sunrise includes **18 reusable skills** that power the slash commands:
+
+| Skill Module | Powers Command(s) | Purpose |
+| -------------- | ------------------- | --------- |
+| `requirements-specification` | `/sunrise.specify` | Create feature specifications from natural language |
+| `requirements-specification-review` | `/sunrise.clarify` | Structured clarification workflow |
+| `technical-design` | `/sunrise.design` | Generate implementation plans with tech stack |
+| `technical-design-review` | `/sunrise.analyze` | Validate design consistency and coverage |
+| `project-management` | `/sunrise.taskify` | Break down designs into actionable tasks |
+| `coding` | `/sunrise.implement` | Execute tasks and build features |
+| `architecture-design` | `/sunrise.architect` | Document system architecture (C4 diagrams) |
+| `architecture-design-review` | *(validation)* | Review architecture completeness |
+| `coding-standards` | `/sunrise.standardize` | Create coding conventions and standards |
+| `e2e-test-design` | `/sunrise.design-e2e-test` | Design end-to-end test specifications |
+| `project-ground-rules-setup` | `/sunrise.set-ground-rules` | Establish project principles |
+| `context-assessment` | `/sunrise.assess-context` | Analyze existing codebases (brownfield) |
+| `project-consistency-analysis` | `/sunrise.analyze` | Check cross-artifact consistency |
+| `code-review` | *(quality checks)* | Code review automation |
+| `git-commit` | *(auto-commits)* | Generate semantic commit messages |
+| `tasks-to-github-issues` | `/sunrise.tasks-to-issues` | Sync tasks to GitHub issues |
+| `tasks-to-azure-devops` | `/sunrise.tasks-to-ado` | Sync tasks to Azure DevOps |
+| `nextjs-mockup` / `nuxtjs-mockup` | *(rapid prototyping)* | Generate framework-specific mockups |
+
+**Skills are framework-agnostic** - they work with any tech stack and support 20+ AI agents through a common interface.
 
 **Note:** The `.sunrise/` folder and agent-specific folders are auto-managed by the Sunrise CLI. You primarily work in `specs/` for your features.
 
