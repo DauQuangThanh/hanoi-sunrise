@@ -1,12 +1,14 @@
 ---
 description: Identify underspecified areas in the current feature spec by asking up to 5 highly targeted clarification questions and encoding answers back into the spec.
 handoffs: 
-  - label: Update Architectural Design
+  - label: Update Architecture Design...
     agent: sunrise.architect
     prompt: Update the architectural design for the spec. I am building with...
-  - label: Update Detailed Design
+    send: false
+  - label: Update Detailed Design...
     agent: sunrise.design
     prompt: Update the detailed design for the spec. I am building with...
+    send: false
 scripts:
    sh: scripts/bash/check-prerequisites.sh --json --paths-only
    ps: scripts/powershell/check-prerequisites.ps1 -Json -PathsOnly

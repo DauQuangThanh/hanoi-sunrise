@@ -1,13 +1,14 @@
 ---
 description: Execute the standardization workflow to create comprehensive coding standards and conventions documentation for the entire product.
 handoffs: 
-  - label: Create Feature Design
+  - label: Create Detailed Design
     agent: sunrise.design
-    prompt: Create a detailed design for ... following the established standards
+    prompt: Create a detailed design based on the provided specification
     send: true
-  - label: Review Architecture
+  - label: Review and Update Architecture Design
     agent: sunrise.architect
-    prompt: Review product architecture design
+    prompt: Review and update architecture design
+    send: true
 scripts:
   sh: scripts/bash/setup-standardize.sh --json
   ps: scripts/powershell/setup-standardize.ps1 -Json

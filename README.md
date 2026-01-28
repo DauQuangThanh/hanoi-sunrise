@@ -152,7 +152,7 @@ Launch your AI assistant in the project. You'll see `/sunrise.*` commands availa
 Create your project's guiding principles:
 
 ```bash
-/sunrise.set-ground-rules Create principles for code quality, testing, user experience, and performance
+/sunrise.set-ground-rules Create principles for code quality, maintainability, testing, user experience, and performance at an MVP level
 ```
 
 #### 2️⃣ **Write the Specification**
@@ -189,7 +189,7 @@ Create coding standards for your team:
 /sunrise.standardize Define naming conventions, file organization, and best practices
 ```
 
-#### 6️⃣ **Create Technical Design**
+#### 6️⃣ **Create Detailed Design**
 
 Now specify **how** to build it (tech stack and architecture):
 
@@ -227,8 +227,6 @@ Execute all tasks automatically:
 Run your application and fix any issues. Your AI assistant will help debug.
 
 ---
-
-**Want more details?** Read our [complete guide](./spec-driven.md).
 
 ## 🤖 Supported AI Agents
 
@@ -336,35 +334,9 @@ sunrise version
 
 ### Available Slash Commands
 
-After running `sunrise init`, your AI coding agent will have access to **15 slash commands** organized into three categories:
-
-- **9 Core Workflow Commands** - Complete development cycle (set-ground-rules/assess-context → specify → clarify → architect → standardize → design → taskify → analyze → implement)
-- **2 Product-Level Commands** - Run once per product (E2E test design and execution)
-- **4 Enhancement Commands** - Project management and integration tools
-
-#### How It Works: Commands + Skills Architecture
-
-**Sunrise uses a two-layer architecture:**
-
-1. **Agent Commands** (in `agent-commands/`) - User-facing slash commands like `/sunrise.specify`, `/sunrise.design`
-2. **Agent Skills** (in `skills/`) - Reusable capabilities that power the commands (e.g., `requirements-specification`, `technical-design`)
-
-When you run `sunrise init`, both layers are installed into your project:
-- Commands go to agent-specific folders (`.github/agents/`, `.claude/commands/`, `.gemini/commands/`, etc.)
-- Skills go to agent-specific skill folders (`.github/skills/`, `.claude/skills/`, `.gemini/extensions/`, etc.)
-
-This modular design lets you:
-- **Customize commands** without changing core skills
-- **Reuse skills** across different commands or projects
-- **Add new agents** easily (18 skills support 20+ AI agents)
-
-After running `sunrise init`, your AI coding agent will have access to these slash commands for structured development:
+After running `sunrise init`, your AI coding agent will have access to **15 slash commands** for structured development:
 
 > **💡 Automatic Commits:** All commands automatically generate semantic commit messages and commit their changes upon completion, maintaining a clear project history without manual intervention.
-
-#### Core Workflow Commands
-
-Essential commands for the complete Spec-Driven Development workflow:
 
 | Command                  | Description                                                           | Auto Commit Prefix |
 | -------------------------- | ----------------------------------------------------------------------- |--------------------|
@@ -378,22 +350,8 @@ Essential commands for the complete Spec-Driven Development workflow:
 | `/sunrise.taskify`       | Generate actionable task lists for implementation                     | `docs:` |
 | `/sunrise.analyze`       | Cross-artifact consistency & coverage analysis (run after `/sunrise.taskify`, before `/sunrise.implement`) | `docs:` |
 | `/sunrise.implement`     | Execute all tasks to build the feature according to the plan         | `feat:`, `fix:`, `test:` (context-dependent) |
-
-#### Product-Level Commands
-
-Commands for end-to-end testing (run once per product, not per feature):
-
-| Command                      | Description                                                           | Auto Commit Prefix |
-| ------------------------------ | ----------------------------------------------------------------------- |--------------------|
 | `/sunrise.design-e2e-test`   | Design comprehensive end-to-end test specifications for the entire product | `test:` |
 | `/sunrise.perform-e2e-test`  | Execute end-to-end tests and generate detailed test result reports | `test:` |
-
-#### Enhancement Commands
-
-Additional commands for project management and integration:
-
-| Command                  | Description                                                           | Auto Commit Prefix |
-| -------------------------- | ----------------------------------------------------------------------- |--------------------|
 | `/sunrise.checklist`     | Generate custom quality checklists that validate requirements completeness, clarity, and consistency | `docs:` |
 | `/sunrise.tasks-to-issues` | Convert existing tasks into actionable GitHub issues with dependency tracking | `chore:` |
 | `/sunrise.tasks-to-ado`  | Convert existing tasks into actionable Azure DevOps work items with dependency tracking | `chore:` |
@@ -459,17 +417,6 @@ flowchart TB
 | **🆕 New Projects (Greenfield)** | <ul><li>Start with high-level requirements</li><li>Establish project principles and architecture</li><li>Generate complete specifications</li><li>Plan implementation steps</li><li>Build production-ready apps with clear standards</li></ul> |
 | **🔧 Existing Projects (Brownfield)** | <ul><li>Add new features systematically to existing codebases</li><li>Maintain consistency with existing patterns</li><li>Adapt the SDD process to your current architecture</li><li>Integrate new functionality smoothly</li></ul> |
 | **🔬 Exploration** | <ul><li>Try different solutions in parallel</li><li>Test multiple tech stacks</li><li>Experiment with UX patterns</li><li>Rapid prototyping and validation</li></ul> |
-
----
-
-## 🔬 What We're Exploring
-
-Our experiments focus on making Spec-Driven Development work for real teams:
-
-- **🔧 Tech Independence** - Build apps with any tech stack, proving this process works across languages and frameworks
-- **🏢 Enterprise Ready** - Support organizational constraints: cloud providers, compliance requirements, design systems
-- **👥 User Focused** - Build for different user needs and development styles (from exploratory coding to structured workflows)
-- **🔄 Iterative & Creative** - Enable parallel exploration of solutions and robust workflows for modernization
 
 ---
 
@@ -913,13 +860,6 @@ After running `sunrise init`, your project will have the following structure:
 ├── .<agent-folder>/       # Agent-specific commands (e.g., .claude/commands/, .github/agents/ or .github/prompts/)
 │   └── sunrise.*.md       # 15 Sunrise slash commands for your AI agent
 │
-├── .<agent-folder>/skills/  # Agent-specific skills (reusable capabilities)
-│   ├── architecture-design/
-│   ├── coding/
-│   ├── context-assessment/
-│   ├── nextjs-mockup/
-│   └── ... (18 skills total for various development tasks)
-│
 └── specs/                 # Your feature specifications (created as you work)
     └── <feature-name>/
         ├── spec.md        # Requirements and user stories
@@ -932,35 +872,7 @@ After running `sunrise init`, your project will have the following structure:
 
 - **`.sunrise/`** - Framework core (memory, scripts, templates)
 - **`.<agent>/commands/`** - AI agent slash commands (`.claude/`, `.github/agents/` or `.github/prompts/`, etc.)
-- **`.<agent>/skills/`** - Reusable capabilities that power the commands (18 modular skills)
 - **`specs/`** - Your feature specifications (grows as you build)
-
-### 🧩 Available Skills
-
-Sunrise includes **18 reusable skills** that power the slash commands:
-
-| Skill Module | Powers Command(s) | Purpose |
-| -------------- | ------------------- | --------- |
-| `requirements-specification` | `/sunrise.specify` | Create feature specifications from natural language |
-| `requirements-specification-review` | `/sunrise.clarify` | Structured clarification workflow |
-| `technical-design` | `/sunrise.design` | Generate implementation plans with tech stack |
-| `technical-design-review` | `/sunrise.analyze` | Validate design consistency and coverage |
-| `project-management` | `/sunrise.taskify` | Break down designs into actionable tasks |
-| `coding` | `/sunrise.implement` | Execute tasks and build features |
-| `architecture-design` | `/sunrise.architect` | Document system architecture (C4 diagrams) |
-| `architecture-design-review` | *(validation)* | Review architecture completeness |
-| `coding-standards` | `/sunrise.standardize` | Create coding conventions and standards |
-| `e2e-test-design` | `/sunrise.design-e2e-test` | Design end-to-end test specifications |
-| `project-ground-rules-setup` | `/sunrise.set-ground-rules` | Establish project principles |
-| `context-assessment` | `/sunrise.assess-context` | Analyze existing codebases (brownfield) |
-| `project-consistency-analysis` | `/sunrise.analyze` | Check cross-artifact consistency |
-| `code-review` | *(quality checks)* | Code review automation |
-| `git-commit` | *(auto-commits)* | Generate semantic commit messages |
-| `tasks-to-github-issues` | `/sunrise.tasks-to-issues` | Sync tasks to GitHub issues |
-| `tasks-to-azure-devops` | `/sunrise.tasks-to-ado` | Sync tasks to Azure DevOps |
-| `nextjs-mockup` / `nuxtjs-mockup` | *(rapid prototyping)* | Generate framework-specific mockups |
-
-**Skills are framework-agnostic** - they work with any tech stack and support 20+ AI agents through a common interface.
 
 **Note:** The `.sunrise/` folder and agent-specific folders are auto-managed by the Sunrise CLI. You primarily work in `specs/` for your features.
 

@@ -4,12 +4,15 @@ handoffs:
   - label: Create Tasks
     agent: sunrise.taskify
     prompt: Break the design into tasks which will be implemented by AI agents
-  - label: Create Checklist
+    send: true
+  - label: Create Checklist...
     agent: sunrise.checklist
-    prompt: Create a checklist for the following domain...
-  - label: Design E2E Test
+    prompt: Create a checklist for the following...
+    send: false
+  - label: Design E2E Test...
     agent: sunrise.design-e2e-test
-    prompt: Create an E2E test scripts for the following domain...
+    prompt: Create an E2E test scripts for the following...
+    send: false
 scripts:
   sh: scripts/bash/setup-design.sh --json
   ps: scripts/powershell/setup-design.ps1 -Json

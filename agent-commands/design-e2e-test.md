@@ -4,9 +4,11 @@ handoffs:
   - label: Implement Project
     agent: sunrise.implement
     prompt: Start the implementation in phases
+    send: true
   - label: Execute E2E Tests
     agent: sunrise.perform-e2e-test
     prompt: Execute the E2E test suite and verify results
+    send: true
 scripts:
   sh: scripts/bash/setup-design-e2e-test.sh --json
   ps: scripts/powershell/setup-design-e2e-test.ps1 -Json

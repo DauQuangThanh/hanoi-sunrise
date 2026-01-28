@@ -1,15 +1,18 @@
 ---
 description: Execute the architecture design workflow to create comprehensive system architecture documentation for the entire product.
 handoffs: 
-  - label: Create Feature Design
+  - label: Create Detailed Design
     agent: sunrise.design
-    prompt: Create a detailed design for a specific feature
+    prompt: Create a detailed design based on the provided specification
+    send: true
   - label: Create Development Standards
     agent: sunrise.standardize
-    prompt: Create coding standards and conventions documentation for the entire product
-  - label: Review Ground-rules
+    prompt: Create coding standards and naming conventions documentation for the entire product
+    send: true
+  - label: Review and Update Ground-rules
     agent: sunrise.set-ground-rules
-    prompt: Review project ground rules and constraints
+    prompt: Review and update project ground rules and constraints
+    send: true
 scripts:
   sh: scripts/bash/setup-architect.sh --json
   ps: scripts/powershell/setup-architect.ps1 -Json

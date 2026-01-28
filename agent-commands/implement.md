@@ -4,9 +4,11 @@ handoffs:
   - label: Design E2E Test Scripts
     agent: sunrise.design-e2e-test
     prompt: Design end-to-end test scripts for the entire product
+    send: true
   - label: Execute E2E Test scripts
     agent: sunrise.perform-e2e-test
     prompt: Execute E2E test scripts to verify the implementation
+    send: true
 scripts:
   sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
   ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks

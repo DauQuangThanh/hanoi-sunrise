@@ -5,12 +5,14 @@ handoffs:
     agent: sunrise.set-ground-rules
     prompt: Create project principles based on context assessment
     send: true
-  - label: Specify New Feature
+  - label: Specify New Feature...
     agent: sunrise.specify
-    prompt: Create specification for new feature based on context assessment
+    prompt: Create specification for...
+    send: false
   - label: Get Architecture Review
     agent: hanoi.architect
     prompt: Review architecture assessment and provide recommendations
+    send: true
 scripts:
   sh: scripts/bash/setup-assess-context.sh --json
   ps: scripts/powershell/setup-assess-context.ps1 -Json

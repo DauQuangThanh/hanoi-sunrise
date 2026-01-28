@@ -1,9 +1,10 @@
 ---
 description: Create or update the project ground-rules from interactive or provided principle inputs, ensuring all dependent templates stay in sync.
 handoffs: 
-  - label: Build Specification
+  - label: Build Specification ...
     agent: sunrise.specify
     prompt: Create the feature specification based on the updated ground-rules. I want to build...
+    send: false
 ---
 
 ## User Input
