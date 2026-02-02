@@ -1,0 +1,89 @@
+description = "Brief description starting with action verb (10-80 chars)"
+
+prompt = """
+# Command Name
+
+## Purpose
+Explain when and why to use this command.
+
+## Context
+What information or files does the agent need?
+
+## Instructions
+
+### Step 1: [First Phase]
+1. [Specific action]
+2. [Specific action]
+3. [Specific action]
+
+### Step 2: [Second Phase]
+1. [Specific action]
+2. [Specific action]
+3. [Specific action]
+
+## Output Format
+
+Create a file `path/to/output.md` with the following structure:
+
+```markdown
+# Output Title
+
+## Section 1
+[Content description]
+
+## Section 2
+[Content description]
+```
+
+Requirements:
+- [Requirement 1]
+- [Requirement 2]
+
+## Examples
+
+### Example 1: [Simple Case]
+Input: command simple-input
+Output: File with [description]
+
+### Example 2: [Complex Case]
+Input: command complex-input --flag
+Output: File with [description]
+
+## Arguments
+
+Arguments: {{args}}
+
+Expected format:
+- path/to/file - File or directory to process
+- --flag - Optional flag for additional behavior
+
+## Edge Cases
+
+### Case 1: Empty or Missing Arguments
+If no arguments provided, display usage help.
+
+### Case 2: Invalid Input
+If input doesn't match expected format, show error.
+
+## Error Handling
+
+**Error: [Common Error 1]**
+- Symptom: [How it appears]
+- Solution: [How to fix]
+
+**Error: [Common Error 2]**
+- Symptom: [How it appears]
+- Solution: [How to fix]
+
+## Validation
+
+Before considering complete, verify:
+- [ ] [Checkpoint 1]
+- [ ] [Checkpoint 2]
+- [ ] [Checkpoint 3]
+"""
+
+[metadata]
+author = "Your Name"
+version = "1.0"
+category = "general"

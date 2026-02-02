@@ -1,0 +1,170 @@
+description = "Analyze code quality and identify improvements"
+
+prompt = """
+# Code Quality Analysis
+
+## Purpose
+Perform comprehensive code quality analysis to identify issues, technical debt, and opportunities for improvement.
+
+## Context
+This command analyzes source code for various quality metrics including maintainability, security, performance, and adherence to best practices.
+
+## Instructions
+
+### Phase 1: Code Scanning
+1. Scan the codebase specified in {{args}}
+2. Analyze code structure and organization
+3. Identify code smells and anti-patterns
+4. Check for security vulnerabilities
+5. Evaluate performance bottlenecks
+
+### Phase 2: Metrics Collection
+1. Calculate cyclomatic complexity
+2. Measure code duplication
+3. Assess test coverage
+4. Evaluate documentation quality
+5. Check dependency health
+
+### Phase 3: Report Generation
+1. Create analysis report in `reports/code-analysis.md`
+2. Categorize findings by severity (Critical, High, Medium, Low)
+3. Provide specific recommendations
+4. Include code examples
+5. Suggest refactoring priorities
+
+## Output Format
+
+Create `reports/code-analysis.md` with this structure:
+
+```markdown
+# Code Quality Analysis Report
+
+## Summary
+- Total issues: [count]
+- Critical: [count]
+- High: [count]
+- Medium: [count]
+- Low: [count]
+
+## Metrics
+- Cyclomatic Complexity: [average/max]
+- Code Duplication: [percentage]
+- Test Coverage: [percentage]
+- Documentation: [score]
+
+## Findings
+
+### Critical Issues
+1. **[Issue Title]**
+   - Location: `file.py:line`
+   - Description: [details]
+   - Impact: [explanation]
+   - Recommendation: [solution]
+
+### High Priority Issues
+[Similar format]
+
+### Medium Priority Issues
+[Similar format]
+
+### Low Priority Issues
+[Similar format]
+
+## Recommendations
+
+### Immediate Actions
+- [Action 1]
+- [Action 2]
+
+### Short-term Improvements
+- [Improvement 1]
+- [Improvement 2]
+
+### Long-term Goals
+- [Goal 1]
+- [Goal 2]
+
+## Refactoring Priorities
+1. [Priority 1 with justification]
+2. [Priority 2 with justification]
+3. [Priority 3 with justification]
+```
+
+## Examples
+
+### Example 1: Full Codebase Analysis
+**Input:** `analyze ./src --detailed`
+
+**Output:** Comprehensive report covering:
+- All source files in src/
+- Security vulnerabilities (SQL injection, XSS, etc.)
+- Performance issues (N+1 queries, inefficient loops)
+- Code organization problems
+- Missing tests and documentation
+- Detailed refactoring recommendations
+
+### Example 2: Targeted Analysis
+**Input:** `analyze ./src/auth --focus=security`
+
+**Output:** Security-focused report for auth module:
+- Authentication vulnerabilities
+- Authorization flaws
+- Password handling issues
+- Session management problems
+- Specific security recommendations
+
+### Example 3: Module Analysis
+**Input:** `analyze ./src/api/users.py`
+
+**Output:** Single-file analysis:
+- Function-level quality metrics
+- Code complexity scores
+- Duplication within file
+- Security issues in specific functions
+- Refactoring suggestions
+
+## Arguments
+{{args}} - Path to directory or file to analyze
+
+**Flags:**
+- `--detailed` - Include detailed explanations
+- `--focus=area` - Focus on specific area (security, performance, maintainability)
+- `--format=md|json|html` - Output format (default: md)
+
+## Edge Cases
+
+### Case 1: Large Codebase
+For codebases >10k LOC:
+- Focus on high-impact areas first
+- Use sampling for metrics
+- Prioritize critical issues
+- Suggest incremental improvements
+
+### Case 2: Legacy Code
+For legacy codebases:
+- Set realistic expectations
+- Focus on preventing regressions
+- Prioritize safe refactorings
+- Document assumptions
+
+### Case 3: Multiple Languages
+If analyzing multi-language project:
+- Analyze each language separately
+- Highlight language-specific issues
+- Provide language-appropriate recommendations
+
+## Validation
+
+Before finalizing the report:
+- [ ] All critical issues are documented
+- [ ] Recommendations are specific and actionable
+- [ ] Code examples are provided for complex issues
+- [ ] Severity levels are justified
+- [ ] Refactoring priorities are clear
+- [ ] Report is well-organized and readable
+"""
+
+[metadata]
+author = "Code Quality Team"
+version = "1.0"
+category = "analysis"

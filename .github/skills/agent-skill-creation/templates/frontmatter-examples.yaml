@@ -1,0 +1,257 @@
+# Agent Skill Frontmatter Examples
+# This file contains valid frontmatter examples for different skill types
+
+# ============================================================================
+# MINIMAL SKILL (Required fields only)
+# ============================================================================
+minimal_skill:
+  yaml: |
+    ---
+    name: minimal-skill
+    description: "Performs basic task. Use when needed or when user mentions task."
+    ---
+
+# ============================================================================
+# SIMPLE SKILL (Common case)
+# ============================================================================
+simple_skill:
+  yaml: |
+    ---
+    name: simple-skill
+    description: "Analyzes data and generates reports. Use when analyzing datasets, creating visualizations, or when user mentions data analysis, reports, or statistics."
+    license: MIT
+    metadata:
+      author: Your Name
+      version: "1.0"
+    ---
+
+# ============================================================================
+# ANALYSIS SKILL
+# ============================================================================
+analysis_skill:
+  yaml: |
+    ---
+    name: code-security-analyzer
+    description: "Analyzes code for security vulnerabilities including SQL injection, XSS, and authentication issues. Use when reviewing code security, conducting security audits, or when user mentions vulnerabilities, security concerns, or code review."
+    license: MIT
+    metadata:
+      author: Security Team
+      version: "2.1"
+      category: security
+      last-updated: "2026-02-01"
+    ---
+
+# ============================================================================
+# GENERATION SKILL
+# ============================================================================
+generation_skill:
+  yaml: |
+    ---
+    name: api-documentation-generator
+    description: "Generates comprehensive API documentation from code including endpoints, parameters, authentication, and examples. Use when creating API docs, documenting REST APIs, or when user mentions API documentation, swagger, or OpenAPI specification."
+    license: Apache-2.0
+    metadata:
+      author: DevTools Team
+      version: "1.5"
+      category: documentation
+    ---
+
+# ============================================================================
+# TRANSFORMATION SKILL
+# ============================================================================
+transformation_skill:
+  yaml: |
+    ---
+    name: csv-to-json-converter
+    description: "Converts CSV files to JSON format with schema validation and data type inference. Use for data format conversion, API data preparation, or when user mentions CSV to JSON, data transformation, or format conversion."
+    license: MIT
+    metadata:
+      author: Data Team
+      version: "1.0"
+      category: data-processing
+    ---
+
+# ============================================================================
+# WORKFLOW SKILL
+# ============================================================================
+workflow_skill:
+  yaml: |
+    ---
+    name: deployment-workflow
+    description: "Guides through complete deployment process including pre-deployment checks, building, deploying, and post-deployment verification. Use for application deployments, release management, or when user mentions deploy, release, or production deployment."
+    license: MIT
+    compatibility: Requires git, docker, and CI/CD access
+    metadata:
+      author: DevOps Team
+      version: "3.0"
+      category: deployment
+    ---
+
+# ============================================================================
+# TOOL SKILL
+# ============================================================================
+tool_skill:
+  yaml: |
+    ---
+    name: git-workflow
+    description: "Executes Git operations for branching, committing, merging, and resolving conflicts. Use for version control tasks, managing branches, or when user mentions git, version control, branches, or merges."
+    license: MIT
+    metadata:
+      author: DevTools Team
+      version: "1.2"
+      category: version-control
+    ---
+
+# ============================================================================
+# INTEGRATION SKILL
+# ============================================================================
+integration_skill:
+  yaml: |
+    ---
+    name: github-integration
+    description: "Integrates with GitHub API for repository management, pull requests, issues, and workflows. Use when working with GitHub repositories, managing PRs, or when user mentions GitHub API, repositories, or pull requests."
+    license: MIT
+    compatibility: Requires GitHub personal access token
+    metadata:
+      author: Integration Team
+      version: "2.0"
+      category: integration
+      api-version: "2022-11-28"
+    ---
+
+# ============================================================================
+# SKILL WITH EXPERIMENTAL FEATURES
+# ============================================================================
+experimental_skill:
+  yaml: |
+    ---
+    name: advanced-processor
+    description: "Processes complex data with machine learning models. Use for advanced data processing, ML inference, or when user mentions machine learning, predictions, or data modeling."
+    license: MIT
+    allowed-tools: Bash(python:*) Bash(pip:*) Read Write
+    metadata:
+      author: ML Team
+      version: "0.9-beta"
+      category: machine-learning
+      experimental: true
+    ---
+
+# ============================================================================
+# VALIDATION RULES
+# ============================================================================
+validation_rules:
+  name:
+    pattern: "^[a-z0-9]+(-[a-z0-9]+)*$"
+    min_length: 1
+    max_length: 64
+    examples:
+      valid:
+        - "my-skill"
+        - "data-processor"
+        - "api-client-v2"
+      invalid:
+        - "My_Skill"        # uppercase and underscore
+        - "my skill"        # space
+        - "-skill"          # leading hyphen
+        - "skill-"          # trailing hyphen
+        - "my--skill"       # consecutive hyphens
+        
+  description:
+    min_length: 1
+    max_length: 1024
+    recommended_length: [150, 300]
+    must_include:
+      - "2-4 action verbs"
+      - "Use when... clause"
+      - "3-5 keywords"
+    must_not_include:
+      - "vague terms: helps with, tool for"
+      - "pronouns: it, this, that"
+    
+  license:
+    optional: true
+    examples:
+      - "MIT"
+      - "Apache-2.0"
+      - "Proprietary"
+      - "BSD-3-Clause"
+      
+  compatibility:
+    optional: true
+    max_length: 500
+    examples:
+      - "Requires git, docker, jq"
+      - "Designed for Claude Code"
+      - "Python 3.8+ required"
+      
+  metadata:
+    optional: true
+    type: "key-value map (string → string)"
+    recommended_keys:
+      - author
+      - version
+      - category
+      - last-updated
+    
+  allowed-tools:
+    optional: true
+    status: experimental
+    format: "space-delimited list"
+    examples:
+      - "Bash(git:*) Read"
+      - "Bash(python:*) Write"
+
+# ============================================================================
+# DESCRIPTION FORMULA
+# ============================================================================
+description_formula:
+  template: "[ACTION 1], [ACTION 2], and [ACTION 3]. Use when [SCENARIO 1], [SCENARIO 2], or when user mentions [KEYWORD 1], [KEYWORD 2], or [KEYWORD 3]."
+  
+  components:
+    actions:
+      count: "2-4"
+      format: "[VERB] [OBJECT]"
+      examples:
+        - "Extracts text from PDFs"
+        - "Generates API documentation"
+        - "Analyzes code security"
+        - "Converts CSV to JSON"
+    
+    scenarios:
+      count: "2-3"
+      format: "Use when [ACTIVITY/SITUATION]"
+      examples:
+        - "Use when working with PDF documents"
+        - "Use when creating API documentation"
+        - "Use when reviewing code security"
+    
+    keywords:
+      count: "3-5"
+      format: "when user mentions [TERM]"
+      examples:
+        - "PDFs"
+        - "API documentation"
+        - "security vulnerabilities"
+        - "data transformation"
+
+# ============================================================================
+# QUICK REFERENCE
+# ============================================================================
+quick_reference:
+  minimal_valid_skill: |
+    ---
+    name: skill-name
+    description: "Does X, Y, and Z. Use when A, B, or when user mentions C, D, E."
+    ---
+    
+    # Skill Name
+    [Content here]
+  
+  common_mistakes:
+    - "Uppercase in name field"
+    - "Underscores in name"
+    - "Vague description without keywords"
+    - "Missing 'Use when' clause"
+    - "Name doesn't match directory"
+    - "Invalid YAML syntax"
+    - "Description over 1024 characters"
