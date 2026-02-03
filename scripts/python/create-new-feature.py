@@ -25,7 +25,7 @@ def create_new_feature(json_mode: bool = False, short_name: str = '', branch_num
     # Generate branch name
     if has_git:
         if branch_number:
-            number = branch_number
+            number = int(branch_number)
         else:
             # Find next number
             specs_dir = Path(repo_root) / 'specs'
