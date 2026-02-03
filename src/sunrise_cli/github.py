@@ -95,7 +95,7 @@ def download_template_from_github(
     ai_assistant: str,
     download_dir: Path,
     *,
-    script_type: str = "sh",
+    script_type: Optional[str] = None,
     verbose: bool = True,
     show_progress: bool = True,
     client: httpx.Client = None,
@@ -107,7 +107,7 @@ def download_template_from_github(
     Args:
         ai_assistant: The AI assistant type (e.g., 'claude', 'copilot')
         download_dir: Directory to download the file to
-        script_type: Script type ('sh' or 'ps')
+        script_type: Script type (deprecated, now only Python)
         verbose: Whether to print detailed progress
         show_progress: Whether to show progress bar
         client: Optional httpx.Client to use
@@ -148,7 +148,7 @@ def download_template_from_github(
         raise typer.Exit(1)
 
     assets = release_data.get("assets", [])
-    pattern = f"sunrise-template-{ai_assistant}-{script_type}"
+    pattern = f"sunrise-template-{ai_assistant}"
     matching_assets = [
         asset for asset in assets
         if pattern in asset["name"] and asset["name"].endswith(".zip")
