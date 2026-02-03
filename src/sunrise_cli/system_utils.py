@@ -125,7 +125,7 @@ def init_git_repo(project_path: Path, quiet: bool = False) -> Tuple[bool, Option
 
 
 def ensure_executable_scripts(project_path: Path, tracker: "StepTracker | None" = None) -> None:
-    """Ensure POSIX .sh scripts under .sunrise/scripts (recursively) have execute bits (no-op on Windows)."""
+    """Ensure Python scripts under .sunrise/scripts (recursively) have execute bits (no-op on Windows)."""
     if os.name == "nt":
         return  # Windows: skip silently
     scripts_root = project_path / ".sunrise" / "scripts"
@@ -133,7 +133,7 @@ def ensure_executable_scripts(project_path: Path, tracker: "StepTracker | None" 
         return
     failures: list[str] = []
     updated = 0
-    for script in scripts_root.rglob("*.sh"):
+    for script in scripts_root.rglob("*.py"):
         try:
             if script.is_symlink() or not script.is_file():
                 continue

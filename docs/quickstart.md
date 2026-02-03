@@ -2,7 +2,7 @@
 
 **Build your first project with Spec-Driven Development in 9 steps.**
 
-> **Note:** All scripts come in both Bash (`.sh`) and PowerShell (`.ps1`) versions. Sunrise CLI automatically picks the right one for your system unless you specify `--script sh|ps`.
+> **Note:** Scripts are now Python-based for cross-platform compatibility.
 
 ---
 
@@ -40,16 +40,6 @@ uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <
 
 # OR work in current directory
 uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init .
-```
-
-**Want a specific script type?**
-
-```bash
-# Force PowerShell
-uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <PROJECT_NAME> --script ps
-
-# Force Bash
-uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <PROJECT_NAME> --script sh
 ```
 
 ---

@@ -10,8 +10,7 @@ handoffs:
     prompt: Execute E2E test scripts to verify the implementation
     send: true
 scripts:
-  sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
-  ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
+   py: python scripts/python/check-prerequisites.py --json --require-tasks --include-tasks
 ---
 
 ## User Input

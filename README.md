@@ -270,7 +270,7 @@ The `sunrise` command supports the following options:
 | ------------------------ | ---------- |------------------------------------------------------------------------------|
 | `<project-name>`       | Argument | Name for your new project directory (optional if using `--here`, or use `.` for current directory) |
 | `--ai`                 | Option   | AI assistant(s) to use. Can be a single agent or comma-separated list (e.g., `claude,gemini,copilot`). Valid options: `claude`, `gemini`, `copilot`, `cursor-agent`, `qwen`, `opencode`, `codex`, `windsurf`, `kilocode`, `auggie`, `roo`, `codebuddy`, `amp`, `shai`, `q`, `bob`, `jules`, `qoder`, `antigravity`. If not specified, an interactive multi-select menu will appear |
-| `--script`             | Option   | Script variant to use: `sh` (bash/zsh) or `ps` (PowerShell)                 |
+| `--script`             | Option   | Script variant to use: `py` (Python) - cross-platform default                 |
 | `--ignore-agent-tools` | Flag     | Skip checks for AI agent tools like Claude Code                             |
 | `--no-git`             | Flag     | Skip git repository initialization                                          |
 | `--here`               | Flag     | Initialize project in the current directory instead of creating a new one   |
@@ -303,8 +303,8 @@ sunrise init my-project --ai shai
 # Initialize with IBM Bob support
 sunrise init my-project --ai bob
 
-# Initialize with PowerShell scripts (Windows/cross-platform)
-sunrise init my-project --ai copilot --script ps
+# Initialize with Python scripts (cross-platform)
+sunrise init my-project --ai copilot --script py
 
 # Initialize in current directory
 sunrise init . --ai copilot
@@ -570,11 +570,11 @@ At this stage, your project folder contents should resemble the following:
     ├── memory
     │  └── ground-rules.md
     ├── scripts
-    │  ├── check-prerequisites.sh
-    │  ├── common.sh
-    │  ├── create-new-feature.sh
-    │  ├── setup-plan.sh
-    │  └── update-claude-md.sh
+    │  ├── check-prerequisites.py
+    │  ├── common.py
+    │  ├── create-new-feature.py
+    │  ├── setup-plan.py
+    │  └── update-claude-md.py
     ├── specs
     │  └── 001-create-taskify
     │      └── spec.md
@@ -854,7 +854,7 @@ After running `sunrise init`, your project will have the following structure:
 <project-root>/
 ├── .sunrise/               # Core framework (auto-generated, managed by Sunrise CLI)
 │   ├── docs/            # Project principles and ground rules
-│   ├── scripts/           # Automation scripts (bash or PowerShell)
+│   ├── scripts/           # Automation scripts (Python)
 │   └── templates/         # Reusable templates for specs, plans, and tasks
 │
 ├── .<agent-folder>/       # Agent-specific commands (e.g., .claude/commands/, .github/agents/ or .github/prompts/)

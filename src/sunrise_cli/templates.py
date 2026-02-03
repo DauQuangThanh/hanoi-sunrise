@@ -90,7 +90,7 @@ def copy_local_template(
     project_path: Path,
     source_path: Path,
     ai_assistant: str,
-    script_type: str,
+    script_type: str = "py",
     is_current_dir: bool = False,
     verbose: bool = True,
     tracker: "StepTracker | None" = None,
@@ -106,7 +106,6 @@ def copy_local_template(
     # Paths to copy
     commands_dir = source_path / "agent-commands"
     skills_dir = source_path / "skills"
-    memory_dir = source_path / "memory"
     scripts_dir = source_path / "scripts"
 
     # Check if required directories exist
@@ -138,15 +137,6 @@ def copy_local_template(
         sunrise_dir = project_path / ".sunrise"
         sunrise_dir.mkdir(exist_ok=True)
 
-        # Copy memory
-        if memory_dir.exists():
-            dest_memory = sunrise_dir / "memory"
-            if dest_memory.exists():
-                shutil.rmtree(dest_memory)
-            shutil.copytree(memory_dir, dest_memory)
-            if verbose and not tracker:
-                console.print(f"[green]✓[/green] Copied memory")
-
         # Copy scripts (filter by script_type)
         if scripts_dir.exists():
             dest_scripts = sunrise_dir / "scripts"
@@ -158,10 +148,8 @@ def copy_local_template(
                     shutil.copy2(item, dest_scripts / item.name)
 
             # Copy script variant directory
-            if script_type == "sh" and (scripts_dir / "bash").exists():
-                shutil.copytree(scripts_dir / "bash", dest_scripts / "bash", dirs_exist_ok=True)
-            elif script_type == "ps" and (scripts_dir / "powershell").exists():
-                shutil.copytree(scripts_dir / "powershell", dest_scripts / "powershell", dirs_exist_ok=True)
+            if script_type == "py" and (scripts_dir / "python").exists():
+                shutil.copytree(scripts_dir / "python", dest_scripts / "python", dirs_exist_ok=True)
 
             if verbose and not tracker:
                 console.print(f"[green]✓[/green] Copied scripts ({script_type})")
@@ -242,7 +230,7 @@ def copy_local_template(
 def download_and_extract_template(
     project_path: Path,
     ai_assistant: str,
-    script_type: str,
+    script_type: str = "py",
     is_current_dir: bool = False,
     *,
     verbose: bool = True,

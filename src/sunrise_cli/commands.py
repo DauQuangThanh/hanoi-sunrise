@@ -16,7 +16,7 @@ from rich.live import Live
 from rich.panel import Panel
 from rich.table import Table
 
-from .config import AGENT_CONFIG, GITHUB_REPO_NAME, GITHUB_REPO_OWNER, SCRIPT_TYPE_CHOICES
+from .config import AGENT_CONFIG, GITHUB_REPO_NAME, GITHUB_REPO_OWNER
 from .github import _github_auth_headers, ssl_context
 from .system_utils import check_tool, ensure_executable_scripts, init_git_repo, is_git_repo
 from .templates import download_and_extract_template
@@ -37,7 +37,6 @@ client = httpx.Client(verify=ssl_context)
 def init(
     project_name: str = typer.Argument(None, help="Name for your new project directory (optional if using --here, or use '.' for current directory)"),
     ai_assistant: str = typer.Option(None, "--ai", help="AI agent(s) to use. Can be a single agent or comma-separated list (e.g., 'claude,gemini,copilot'). Valid options: claude, gemini, copilot, cursor-agent, qwen, opencode, codex, windsurf, kilocode, auggie, codebuddy, roo, amp, shai, q, bob, jules, qoder, antigravity. If not specified, an interactive multi-select menu will appear (default: copilot pre-selected)"),
-    script_type: str = typer.Option(None, "--script", help="Script type to use: sh or ps"),
     ignore_agent_tools: bool = typer.Option(False, "--ignore-agent-tools", help="Skip checks for AI agent tools like Claude Code"),
     no_git: bool = typer.Option(False, "--no-git", help="Skip git repository initialization"),
     here: bool = typer.Option(False, "--here", help="Initialize project in the current directory instead of creating a new one"),
@@ -70,19 +69,13 @@ def init(
         # Initialize with multiple AI assistants (comma-separated)
         sunrise init my-project --ai claude,gemini,copilot
 
-        # Initialize in current directory (interactive selection)
-        sunrise init .
-        sunrise init --here
+         # Initialize in current directory (interactive selection)
+         sunrise init .
+         sunrise init --here
 
-        # Initialize with specific AI and script type
-        sunrise init my-project --ai copilot --script ps
-
-        # Multiple agents with script type
-        sunrise init my-project --ai claude,cursor-agent --script sh
-
-        # Force merge into current (non-empty) directory
-        sunrise init . --force
-        sunrise init --here --force
+         # Force merge into current (non-empty) directory
+         sunrise init . --force
+         sunrise init --here --force
 
         # Upgrade existing project (prompts for AI selection)
         sunrise init --upgrade
@@ -367,21 +360,10 @@ def init(
                     console.print(error_panel)
                     raise typer.Exit(1)
 
-    if script_type:
-        if script_type not in SCRIPT_TYPE_CHOICES:
-            console.print(f"[red]Error:[/red] Invalid script type '{script_type}'. Choose from: {', '.join(SCRIPT_TYPE_CHOICES.keys())}")
-            raise typer.Exit(1)
-        selected_script = script_type
-    else:
-        default_script = "ps" if os.name == "nt" else "sh"
-
-        if sys.stdin.isatty():
-            selected_script = select_with_arrows(SCRIPT_TYPE_CHOICES, "Choose script type (or press Enter)", default_script)
-        else:
-            selected_script = default_script
+    # Script type selection - now only Python
+    selected_script = "py"
 
     console.print(f"[cyan]Selected AI assistant(s):[/cyan] {', '.join(selected_ais)}")
-    console.print(f"[cyan]Selected script type:[/cyan] {selected_script}")
 
     tracker = StepTracker("Upgrade Sunrise Project" if is_upgrade_mode else "Initialize Sunrise Project")
 
@@ -391,8 +373,6 @@ def init(
     tracker.complete("precheck", "ok")
     tracker.add("ai-select", "Select AI assistant(s)")
     tracker.complete("ai-select", f"{', '.join(selected_ais)}")
-    tracker.add("script-select", "Select script type")
-    tracker.complete("script-select", selected_script)
 
     # Add backup step for upgrade mode
     if is_upgrade_mode:

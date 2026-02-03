@@ -2,16 +2,14 @@
 set -euo pipefail
 
 # create-release-packages.sh (workflow-local)
-# Build Hanoi Sunrise template release archives for each supported AI assistant and script type.
+# Build Hanoi Sunrise template release archives for each supported AI assistant.
 # Usage: .github/workflows/scripts/create-release-packages.sh <version>
 #   Version argument should include leading 'v'.
-#   Optionally set AGENTS and/or SCRIPTS env vars to limit what gets built.
-#     AGENTS  : space or comma separated subset of: claude gemini copilot cursor-agent qwen opencode windsurf codex amp shai bob (default: all)
-#     SCRIPTS : space or comma separated subset of: sh ps (default: both)
+#   Optionally set AGENTS env var to limit what gets built.
+#     AGENTS: space or comma separated subset of: claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp shai q bob jules qoder antigravity (default: all)
 #   Examples:
-#     AGENTS=claude SCRIPTS=sh $0 v0.2.0
+#     AGENTS=claude $0 v0.2.0
 #     AGENTS="copilot,gemini" $0 v0.2.0
-#     SCRIPTS=ps $0 v0.2.0
 
 if [[ $# -ne 1 ]]; then
   echo "Usage: $0 <version-with-v-prefix>" >&2
@@ -116,9 +114,9 @@ generate_skills() {
 }
 
 build_variant() {
-  local agent=$1 script=$2
-  local base_dir="$GENRELEASES_DIR/sdd-${agent}-package-${script}"
-  echo "Building $agent ($script) package..."
+  local agent=$1
+  local base_dir="$GENRELEASES_DIR/sdd-${agent}-package"
+  echo "Building $agent package..."
   mkdir -p "$base_dir"
   
   # Copy base structure but filter scripts by variant
@@ -127,22 +125,13 @@ build_variant() {
   
   [[ -d memory ]] && { cp -r memory "$SPEC_DIR/"; echo "Copied memory -> .sunrise"; }
   
-  # Only copy the relevant script variant directory
-  if [[ -d scripts ]]; then
-    mkdir -p "$SPEC_DIR/scripts"
-    case $script in
-      sh)
-        [[ -d scripts/bash ]] && { cp -r scripts/bash "$SPEC_DIR/scripts/"; echo "Copied scripts/bash -> .sunrise/scripts"; }
-        # Copy any script files that aren't in variant-specific directories
-        find scripts -maxdepth 1 -type f -exec cp {} "$SPEC_DIR/scripts/" \; 2>/dev/null || true
-        ;;
-      ps)
-        [[ -d scripts/powershell ]] && { cp -r scripts/powershell "$SPEC_DIR/scripts/"; echo "Copied scripts/powershell -> .sunrise/scripts"; }
-        # Copy any script files that aren't in variant-specific directories
-        find scripts -maxdepth 1 -type f -exec cp {} "$SPEC_DIR/scripts/" \; 2>/dev/null || true
-        ;;
-    esac
-  fi
+   # Only copy the python script variant directory
+   if [[ -d scripts ]]; then
+     mkdir -p "$SPEC_DIR/scripts"
+     [[ -d scripts/python ]] && { cp -r scripts/python "$SPEC_DIR/scripts/"; echo "Copied scripts/python -> .sunrise/scripts"; }
+     # Copy any script files that aren't in variant-specific directories
+     find scripts -maxdepth 1 -type f -exec cp {} "$SPEC_DIR/scripts/" \; 2>/dev/null || true
+   fi
   
   # Copy template files to .sunrise/templates with subdirectories
   mkdir -p "$SPEC_DIR/templates"
@@ -160,48 +149,48 @@ build_variant() {
   case $agent in
     claude)
       mkdir -p "$base_dir/.claude/commands"
-      generate_commands claude md "\$ARGUMENTS" "$base_dir/.claude/commands" "$script"
-      generate_skills claude "$base_dir/.claude/skills" ;;
+      generate_commands claude md "\$ARGUMENTS" "$base_dir/.claude/commands" "py"
+      generate_skills claude "$base_dir/.claude/skills" ;; 
     gemini)
       mkdir -p "$base_dir/.gemini/commands"
-      generate_commands gemini toml "{{args}}" "$base_dir/.gemini/commands" "$script"
+      generate_commands gemini toml "{{args}}" "$base_dir/.gemini/commands" "py"
       generate_skills gemini "$base_dir/.gemini/extensions"
       [[ -f agent_templates/gemini/GEMINI.md ]] && cp agent_templates/gemini/GEMINI.md "$base_dir/GEMINI.md" ;;
     copilot)
       mkdir -p "$base_dir/.github/agents"
       mkdir -p "$base_dir/.github/prompts"
-      generate_commands copilot agent.md "\$ARGUMENTS" "$base_dir/.github/agents" "$script"
+      generate_commands copilot agent.md "\$ARGUMENTS" "$base_dir/.github/agents" "py"
       # Also generate prompts for slash commands
       for template in agent-commands/*.md; do
-        [[ -f "$template" ]] || continue
-        local name file_content description script_command agent_script_command body
-        name=$(basename "$template" .md)
-        file_content=$(tr -d '\r' < "$template")
-        description=$(printf '%s\n' "$file_content" | awk '/^description:/ {sub(/^description:[[:space:]]*/, ""); print; exit}')
-        script_command=$(printf '%s\n' "$file_content" | awk -v sv="$script" '/^[[:space:]]*'"$script"':[[:space:]]*/ {sub(/^[[:space:]]*'"$script"':[[:space:]]*/, ""); print; exit}')
-        [[ -z $script_command ]] && script_command="(Missing script command for $script)"
-        agent_script_command=$(printf '%s\n' "$file_content" | awk '
-          /^agent_scripts:$/ { in_agent_scripts=1; next }
-          in_agent_scripts && /^[[:space:]]*'"$script"':[[:space:]]*/ {
-            sub(/^[[:space:]]*'"$script"':[[:space:]]*/, "")
-            print
-            exit
-          }
-          in_agent_scripts && /^[a-zA-Z]/ { in_agent_scripts=0 }
-        ')
-        body=$(printf '%s\n' "$file_content" | sed "s|{SCRIPT}|${script_command}|g")
-        [[ -n $agent_script_command ]] && body=$(printf '%s\n' "$body" | sed "s|{AGENT_SCRIPT}|${agent_script_command}|g")
-        body=$(printf '%s\n' "$body" | awk '
-          /^---$/ { print; if (++dash_count == 1) in_frontmatter=1; else in_frontmatter=0; next }
-          in_frontmatter && /^scripts:$/ { skip_scripts=1; next }
-          in_frontmatter && /^agent_scripts:$/ { skip_scripts=1; next }
-          in_frontmatter && /^[a-zA-Z].*:/ && skip_scripts { skip_scripts=0 }
-          in_frontmatter && skip_scripts && /^[[:space:]]/ { next }
-          { print }
-        ')
-        body=$(printf '%s\n' "$body" | sed "s/{ARGS}/\$ARGUMENTS/g" | sed "s/__AGENT__/copilot/g" | rewrite_paths)
-        echo "$body" > "$base_dir/.github/prompts/sunrise.$name.prompt.md"
-      done
+         [[ -f "$template" ]] || continue
+         local name file_content description script_command agent_script_command body
+         name=$(basename "$template" .md)
+         file_content=$(tr -d '\r' < "$template")
+         description=$(printf '%s\n' "$file_content" | awk '/^description:/ {sub(/^description:[[:space:]]*/, ""); print; exit}')
+         script_command=$(printf '%s\n' "$file_content" | awk -v sv="py" '/^[[:space:]]*py:[[:space:]]*/ {sub(/^[[:space:]]*py:[[:space:]]*/, ""); print; exit}')
+         [[ -z $script_command ]] && script_command="(Missing script command for py)"
+         agent_script_command=$(printf '%s\n' "$file_content" | awk '
+           /^agent_scripts:$/ { in_agent_scripts=1; next }
+           in_agent_scripts && /^[[:space:]]*py:[[:space:]]*/ {
+             sub(/^[[:space:]]*py:[[:space:]]*/, "")
+             print
+             exit
+           }
+           in_agent_scripts && /^[a-zA-Z]/ { in_agent_scripts=0 }
+         ')
+         body=$(printf '%s\n' "$file_content" | sed "s|{SCRIPT}|${script_command}|g")
+         [[ -n $agent_script_command ]] && body=$(printf '%s\n' "$body" | sed "s|{AGENT_SCRIPT}|${agent_script_command}|g")
+         body=$(printf '%s\n' "$body" | awk '
+           /^---$/ { print; if (++dash_count == 1) in_frontmatter=1; else in_frontmatter=0; next }
+           in_frontmatter && /^scripts:$/ { skip_scripts=1; next }
+           in_frontmatter && /^agent_scripts:$/ { skip_scripts=1; next }
+           in_frontmatter && /^[a-zA-Z].*:/ && skip_scripts { skip_scripts=0 }
+           in_frontmatter && skip_scripts && /^[[:space:]]/ { next }
+           { print }
+         ')
+         body=$(printf '%s\n' "$body" | sed "s/{ARGS}/\$ARGUMENTS/g" | sed "s/__AGENT__/copilot/g" | rewrite_paths)
+         echo "$body" > "$base_dir/.github/prompts/sunrise.$name.prompt.md"
+       done
       generate_skills copilot "$base_dir/.github/skills"
       # Create VS Code workspace settings
       mkdir -p "$base_dir/.vscode"
@@ -209,16 +198,16 @@ build_variant() {
       ;;
     cursor-agent)
       mkdir -p "$base_dir/.cursor/commands"
-      generate_commands cursor-agent md "\$ARGUMENTS" "$base_dir/.cursor/commands" "$script"
+      generate_commands cursor-agent md "\$ARGUMENTS" "$base_dir/.cursor/commands" "py"
       generate_skills cursor-agent "$base_dir/.cursor/rules" ;;
     qwen)
       mkdir -p "$base_dir/.qwen/commands"
-      generate_commands qwen toml "{{args}}" "$base_dir/.qwen/commands" "$script"
+      generate_commands qwen toml "{{args}}" "$base_dir/.qwen/commands" "py"
       generate_skills qwen "$base_dir/.qwen/skills"
       [[ -f agent_templates/qwen/QWEN.md ]] && cp agent_templates/qwen/QWEN.md "$base_dir/QWEN.md" ;;
     opencode)
       mkdir -p "$base_dir/.opencode/command"
-      generate_commands opencode md "\$ARGUMENTS" "$base_dir/.opencode/command" "$script"
+      generate_commands opencode md "\$ARGUMENTS" "$base_dir/.opencode/command" "py"
       generate_skills opencode "$base_dir/.opencode/skill" ;;
     windsurf)
       mkdir -p "$base_dir/.windsurf/workflows"
@@ -273,13 +262,12 @@ build_variant() {
       generate_commands antigravity md "\$ARGUMENTS" "$base_dir/.agent/rules" "$script"
       generate_skills antigravity "$base_dir/.agent/skills" ;;
   esac
-  ( cd "$base_dir" && zip -r "../sunrise-template-${agent}-${script}-${NEW_VERSION}.zip" . )
-  echo "Created $GENRELEASES_DIR/sunrise-template-${agent}-${script}-${NEW_VERSION}.zip"
+   ( cd "$base_dir" && zip -r "../sunrise-template-${agent}-${NEW_VERSION}.zip" . )
+   echo "Created $GENRELEASES_DIR/sunrise-template-${agent}-${NEW_VERSION}.zip"
 }
 
 # Determine agent list
 ALL_AGENTS=(claude gemini copilot cursor-agent qwen opencode windsurf codex kilocode auggie roo codebuddy amp shai q bob jules qoder antigravity)
-ALL_SCRIPTS=(sh ps)
 
 norm_list() {
   # convert comma+space separated -> line separated unique while preserving order of first occurrence
@@ -301,26 +289,16 @@ validate_subset() {
 }
 
 if [[ -n ${AGENTS:-} ]]; then
-  mapfile -t AGENT_LIST < <(printf '%s' "$AGENTS" | norm_list)
-  validate_subset agent ALL_AGENTS "${AGENT_LIST[@]}" || exit 1
+   mapfile -t AGENT_LIST < <(printf '%s' "$AGENTS" | norm_list)
+   validate_subset agent ALL_AGENTS "${AGENT_LIST[@]}" || exit 1
 else
-  AGENT_LIST=("${ALL_AGENTS[@]}")
-fi
-
-if [[ -n ${SCRIPTS:-} ]]; then
-  mapfile -t SCRIPT_LIST < <(printf '%s' "$SCRIPTS" | norm_list)
-  validate_subset script ALL_SCRIPTS "${SCRIPT_LIST[@]}" || exit 1
-else
-  SCRIPT_LIST=("${ALL_SCRIPTS[@]}")
+   AGENT_LIST=("${ALL_AGENTS[@]}")
 fi
 
 echo "Agents: ${AGENT_LIST[*]}"
-echo "Scripts: ${SCRIPT_LIST[*]}"
 
 for agent in "${AGENT_LIST[@]}"; do
-  for script in "${SCRIPT_LIST[@]}"; do
-    build_variant "$agent" "$script"
-  done
+  build_variant "$agent"
 done
 
 echo "Archives in $GENRELEASES_DIR:"

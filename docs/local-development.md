@@ -2,7 +2,7 @@
 
 **Work on Sunrise CLI locally without publishing releases.**
 
-> **Note:** All scripts come in both Bash (`.sh`) and PowerShell (`.ps1`) versions. The CLI auto-picks based on your OS unless you specify `--script sh|ps`.
+> **Note:** Scripts are now Python-based for cross-platform compatibility.
 
 ---
 
@@ -27,19 +27,19 @@ Test your changes instantly without installing:
 ```bash
 # From repository root
 python -m src.sunrise_cli --help
-python -m src.sunrise_cli init demo-project --ai claude --ignore-agent-tools --script sh
+python -m src.sunrise_cli init demo-project --ai claude --ignore-agent-tools
 
 # Multiple AI agents (comma-separated)
-python -m src.sunrise_cli init demo-project --ai claude,gemini,copilot --script sh
+python -m src.sunrise_cli init demo-project --ai claude,gemini,copilot
 
 # Use local templates (no GitHub download)
-python -m src.sunrise_cli init demo-project --ai claude --local-templates --template-path . --script sh
+python -m src.sunrise_cli init demo-project --ai claude --local-templates --template-path .
 ```
 
 **Alternative:** Run the script directly (uses shebang):
 
 ```bash
-python src/sunrise_cli/__init__.py init demo-project --script ps
+python src/sunrise_cli/__init__.py init demo-project
 ```
 
 ---
@@ -73,7 +73,7 @@ Test how users will actually run Sunrise:
 **From local directory:**
 
 ```bash
-uvx --from . sunrise init demo-uvx --ai copilot --ignore-agent-tools --script sh
+uvx --from . sunrise init demo-uvx --ai copilot --ignore-agent-tools
 ```
 
 **From a specific branch (without merging):**
@@ -83,7 +83,7 @@ uvx --from . sunrise init demo-uvx --ai copilot --ignore-agent-tools --script sh
 git push origin your-feature-branch
 
 # Test it
-uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git@your-feature-branch sunrise init demo-branch-test --script ps
+uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git@your-feature-branch sunrise init demo-branch-test
 ```
 
 #### Run from Anywhere (Absolute Path)
@@ -92,7 +92,7 @@ Use absolute paths when you're in a different directory:
 
 ```bash
 uvx --from /mnt/c/GitHub/hanoi-sunrise sunrise --help
-uvx --from /mnt/c/GitHub/hanoi-sunrise sunrise init demo-anywhere --ai copilot --script sh
+uvx --from /mnt/c/GitHub/hanoi-sunrise sunrise init demo-anywhere --ai copilot
 ```
 
 **Make it easier with an environment variable:**
@@ -102,7 +102,7 @@ uvx --from /mnt/c/GitHub/hanoi-sunrise sunrise init demo-anywhere --ai copilot -
 export RAINBOW_SRC=/mnt/c/GitHub/hanoi-sunrise
 
 # Use anywhere
-uvx --from "$RAINBOW_SRC" sunrise init demo-env --ai copilot --script ps
+uvx --from "$RAINBOW_SRC" sunrise init demo-env --ai copilot
 ```
 
 **Or create a shell function:**
@@ -116,16 +116,16 @@ sunrise-dev --help
 
 ---
 
-### 5. Check Script Permissions
+### 5. Check Script Files
 
-After running `init`, verify shell scripts are executable (Linux/macOS only):
+After running `init`, verify Python scripts are present:
 
 ```bash
-ls -l scripts | grep .sh
-# Expect: -rwxr-xr-x (owner execute bit set)
+ls -l scripts | grep .py
+# Expect: -rw-r--r-- (Python scripts don't need execute permissions)
 ```
 
-> **Note:** Windows PowerShell scripts (`.ps1`) don't need chmod.
+> **Note:** Python scripts work cross-platform without special permissions.
 
 ---
 
@@ -156,7 +156,7 @@ Test `init --here` without cluttering your repo:
 
 ```bash
 mkdir /tmp/sunrise-test && cd /tmp/sunrise-test
-python -m src.sunrise_cli init --here --ai claude --ignore-agent-tools --script sh
+python -m src.sunrise_cli init --here --ai claude --ignore-agent-tools
 ```
 
 ---
@@ -167,7 +167,7 @@ Skip TLS validation during local testing (not for production!):
 
 ```bash
 sunrise check --skip-tls
-sunrise init demo --skip-tls --ai gemini --ignore-agent-tools --script ps
+sunrise init demo --skip-tls --ai gemini --ignore-agent-tools
 ```
 
 ---
@@ -192,7 +192,7 @@ hanoi-sunrise/
 │   └── ... (17 skills total)
 │
 ├── docs/                 # Documentation site
-├── scripts/              # Automation scripts (bash + PowerShell)
+├── scripts/              # Automation scripts (Python)
 ├── src/sunrise_cli/      # CLI source code
 ├── rules/                # Agent-specific rules and guidelines
 └── .github/workflows/    # CI/CD and release automation
@@ -231,9 +231,7 @@ rm -rf .venv dist build *.egg-info
 | Problem | Solution |
 | --------- | ---------- |
 | **`ModuleNotFoundError: typer`** | Run `uv pip install -e .` to install dependencies |
-| **Scripts not executable (Linux)** | Re-run init or manually run `chmod +x scripts/*.sh` |
 | **Git step skipped** | You passed `--no-git` or Git isn't installed |
-| **Wrong script type** | Pass `--script sh` or `--script ps` explicitly |
 | **TLS errors (corporate network)** | Try `--skip-tls` (not recommended for production) |
 
 ---

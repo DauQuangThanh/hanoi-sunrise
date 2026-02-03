@@ -1,11 +1,9 @@
 ---
 description: Execute end-to-end tests based on the E2E test plan and generate detailed test result reports.
 scripts:
-  sh: scripts/bash/setup-perform-e2e-test.sh --json
-  ps: scripts/powershell/setup-perform-e2e-test.ps1 -Json
+   py: python scripts/python/setup-perform-e2e-test.py --json
 agent_scripts:
-  sh: scripts/bash/update-agent-context.sh __AGENT__
-  ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+   py: python scripts/python/update-agent-context.py __AGENT__
 ---
 
 ## User Input

@@ -14,11 +14,9 @@ handoffs:
     prompt: Review architecture assessment and provide recommendations
     send: true
 scripts:
-  sh: scripts/bash/setup-assess-context.sh --json
-  ps: scripts/powershell/setup-assess-context.ps1 -Json
+   py: python scripts/python/setup-assess-context.py --json
 agent_scripts:
-  sh: scripts/bash/update-agent-context.sh __AGENT__
-  ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+   py: python scripts/python/update-agent-context.py __AGENT__
 ---
 
 ## User Input

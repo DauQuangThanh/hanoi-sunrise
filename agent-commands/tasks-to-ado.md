@@ -2,8 +2,7 @@
 description: Convert existing tasks into actionable, dependency-ordered Azure DevOps work items for the feature based on available design artifacts.
 tools: ['ado/azure-devops-mcp/mcp_ado_wit_create_work_item']
 scripts:
-  sh: scripts/bash/check-prerequisites.sh --json --require-tasks --include-tasks
-  ps: scripts/powershell/check-prerequisites.ps1 -Json -RequireTasks -IncludeTasks
+   py: python scripts/python/check-prerequisites.py --json --require-tasks --include-tasks
 ---
 
 ## User Input

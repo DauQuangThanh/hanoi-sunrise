@@ -58,25 +58,14 @@ uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <
 uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <project_name> --ai codebuddy
 ```
 
-### 🔧 Choose Script Type (Bash or PowerShell)
+### 🔧 Script Type (Python)
 
-All automation scripts come in both formats:
+All automation scripts are now Python-based for cross-platform compatibility:
 
 **Default behavior:**
 
-- 🪟 Windows → PowerShell (`.ps1`)
-- 🐧 Linux/macOS → Bash (`.sh`)
-- 💬 Interactive mode → You'll be asked
-
-**Force a specific type:**
-
-```bash
-# Force Bash scripts
-uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <project_name> --script sh
-
-# Force PowerShell scripts
-uvx --from git+https://github.com/dauquangthanh/hanoi-sunrise.git sunrise init <project_name> --script ps
-```
+- 🐧 All platforms → Python (`.py`)
+- 💬 Interactive mode → You'll be asked if needed
 
 ### ⚡ Skip Tool Checks (Optional)
 
@@ -110,10 +99,9 @@ Your AI agent should show these core commands:
 
 ### 2. Check Script Files
 
-The `.sunrise/scripts` directory should contain both:
+The `.sunrise/scripts` directory should contain:
 
-- ✅ Bash scripts (`.sh`) for Linux/macOS
-- ✅ PowerShell scripts (`.ps1`) for Windows
+- ✅ Python scripts (`.py`) for cross-platform execution
 
 ---
 
