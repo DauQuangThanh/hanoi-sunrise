@@ -7,6 +7,7 @@ Comprehensive validation criteria for agent commands.
 ### Description Field
 
 **Requirements:**
+
 - [ ] Present in frontmatter
 - [ ] 10-80 characters (recommended)
 - [ ] Maximum 1024 characters
@@ -16,6 +17,7 @@ Comprehensive validation criteria for agent commands.
 - [ ] No redundant words
 
 **Action Verbs (Use these):**
+
 - Create, Generate, Build, Design
 - Analyze, Review, Inspect, Audit
 - Refactor, Optimize, Improve
@@ -23,6 +25,7 @@ Comprehensive validation criteria for agent commands.
 - Document, Explain, Describe
 
 **Examples:**
+
 ```yaml
 ✅ "Create feature specification from user requirements"
 ✅ "Analyze codebase for security vulnerabilities"
@@ -34,6 +37,7 @@ Comprehensive validation criteria for agent commands.
 ### Instructions Section
 
 **Requirements:**
+
 - [ ] Present in command body
 - [ ] Uses numbered or bulleted lists
 - [ ] Each step is actionable
@@ -43,6 +47,7 @@ Comprehensive validation criteria for agent commands.
 - [ ] Clear success criteria
 
 **Pattern:**
+
 ```markdown
 ## Instructions
 
@@ -54,6 +59,7 @@ Comprehensive validation criteria for agent commands.
 ### Output Format Section
 
 **Requirements:**
+
 - [ ] Explicitly specified
 - [ ] Exact file path provided
 - [ ] File format stated
@@ -62,6 +68,7 @@ Comprehensive validation criteria for agent commands.
 - [ ] All required fields listed
 
 **Pattern:**
+
 ```markdown
 ## Output Format
 
@@ -78,6 +85,7 @@ Create file `path/to/output.md` with:
 ```
 
 Include: [list of required elements]
+
 ```
 
 ### Examples Section
@@ -108,6 +116,7 @@ Include: [list of required elements]
 ### Arguments Documentation
 
 **Requirements:**
+
 - [ ] All arguments documented
 - [ ] Required vs optional marked
 - [ ] Types specified
@@ -116,6 +125,7 @@ Include: [list of required elements]
 - [ ] Correct syntax for format
 
 **Pattern:**
+
 ```markdown
 ## Arguments
 
@@ -132,6 +142,7 @@ Include: [list of required elements]
 ### File Naming
 
 **Requirements:**
+
 - [ ] Lowercase only
 - [ ] Hyphens for word separation
 - [ ] No underscores
@@ -141,6 +152,7 @@ Include: [list of required elements]
 - [ ] Correct extension (.md or .toml)
 
 **Examples:**
+
 ```
 ✅ specify.md
 ✅ analyze-coverage.md
@@ -154,6 +166,7 @@ Include: [list of required elements]
 ### Frontmatter/YAML Validation
 
 **Requirements:**
+
 - [ ] Valid YAML syntax
 - [ ] Starts with `---`
 - [ ] Ends with `---`
@@ -163,6 +176,7 @@ Include: [list of required elements]
 - [ ] Required fields present
 
 **Valid example:**
+
 ```yaml
 ---
 description: "Create feature specification"
@@ -171,6 +185,7 @@ mode: "project.command"
 ```
 
 **Invalid examples:**
+
 ```yaml
 ❌ Missing closing delimiter
 ---
@@ -190,6 +205,7 @@ desc: "Test"
 ### TOML Validation
 
 **Requirements:**
+
 - [ ] Valid TOML syntax
 - [ ] description field present
 - [ ] description is quoted string
@@ -198,6 +214,7 @@ desc: "Test"
 - [ ] No syntax errors
 
 **Valid example:**
+
 ```toml
 description = "Create feature specification"
 
@@ -209,6 +226,7 @@ Instructions here
 ```
 
 **Invalid examples:**
+
 ```toml
 ❌ Single quotes for prompt
 description = "Test"
@@ -222,16 +240,19 @@ prompt = """Content"""
 ### Argument Syntax Validation
 
 **Markdown commands:**
+
 - [ ] Uses `$ARGUMENTS` (not `{{args}}`)
 - [ ] Placed appropriately in instructions
 - [ ] Documented in Arguments section
 
 **TOML commands:**
+
 - [ ] Uses `{{args}}` (not `$ARGUMENTS`)
 - [ ] Placed in prompt string
 - [ ] Documented in prompt
 
 **Examples:**
+
 ```markdown
 ✅ Markdown: Arguments: $ARGUMENTS
 ❌ Markdown: Arguments: {{args}}
@@ -245,6 +266,7 @@ prompt = """Content"""
 ### GitHub Copilot
 
 **Requirements:**
+
 - [ ] mode field present in frontmatter
 - [ ] mode format: `project.command-name`
 - [ ] Both parts lowercase
@@ -253,6 +275,7 @@ prompt = """Content"""
 - [ ] In `.github/prompts/` or `.github/agents/`
 
 **Valid:**
+
 ```yaml
 ---
 description: "Command description"
@@ -261,6 +284,7 @@ mode: vinh.specify
 ```
 
 **Invalid:**
+
 ```yaml
 ---
 description: "Command description"
@@ -271,12 +295,14 @@ mode: Vinh.Specify  # uppercase
 ### Cursor
 
 **Requirements (if using glob):**
+
 - [ ] glob field format valid
 - [ ] Pattern matches intended files
 - [ ] Uses double asterisks for recursive: `**`
 - [ ] File extension included: `*.ext`
 
 **Valid:**
+
 ```yaml
 ---
 description: "TypeScript rules"
@@ -287,6 +313,7 @@ glob: "**/*.ts"
 ### Gemini CLI / Qwen Code
 
 **Requirements:**
+
 - [ ] File extension is `.toml`
 - [ ] Uses TOML format (not Markdown)
 - [ ] Uses `{{args}}` for arguments
@@ -297,6 +324,7 @@ glob: "**/*.ts"
 ### Path Handling
 
 **Requirements:**
+
 - [ ] Uses forward slashes `/`
 - [ ] No backslashes `\`
 - [ ] No absolute paths
@@ -304,6 +332,7 @@ glob: "**/*.ts"
 - [ ] No platform-specific paths
 
 **Examples:**
+
 ```markdown
 ✅ `docs/api/module.md`
 ✅ `./src/utils.py`
@@ -315,6 +344,7 @@ glob: "**/*.ts"
 ### Script References
 
 **If command includes scripts:**
+
 - [ ] Scripts are Python 3.8+ (recommended)
 - [ ] OR both .sh and .ps1 provided
 - [ ] Scripts tested on all platforms
@@ -327,6 +357,7 @@ glob: "**/*.ts"
 ### Markdown Structure
 
 **Requirements:**
+
 - [ ] One H1 heading
 - [ ] H1 matches command name
 - [ ] Uses H2 for major sections
@@ -335,6 +366,7 @@ glob: "**/*.ts"
 - [ ] No skipped levels (H1 → H3)
 
 **Example:**
+
 ```markdown
 # Command Name (H1)
 
@@ -352,12 +384,14 @@ glob: "**/*.ts"
 ### Required Sections
 
 **Minimum required:**
+
 - [ ] Command title (H1)
 - [ ] Purpose or Context section
 - [ ] Instructions section
 - [ ] Output Format section
 
 **Recommended:**
+
 - [ ] Examples section
 - [ ] Arguments section (if applicable)
 - [ ] Edge Cases section
@@ -386,6 +420,7 @@ glob: "**/*.ts"
 ### Quality Indicators
 
 **High quality command has:**
+
 - Clear, specific description
 - Step-by-step numbered instructions
 - Multiple concrete examples
@@ -396,6 +431,7 @@ glob: "**/*.ts"
 - Validation checkpoints
 
 **Low quality command has:**
+
 - Vague description
 - Ambiguous instructions
 - No examples
@@ -412,6 +448,7 @@ python3 scripts/validate-command.py path/to/command.md
 ```
 
 **Script checks:**
+
 - File naming conventions
 - Frontmatter validity
 - Required sections present
@@ -446,12 +483,14 @@ jobs:
 Print this checklist and check each item:
 
 ### Basic Structure
+
 - [ ] Correct file location for target agent
 - [ ] Correct file extension (.md or .toml)
 - [ ] Valid frontmatter/TOML syntax
 - [ ] All required fields present
 
 ### Content Quality
+
 - [ ] Description is clear and specific
 - [ ] Instructions are numbered and actionable
 - [ ] Output format explicitly specified
@@ -459,18 +498,21 @@ Print this checklist and check each item:
 - [ ] Arguments documented (if applicable)
 
 ### Technical Correctness
+
 - [ ] Correct argument syntax for format
 - [ ] Cross-platform compatible paths
 - [ ] Agent-specific requirements met
 - [ ] No platform-specific commands
 
 ### Completeness
+
 - [ ] All sections present and complete
 - [ ] Examples are realistic and helpful
 - [ ] Edge cases addressed
 - [ ] Error handling guidance provided
 
 ### Polish
+
 - [ ] No spelling or grammar errors
 - [ ] Consistent formatting
 - [ ] Clear, professional language
@@ -483,12 +525,14 @@ Print this checklist and check each item:
 **Symptom:** Parser error when reading frontmatter
 
 **Common causes:**
+
 - Missing closing `---`
 - Unquoted strings with special characters
 - Tabs instead of spaces
 - Wrong indentation
 
 **Solution:**
+
 ```yaml
 ✅ Correct
 ---
@@ -506,11 +550,13 @@ description: Test: with colon
 **Symptom:** Arguments not recognized
 
 **Common causes:**
+
 - Using `{{args}}` in Markdown
 - Using `$ARGUMENTS` in TOML
 - Missing Arguments declaration
 
 **Solution:**
+
 - Markdown → `$ARGUMENTS`
 - TOML → `{{args}}`
 
@@ -519,6 +565,7 @@ description: Test: with colon
 **Symptom:** Command works but incomplete
 
 **Common causes:**
+
 - No output format specified
 - No examples provided
 - Missing instructions section
@@ -530,6 +577,7 @@ description: Test: with colon
 **Symptom:** Command fails on some platforms
 
 **Common causes:**
+
 - Using backslashes `\`
 - Using absolute paths
 - Platform-specific commands

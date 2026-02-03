@@ -52,21 +52,27 @@ description: "Analyzes [SUBJECT] for [CRITERIA_1], [CRITERIA_2], and [CRITERIA_3
 ## Output Format
 
 **Analysis Report:**
-```
-# Analysis Results
+````
+
+\# Analysis Results
 
 ## Summary
+
 [Overall assessment]
 
 ## Findings
+
 ### [Criterion 1]
+
 - Finding: [description]
 - Severity: [High/Medium/Low]
 - Recommendation: [action]
 
 ### [Criterion 2]
+
 ...
-```
+
+````
 
 ## Examples
 
@@ -74,7 +80,9 @@ description: "Analyzes [SUBJECT] for [CRITERIA_1], [CRITERIA_2], and [CRITERIA_3
 
 **Output:**
 ```
+
 [Sample analysis report]
+
 ```
 ```
 
@@ -108,19 +116,23 @@ description: "Analyzes code for security vulnerabilities including SQL injection
 ## Output Format
 
 **Security Analysis Report:**
-```
-# Security Analysis
+````
+
+\# Security Analysis
 
 ## Summary
+
 [X] Critical, [Y] High, [Z] Medium, [W] Low severity issues found
 
 ## Critical Issues
+
 1. SQL Injection in user_login.py:45
    - Risk: Database compromise
    - Recommendation: Use parameterized queries
 
 ...
-```
+
+````
 ```
 
 ---
@@ -178,12 +190,16 @@ description: "Generates [OUTPUT_TYPE] from [INPUT_TYPE] with [FEATURES]. Use whe
 
 **Input:**
 ```
+
 [Sample input]
+
 ```
 
 **Output:**
 ```
+
 [Generated result]
+
 ```
 ```
 
@@ -237,12 +253,10 @@ Create structured documentation:
 
 **Response:** 200 OK
 \```json
-{
-  "id": 123,
-  "name": "John Doe",
+
+
   "email": "john@example.com"
-}
-\```
+
 
 **Errors:**
 - 404: User not found
@@ -293,12 +307,16 @@ description: "Transforms [INPUT_FORMAT] to [OUTPUT_FORMAT] with [FEATURES]. Use 
 
 **Input ([Format]):**
 ```
+
 [Sample input]
+
 ```
 
 **Output ([Format]):**
 ```
+
 [Transformed output]
+
 ```
 ```
 
@@ -352,12 +370,14 @@ id,name,age,active
 ```
 
 **Output (JSON Array):**
+
 ```json
 [
   {"id": 1, "name": "Alice", "age": 30, "active": true},
   {"id": 2, "name": "Bob", "age": 25, "active": false}
 ]
 ```
+
 ```
 
 ---
@@ -538,6 +558,7 @@ description: "Executes [TOOL] for [PURPOSES]. Use when [SCENARIOS], or when user
 ```
 
 ### Advanced Usage
+
 ```bash
 [tool-command] [advanced-args]
 ```
@@ -545,7 +566,9 @@ description: "Executes [TOOL] for [PURPOSES]. Use when [SCENARIOS], or when user
 ## Common Tasks
 
 ### Task 1: [Task Name]
+
 **Command:**
+
 ```bash
 [specific-command]
 ```
@@ -553,12 +576,14 @@ description: "Executes [TOOL] for [PURPOSES]. Use when [SCENARIOS], or when user
 **Explanation:** [What it does]
 
 ### Task 2: [Task Name]
+
 [Similar structure]
 
 ## Troubleshooting
 
 **Issue:** [Common problem]
 **Solution:** [How to fix]
+
 ```
 
 ### Real Example: Git Workflow Tool
@@ -586,7 +611,9 @@ git checkout -b feature/new-feature
 **Explanation:** Creates and switches to new feature branch
 
 ### Task 2: Commit Changes
+
 **Command:**
+
 ```bash
 git add .
 git commit -m "feat: add new feature"
@@ -595,7 +622,9 @@ git commit -m "feat: add new feature"
 **Explanation:** Stages and commits changes with conventional commit message
 
 ### Task 3: Update from Main
+
 **Command:**
+
 ```bash
 git checkout main
 git pull origin main
@@ -606,12 +635,15 @@ git merge main
 **Explanation:** Keeps feature branch up to date with main
 
 ### Task 4: Push Branch
+
 **Command:**
+
 ```bash
 git push -u origin feature/new-feature
 ```
 
 **Explanation:** Pushes branch to remote and sets up tracking
+
 ```
 
 ---
@@ -650,9 +682,11 @@ description: "Integrates with [SERVICE] for [PURPOSES]. Use when [SCENARIOS], or
 ## Operations
 
 ### Operation 1: [Operation Name]
+
 **Purpose:** [What it does]
 
 **Request:**
+
 ```http
 GET /api/endpoint HTTP/1.1
 Host: api.service.com
@@ -660,6 +694,7 @@ Authorization: Bearer $API_KEY
 ```
 
 **Response:**
+
 ```json
 {
   "data": "..."
@@ -667,6 +702,7 @@ Authorization: Bearer $API_KEY
 ```
 
 ### Operation 2: [Operation Name]
+
 [Similar structure]
 
 ## Error Handling
@@ -674,6 +710,7 @@ Authorization: Bearer $API_KEY
 **Error Code:** 401
 **Meaning:** Unauthorized
 **Action:** Check API key validity
+
 ```
 
 ### Real Example: GitHub Integration
@@ -701,23 +738,28 @@ gh auth login
 ## Operations
 
 ### Operation 1: List Pull Requests
+
 **Purpose:** Retrieve open PRs for repository
 
 **Command:**
+
 ```bash
 gh pr list --repo owner/repo --state open
 ```
 
 **Output:**
+
 ```
 #123  Fix bug in authentication  feature/auth-fix  author
 #124  Add new API endpoint       feature/api       author
 ```
 
 ### Operation 2: Create Issue
+
 **Purpose:** Create new issue in repository
 
 **Command:**
+
 ```bash
 gh issue create \
   --repo owner/repo \
@@ -726,9 +768,11 @@ gh issue create \
 ```
 
 ### Operation 3: Merge Pull Request
+
 **Purpose:** Merge approved PR
 
 **Command:**
+
 ```bash
 gh pr merge 123 --merge --delete-branch
 ```
@@ -740,6 +784,7 @@ gh pr merge 123 --merge --delete-branch
 
 **Error:** "resource not found"
 **Action:** Verify repository name and access permissions
+
 ```
 
 ---

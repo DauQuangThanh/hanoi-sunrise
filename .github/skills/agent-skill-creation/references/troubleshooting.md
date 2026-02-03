@@ -7,6 +7,7 @@
 #### Invalid Name Format
 
 **Symptom:**
+
 ```
 ❌ Invalid name format: 'My_Skill' (must be lowercase letters, numbers, and hyphens only)
 ```
@@ -14,6 +15,7 @@
 **Cause:** Name contains invalid characters (uppercase, underscores, spaces)
 
 **Solution:**
+
 ```python
 # Convert to valid format
 invalid_name = "My_Skill"
@@ -22,6 +24,7 @@ valid_name = invalid_name.lower().replace('_', '-').replace(' ', '-')
 ```
 
 **Rules:**
+
 - Only lowercase letters (a-z)
 - Only numbers (0-9)
 - Only hyphens (-)
@@ -32,6 +35,7 @@ valid_name = invalid_name.lower().replace('_', '-').replace(' ', '-')
 #### Name-Directory Mismatch
 
 **Symptom:**
+
 ```
 ❌ Name 'pdf-processor' doesn't match directory 'pdf-processing'
 ```
@@ -39,6 +43,7 @@ valid_name = invalid_name.lower().replace('_', '-').replace(' ', '-')
 **Cause:** The `name` field in frontmatter doesn't match the parent directory name
 
 **Solution:**
+
 1. Rename directory to match name field, OR
 2. Update name field to match directory name
 
@@ -54,6 +59,7 @@ mv pdf-processing pdf-processor
 #### Missing Frontmatter
 
 **Symptom:**
+
 ```
 ❌ Missing frontmatter (should start with ---)
 ```
@@ -78,11 +84,13 @@ description: "Skill description here."
 #### Description Too Vague
 
 **Symptom:**
+
 ```
 ⚠️  Description contains vague term: 'helps with'
 ```
 
 **Poor examples:**
+
 - "Helps with documents"
 - "Tool for processing"
 - "Does PDF stuff"
@@ -99,6 +107,7 @@ description: "Extracts text and tables from PDF files, fills forms, and merges m
 ```
 
 **Formula:**
+
 ```
 [SPECIFIC ACTIONS] + [USE CASES] + [KEYWORDS]
 ```
@@ -106,6 +115,7 @@ description: "Extracts text and tables from PDF files, fills forms, and merges m
 #### Missing Discovery Hints
 
 **Symptom:**
+
 ```
 ⚠️  Description missing 'Use when...' clause
 ⚠️  Description missing keyword matching hints
@@ -119,6 +129,7 @@ description: "[Actions]. Use when [scenario 1], [scenario 2], or when user menti
 ```
 
 **Example:**
+
 ```yaml
 description: "Analyzes code for security vulnerabilities including SQL injection and XSS. Use when reviewing code security, conducting audits, or when user mentions security, vulnerabilities, or code review."
 ```
@@ -128,6 +139,7 @@ description: "Analyzes code for security vulnerabilities including SQL injection
 #### SKILL.md Too Long
 
 **Symptom:**
+
 ```
 ⚠️  SKILL.md has 850 lines (recommended: <500)
 ```
@@ -138,6 +150,7 @@ description: "Analyzes code for security vulnerabilities including SQL injection
 Move detailed content to references/:
 
 **Before (850 lines in SKILL.md):**
+
 ```markdown
 ---
 name: pdf-processing
@@ -162,6 +175,7 @@ name: pdf-processing
 ```
 
 **After (main SKILL.md ~400 lines):**
+
 ```markdown
 ---
 name: pdf-processing
@@ -188,6 +202,7 @@ See [references/advanced.md](references/advanced.md) for:
 ```
 
 **Create reference files:**
+
 - `references/examples.md` - Detailed examples
 - `references/api-reference.md` - Complete API documentation
 - `references/troubleshooting.md` - Extended troubleshooting
@@ -196,6 +211,7 @@ See [references/advanced.md](references/advanced.md) for:
 #### Missing Required File
 
 **Symptom:**
+
 ```
 ❌ SKILL.md not found
 ```
@@ -203,6 +219,7 @@ See [references/advanced.md](references/advanced.md) for:
 **Cause:** SKILL.md doesn't exist in skill directory
 
 **Solution:**
+
 1. Create SKILL.md in the skill root directory
 2. Add proper frontmatter and content
 
@@ -217,6 +234,7 @@ touch SKILL.md
 #### Non-Cross-Platform Script
 
 **Symptom:**
+
 - Script works on macOS/Linux but fails on Windows
 - Uses bash-specific features
 - Hardcoded path separators
@@ -225,6 +243,7 @@ touch SKILL.md
 Use Python 3.8+ for cross-platform compatibility:
 
 **BAD (bash script):**
+
 ```bash
 #!/bin/bash
 # Only works on Unix-like systems
@@ -236,6 +255,7 @@ done
 ```
 
 **GOOD (Python script):**
+
 ```python
 #!/usr/bin/env python3
 """Cross-platform file processor."""
@@ -255,6 +275,7 @@ if __name__ == "__main__":
 ```
 
 **Key differences:**
+
 - `pathlib.Path` handles separators automatically
 - Works on Windows, macOS, and Linux
 - No shell-specific commands
@@ -262,6 +283,7 @@ if __name__ == "__main__":
 #### Missing Script Dependencies
 
 **Symptom:**
+
 ```
 ModuleNotFoundError: No module named 'pandas'
 ```
@@ -269,11 +291,13 @@ ModuleNotFoundError: No module named 'pandas'
 **Cause:** Script uses external library not documented
 
 **Solution:**
+
 1. Document dependencies in script docstring
 2. Add requirements.txt (optional)
 3. Include installation instructions
 
 **Script docstring:**
+
 ```python
 #!/usr/bin/env python3
 """
@@ -290,6 +314,7 @@ Install:
 ```
 
 **SKILL.md instructions:**
+
 ```markdown
 ## Prerequisites
 
@@ -297,6 +322,7 @@ Install required Python packages:
 ```bash
 pip install pandas numpy
 ```
+
 ```
 
 ### Issue 5: Validation Tool Issues
@@ -305,7 +331,9 @@ pip install pandas numpy
 
 **Symptom:**
 ```
+
 bash: skills-ref: command not found
+
 ```
 
 **Solution:**
@@ -322,11 +350,13 @@ Check the validation checklist in [references/validation-checklist.md](validatio
 #### PyYAML Not Installed
 
 **Symptom:**
+
 ```
 Error: PyYAML is required
 ```
 
 **Solution:**
+
 ```bash
 pip install pyyaml
 ```
@@ -336,6 +366,7 @@ pip install pyyaml
 #### Invalid YAML Syntax
 
 **Symptom:**
+
 ```
 ❌ Invalid YAML in frontmatter: ...
 ```
@@ -343,6 +374,7 @@ pip install pyyaml
 **Common causes:**
 
 1. **Unquoted special characters:**
+
 ```yaml
 # BAD
 description: Use when: working with files
@@ -351,7 +383,8 @@ description: Use when: working with files
 description: "Use when: working with files"
 ```
 
-2. **Incorrect indentation:**
+1. **Incorrect indentation:**
+
 ```yaml
 # BAD
 metadata:
@@ -364,7 +397,8 @@ metadata:
   version: "1.0"
 ```
 
-3. **Missing closing quotes:**
+1. **Missing closing quotes:**
+
 ```yaml
 # BAD
 description: "Processing files
@@ -373,7 +407,8 @@ description: "Processing files
 description: "Processing files"
 ```
 
-4. **Unescaped colons:**
+1. **Unescaped colons:**
+
 ```yaml
 # BAD
 description: Handles files: all types
@@ -383,15 +418,17 @@ description: "Handles files: all types"
 ```
 
 **Solution:**
+
 - Always quote strings with colons, newlines, or special characters
 - Use consistent indentation (2 spaces recommended)
-- Validate YAML online: https://www.yamllint.com/
+- Validate using the skill's validation script: `python3 scripts/validate-skill.py ./skill-name`
 
 ### Issue 7: Content Quality Issues
 
 #### No Examples Provided
 
 **Symptom:**
+
 ```
 ⚠️  No examples section found
 ```
@@ -414,6 +451,7 @@ python3 scripts/extract.py invoice.pdf
 ```
 
 **Output:**
+
 ```json
 {
   "invoice_number": "INV-2024-001",
@@ -427,24 +465,29 @@ python3 scripts/extract.py invoice.pdf
 **Input:** `documents/*.pdf`
 
 **Command:**
+
 ```bash
 python3 scripts/extract.py documents/*.pdf --output results/
 ```
 
 **Output:**
+
 ```
 Processed 5 files:
 - invoice.pdf → results/invoice.json
 - report.pdf → results/report.json
 ...
 ```
+
 ```
 
 #### Missing Error Handling Documentation
 
 **Symptom:**
 ```
+
 ⚠️  No error handling section
+
 ```
 
 **Solution:**
@@ -472,6 +515,7 @@ Document common errors and solutions:
 chmod +r input.pdf
 chmod +w output-directory/
 ```
+
 ```
 
 ## Quick Reference
@@ -516,9 +560,9 @@ chmod +x my-skill/scripts/*.py
 
 ### Getting Help
 
-1. **Check specification:** `/rules/agent-skills-creation-rules.md`
-2. **Review examples:** `https://github.com/anthropics/skills`
-3. **Validate:** Use `scripts/validate.py`
+1. **Check specification:** Review this skill's SKILL.md and references/
+2. **Review examples:** See [assets/examples/](assets/examples/) for complete working examples
+3. **Validate:** Use `scripts/validate-skill.py`
 4. **Test:** Load in target agent platform
 
 ## Platform-Specific Issues
@@ -563,6 +607,7 @@ path = "folder\\file.txt"
 **Symptom:** `Permission denied` when running scripts
 
 **Solution:**
+
 ```bash
 chmod +x scripts/*.py
 ```
@@ -574,6 +619,7 @@ chmod +x scripts/*.py
 **Symptom:** `command not found` or `module not found`
 
 **Solution:**
+
 ```bash
 # Install Python
 sudo apt-get install python3 python3-pip

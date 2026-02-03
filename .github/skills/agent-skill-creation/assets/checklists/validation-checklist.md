@@ -3,18 +3,21 @@
 ## Quick Validation Commands
 
 ### Name Format Validation
+
 ```bash
 # Check if name matches pattern: lowercase, hyphens, numbers only
 echo "skill-name" | grep -E '^[a-z0-9]+(-[a-z0-9]+)*$' && echo "✅ Valid" || echo "❌ Invalid"
 ```
 
 ### Line Count Check
+
 ```bash
 # Count lines in SKILL.md (should be < 500)
 wc -l SKILL.md
 ```
 
 ### External References Check
+
 ```bash
 # Check for /rules/ references (should have none)
 grep -n "/rules/" SKILL.md
@@ -24,6 +27,7 @@ grep -n "https://" SKILL.md
 ```
 
 ### YAML Frontmatter Validation
+
 ```bash
 # Extract and validate frontmatter
 python3 -c "
@@ -49,6 +53,7 @@ else:
 ## Complete Validation Checklist
 
 ### Structure Validation
+
 - [ ] SKILL.md file exists
 - [ ] SKILL.md starts with `---` (YAML frontmatter)
 - [ ] SKILL.md frontmatter ends with `---`
@@ -61,6 +66,7 @@ else:
 - [ ] Skill is self-contained (all resources within directory)
 
 ### Required Frontmatter Fields
+
 - [ ] `name` field present
 - [ ] `name` matches pattern: `^[a-z0-9]+(-[a-z0-9]+)*$`
 - [ ] `name` length is 1-64 characters
@@ -69,12 +75,14 @@ else:
 - [ ] `description` is specific (not vague)
 
 ### Recommended Frontmatter Fields
+
 - [ ] `license` field present (MIT recommended)
 - [ ] `metadata.author` present
 - [ ] `metadata.version` present (e.g., "1.0")
 - [ ] `metadata.last_updated` present (YYYY-MM-DD format)
 
 ### Description Quality
+
 - [ ] Includes 2-4 specific action verbs
 - [ ] Includes "Use when..." with 2-3 scenarios
 - [ ] Includes "when user mentions..." with 3-5 keywords
@@ -83,6 +91,7 @@ else:
 - [ ] Specific enough to differentiate from similar skills
 
 ### Content Sections (Required in SKILL.md)
+
 - [ ] `# Skill Name` (H1 title)
 - [ ] `## Overview` section (2-3 sentences)
 - [ ] `## When to Use` section (3-5 bullet points)
@@ -93,12 +102,14 @@ else:
 - [ ] `## Error Handling` section (common errors)
 
 ### Optional Content Sections
+
 - [ ] `## Scripts` (if scripts/ directory exists)
 - [ ] `## References` (if references/ directory exists)
 - [ ] `## Validation` section
 - [ ] Footer with version, author, license
 
 ### Examples Quality
+
 - [ ] At least 2 complete examples
 - [ ] Each example shows input
 - [ ] Each example shows output
@@ -106,6 +117,7 @@ else:
 - [ ] Examples are concrete (not abstract)
 
 ### Instructions Quality
+
 - [ ] Steps are numbered
 - [ ] Each step has clear action verb
 - [ ] Code examples included where relevant
@@ -113,6 +125,7 @@ else:
 - [ ] Platform differences documented (if any)
 
 ### Scripts Directory (if present)
+
 - [ ] Scripts use Python 3.8+ (cross-platform)
 - [ ] Scripts have shebang: `#!/usr/bin/env python3`
 - [ ] Scripts have docstrings with usage
@@ -122,23 +135,27 @@ else:
 - [ ] Scripts tested on Windows, macOS, Linux
 
 ### References Directory (if present)
+
 - [ ] Referenced from SKILL.md
 - [ ] One topic per file
 - [ ] Clear structure with headings
 - [ ] Files use `.md` extension
 
 ### Templates Directory (if present)
+
 - [ ] Contains reusable templates
 - [ ] Templates are well-documented
 - [ ] Templates follow same standards as main skill
 
 ### Assets Directory (if present)
+
 - [ ] Contains static resources
 - [ ] Referenced from SKILL.md or references/
 - [ ] Examples are complete and working
 - [ ] Checklists are comprehensive
 
 ### Cross-Platform Compatibility
+
 - [ ] No platform-specific paths (use `pathlib.Path`)
 - [ ] No platform-specific commands (or provide alternatives)
 - [ ] File references use forward slashes
@@ -148,6 +165,7 @@ else:
 - [ ] Scripts tested on Linux
 
 ### Final Checks
+
 - [ ] SKILL.md renders correctly in Markdown viewer
 - [ ] All internal links resolve correctly
 - [ ] No broken references

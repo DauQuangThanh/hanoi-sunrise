@@ -4,8 +4,8 @@ description: Generates and updates agent skills following the Agent Skills speci
 license: MIT
 metadata:
   author: Dau Quang Thanh
-  version: "2.0"
-  last_updated: "2026-02-01"
+  version: "2.1"
+  last_updated: "2026-02-03"
 ---
 
 # Agent Skill Creation
@@ -15,6 +15,7 @@ metadata:
 This self-contained skill helps AI agents create and update agent skills that conform to the Agent Skills specification. It provides everything needed: instructions, templates, examples, validation rules, and scripts—all within this skill directory.
 
 **Key Concept: Progressive Disclosure**
+
 - **Tier 1** (Always loaded): Metadata (name + description) for discovery  
 - **Tier 2** (On activation): This SKILL.md with instructions (<500 lines)
 - **Tier 3** (On demand): references/, templates/, scripts/, assets/
@@ -48,27 +49,32 @@ This self-contained skill helps AI agents create and update agent skills that co
 ### Quick Start: 5-Step Process
 
 **Step 1: Gather Requirements**
+
 1. What task or problem does it solve?
 2. What specific actions can it perform?
 3. When should agents activate this skill?
 4. What keywords might users mention?
 
 **Step 2: Choose Name & Write Description**
+
 - Name: lowercase, hyphens only, 1-64 chars, matches directory
 - Description formula: `[Actions]. Use when [scenarios] or when user mentions [keywords].`
 - Length: 150-300 chars optimal (max 1024)
 
 **Step 3: Generate Skill Structure (Automated)**
+
 ```bash
 python3 scripts/generate-skill.py skill-name
 ```
 
 **Step 4: Write SKILL.md**
+
 - Generated automatically by script, but needs customization
 - Include: Overview, When to Use, Prerequisites, Instructions, Examples, Edge Cases, Error Handling
 - Keep under 500 lines
 
 **Step 5: Validate**
+
 ```bash
 python3 scripts/validate-skill.py ./skill-name
 ```
@@ -86,6 +92,7 @@ python3 scripts/validate-skill.py ./skill-name
 5. **Dependencies**: Required tools, packages, or environment?
 
 **Ask clarifying questions if needed:**
+
 - "What specific capabilities should this skill have?"
 - "Are there existing examples or documentation to reference?"
 - "What platforms should scripts support?"
@@ -100,6 +107,7 @@ python3 scripts/validate-skill.py ./skill-name
 🔗 **Must match**: Directory name
 
 **Examples:**
+
 - ✅ `pdf-processing`, `code-review`, `api-documentation`
 - ❌ `PDF-Processing` (uppercase), `pdf_processing` (underscore), `pdf processing` (space), `-pdf` (leading hyphen)
 
@@ -108,27 +116,31 @@ python3 scripts/validate-skill.py ./skill-name
 **Use the 3-part formula:**
 
 ```
-[What it does] + [When to use] + [Keywords for matching]
+[Active Verbs] + [Use when Scenarios] + [User Mentions/Keywords]
 ```
 
 **Template:**
+
 ```yaml
-description: "[ACTION 1], [ACTION 2], and [ACTION 3]. Use when [SCENARIO 1], [SCENARIO 2], or when user mentions [KEYWORD 1], [KEYWORD 2], or [KEYWORD 3]."
+description: "[Action 1] and [Action 2]. Use when [Scenario 1] or [Scenario 2], or when user mentions [Keyword 1] or [Keyword 2]."
 ```
 
 **Requirements:**
+
 - Length: 150-300 characters optimal (max 1024)
 - Include 2-4 specific actions (active verbs)
 - Include 2-3 use cases starting with "Use when..."
-- Include 3-5 keywords users might mention
+- **Critical:** Include keywords clause ("or when user mentions...") for discovery
 - Be specific, not vague
 
 **Example:**
+
 ```yaml
 description: "Extracts text and tables from PDF files, fills PDF forms, and merges multiple PDFs. Use when working with PDF documents, extracting form data, or when user mentions PDFs, forms, or document extraction."
 ```
 
 **Bad Example:**
+
 ```yaml
 description: "Helps with PDFs."  # Too vague, missing use cases and keywords
 ```
@@ -136,20 +148,24 @@ description: "Helps with PDFs."  # Too vague, missing use cases and keywords
 ### Step 4: Generate Skill Structure
 
 **Use the generator script (Recommended):**
+
 ```bash
 python3 scripts/generate-skill.py skill-name
 ```
+
 This will create the directory, `SKILL.md` with frontmatter, and a sample script.
 
 **Manual creation (Fallback):**
 
 **Minimal structure (always required):**
+
 ```
 skill-name/
 └── SKILL.md
 ```
 
 **Full structure (when needed):**
+
 ```
 skill-name/
 ├── SKILL.md                     # Core skill definition (<500 lines)
@@ -169,6 +185,7 @@ skill-name/
 ```
 
 **When to add optional directories:**
+
 - `scripts/`: If skill needs automated processing or validation
 - `references/`: If SKILL.md would exceed 500 lines
 - `templates/`: If skill provides reusable templates
@@ -177,6 +194,7 @@ skill-name/
 ### Step 5: Write SKILL.md
 
 **Required YAML frontmatter:**
+
 ```yaml
 ---
 name: skill-name                    # Required: matches directory, lowercase, hyphens only
@@ -201,11 +219,13 @@ metadata:                            # Optional
 8. **## Error Handling** - Common errors and solutions
 
 **Optional sections:**
+
 - **## Scripts** - Usage of automation scripts (if using scripts/)
 - **## References** - Links to detailed documentation (if using references/)
 - **## Validation** - How to validate usage
 
 **Key requirements:**
+
 - Keep under 500 lines total
 - Use clear, imperative language
 - Provide concrete examples
@@ -255,6 +275,7 @@ if __name__ == "__main__":
 ```
 
 **Key requirements:**
+
 - Use `pathlib` for cross-platform paths (not hardcoded `/` or `\`)
 - Clear error messages with proper exit codes
 - Usage documentation in docstring
@@ -263,12 +284,14 @@ if __name__ == "__main__":
 ### Step 7: Create References (If Needed)
 
 **When to use references/:**
+
 - SKILL.md exceeds 400 lines
 - Detailed technical documentation needed
 - Multiple complex topics to cover
 - Large examples or data
 
 **Keep references focused:**
+
 - One topic per file
 - Clear headings
 - Concrete examples
@@ -277,6 +300,7 @@ if __name__ == "__main__":
 ### Step 8: Validate
 
 **Manual validation checklist:**
+
 - [ ] Name follows rules (lowercase, hyphens only, 1-64 chars)
 - [ ] Name matches directory name exactly
 - [ ] Description includes actions, use cases, keywords (150-300 chars optimal)
@@ -292,11 +316,13 @@ if __name__ == "__main__":
 - [ ] No external references (no /rules/, no https:// external links)
 
 **Automated validation:**
+
 ```bash
 python3 scripts/validate-skill.py ./skill-name
 ```
 
 **Quick validation commands:**
+
 ```bash
 # Count lines
 wc -l skill-name/SKILL.md
@@ -314,6 +340,7 @@ grep -n "/rules/" skill-name/SKILL.md
 ### Example 1: Minimal Skill - Code Review
 
 **Directory structure:**
+
 ```
 code-review/
 └── SKILL.md (with frontmatter, instructions, examples)
@@ -324,6 +351,7 @@ code-review/
 ### Example 2: Skill with Scripts - CSV Processing
 
 **Directory structure:**
+
 ```
 csv-processing/
 ├── SKILL.md
@@ -335,6 +363,7 @@ csv-processing/
 ### Example 3: Complex Skill - This Skill
 
 **Directory structure:**
+
 ```
 agent-skill-creation/
 ├── SKILL.md (<500 lines)
@@ -349,15 +378,19 @@ See [assets/examples/](assets/examples/) for complete working examples and [refe
 ## Edge Cases
 
 ### Case 1: Large Documentation (2000+ lines)
+
 **Handling**: Extract core instructions for SKILL.md (<500), move details to references/, link from main file
 
 ### Case 2: Platform-Specific Requirements
+
 **Handling**: Use Python with `platform.system()` detection, document in Prerequisites, test all platforms
 
 ### Case 3: Complex Dependencies
+
 **Handling**: List in Prerequisites with versions, provide install commands, create validation script
 
 ### Case 4: No Clear Keywords
+
 **Handling**: Include synonyms, problem symptoms, technical and non-technical terms in description
 
 For detailed edge case handling, see [references/troubleshooting.md](references/troubleshooting.md)
@@ -365,21 +398,27 @@ For detailed edge case handling, see [references/troubleshooting.md](references/
 ## Error Handling
 
 ### Invalid Skill Name
+
 **Solution**: Convert to lowercase, replace spaces/underscores with hyphens, validate with `grep -E '^[a-z0-9]+(-[a-z0-9]+)*$'`
 
 ### Description Too Vague
+
 **Solution**: Add 2-4 action verbs, "Use when..." scenarios, 3-5 keywords, aim for 150-300 chars
 
 ### SKILL.md Too Long (>500 lines)
+
 **Solution**: Move detailed content to references/, keep essential instructions in main file
 
 ### Missing Required Fields
+
 **Solution**: Add name and description to frontmatter, validate YAML syntax (spaces, not tabs)
 
 ### Script Not Cross-Platform
+
 **Solution**: Use Python 3.8+, use `pathlib.Path` for paths, test on Windows/macOS/Linux
 
 ### External References
+
 **Solution**: Copy content into skill directory (references/ or assets/), use relative paths
 
 For comprehensive error handling, see [references/troubleshooting.md](references/troubleshooting.md)
@@ -389,12 +428,14 @@ For comprehensive error handling, see [references/troubleshooting.md](references
 **Before finalizing, verify:**
 
 **Structure:**
+
 - [ ] Name matches directory (lowercase, hyphens only, 1-64 chars)
 - [ ] Valid YAML frontmatter with required fields (name, description)
 - [ ] SKILL.md under 500 lines
 - [ ] Self-contained (no dependencies on external files outside skill directory)
 
 **Content:**
+
 - [ ] Description is comprehensive (actions + use cases + keywords, 150-300 chars)
 - [ ] Clear instructions with step-by-step guidance
 - [ ] At least 2 examples with input/output
@@ -402,6 +443,7 @@ For comprehensive error handling, see [references/troubleshooting.md](references
 - [ ] Error handling included with solutions
 
 **Scripts (if present):**
+
 - [ ] Python 3.8+ for cross-platform support
 - [ ] Usage documentation in docstring
 - [ ] Error messages are clear
@@ -409,6 +451,7 @@ For comprehensive error handling, see [references/troubleshooting.md](references
 - [ ] Uses `pathlib` for paths
 
 **References (if present):**
+
 - [ ] Referenced from SKILL.md
 - [ ] One topic per file
 - [ ] Clear structure with headings
@@ -438,10 +481,3 @@ This skill includes comprehensive self-contained resources:
 6. **Stay self-contained**: No external dependencies outside skill directory
 7. **Use templates**: Start with templates/skill-template.md
 8. **Validate often**: Run validation after each major change
-
----
-
-**Version**: 2.0  
-**Last Updated**: 2026-02-01  
-**Author**: Dau Quang Thanh  
-**License**: MIT

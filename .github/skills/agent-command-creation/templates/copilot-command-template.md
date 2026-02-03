@@ -6,6 +6,7 @@ mode: project.command-name
 # Command Name
 
 ## Purpose
+
 Explain when and why to use this command specifically for GitHub Copilot users.
 
 ## Instructions

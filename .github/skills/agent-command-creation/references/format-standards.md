@@ -26,6 +26,7 @@ replacement: "/new-command"  # Optional: suggest replacement
 ### Required Frontmatter Fields
 
 **description:**
+
 - Type: String
 - Length: 10-80 characters (recommended)
 - Maximum: 1024 characters
@@ -36,16 +37,19 @@ replacement: "/new-command"  # Optional: suggest replacement
 ### Optional Frontmatter Fields
 
 **mode (GitHub Copilot only):**
+
 - Format: `project-name.command-name`
 - Both parts lowercase
 - Use hyphens for multi-word
 - Example: `vinh.specify`, `myapp.analyze-code`
 
 **glob (Cursor only):**
+
 - Glob pattern for file matching
 - Examples: `**/*.ts`, `src/**/*.py`, `*.md`
 
 **category (Google Antigravity only):**
+
 - Values: `rules` or `skills`
 - Rules = constraints/guidelines
 - Skills = capabilities/actions
@@ -90,11 +94,13 @@ Arguments: $ARGUMENTS
 ### Argument Syntax
 
 **Standard Markdown commands:**
+
 ```markdown
 Arguments: $ARGUMENTS
 ```
 
 **Usage in instructions:**
+
 ```markdown
 1. Analyze the requirements: $ARGUMENTS
 2. Create specification based on $ARGUMENTS
@@ -152,6 +158,7 @@ Create files in `docs/api/` with structure:
 ```language
 // Code example
 ```
+
 ```
 
 ## Examples
@@ -211,6 +218,7 @@ version = "1.0"
 ### Required Fields
 
 **description:**
+
 - Type: String
 - Single line only
 - Length: 10-80 characters (recommended)
@@ -218,6 +226,7 @@ version = "1.0"
 - Example: `description = "Analyze code quality"`
 
 **prompt:**
+
 - Type: Multi-line string
 - Use triple quotes: `"""`
 - Contains full command instructions
@@ -227,6 +236,7 @@ version = "1.0"
 ### Argument Syntax
 
 **TOML commands:**
+
 ```toml
 prompt = """
 Arguments: {{args}}
@@ -234,6 +244,7 @@ Arguments: {{args}}
 ```
 
 **Usage in instructions:**
+
 ```toml
 prompt = """
 1. Analyze the file: {{args}}
@@ -302,17 +313,21 @@ Create `reports/security-analysis.md`:
 ## Examples
 
 ### Example 1: Full Codebase Scan
+
 Input: `analyze ./src`
 Output: Comprehensive security report
 
 ### Example 2: Targeted Analysis
+
 Input: `analyze ./src/auth --focus=authentication`
 Output: Authentication-specific findings
 
 ## Arguments
+
 {{args}} - Directory or file path to analyze
 
 Optional flags:
+
 - --focus=area - Focus on specific security area
 - --detailed - Include detailed explanation
 """
@@ -321,11 +336,13 @@ Optional flags:
 author = "Security Team"
 version = "1.0"
 category = "security"
+
 ```
 
 ## Format Selection Decision Tree
 
 ```
+
 Is target agent Gemini CLI or Qwen Code?
 ├─ YES → Use TOML format (.toml)
 │         • Use {{args}} for arguments
@@ -345,6 +362,7 @@ Is target agent Gemini CLI or Qwen Code?
           │
           └─ Is it Google Antigravity?
              └─ YES → Add category: field
+
 ```
 
 ## Validation Rules
@@ -397,6 +415,7 @@ description: "Test"
 ```
 
 **TOML errors:**
+
 ```toml
 ❌ Single quotes in prompt (use double quotes)
 prompt = '''
@@ -412,6 +431,7 @@ Content here
 ```
 
 **Argument errors:**
+
 ```markdown
 ❌ Wrong syntax for Markdown
 Arguments: {{args}}
@@ -427,12 +447,14 @@ Arguments: $ARGUMENTS
 ### File Paths in Commands
 
 **Always use forward slashes:**
+
 ```markdown
 ✅ Create file `docs/api/module.md`
 ❌ Create file `docs\api\module.md`
 ```
 
 **Use relative paths from project root:**
+
 ```markdown
 ✅ `./src/utils.py`
 ✅ `specs/feature.md`

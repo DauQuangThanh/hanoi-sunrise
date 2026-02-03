@@ -9,6 +9,7 @@ Advanced techniques for writing effective agent command instructions.
 Encourage step-by-step reasoning to improve accuracy and transparency.
 
 **Pattern:**
+
 ```markdown
 ## Instructions
 
@@ -24,6 +25,7 @@ Explain your reasoning as you work through each step.
 ```
 
 **Example:**
+
 ```markdown
 ## Code Review Process
 
@@ -43,6 +45,7 @@ Think out loud as you work through each step.
 Assign specific expertise to improve response quality.
 
 **Pattern:**
+
 ```markdown
 You are a [specific role] with [X years] of experience in [domain].
 
@@ -58,6 +61,7 @@ When [performing task]:
 ```
 
 **Example:**
+
 ```markdown
 You are a senior security engineer with 15 years of experience in application security.
 
@@ -79,6 +83,7 @@ When reviewing code:
 Provide concrete examples to demonstrate expected format.
 
 **Pattern:**
+
 ```markdown
 ## Instructions
 
@@ -98,6 +103,7 @@ Now apply this pattern to: $ARGUMENTS
 ```
 
 **Example:**
+
 ```markdown
 ## API Endpoint Design
 
@@ -105,18 +111,22 @@ Design RESTful API endpoints following these examples:
 
 ### Example 1: User Resource
 ```
+
 GET    /api/v1/users           - List all users
 GET    /api/v1/users/:id       - Get specific user
 POST   /api/v1/users           - Create new user
 PUT    /api/v1/users/:id       - Update user
 DELETE /api/v1/users/:id       - Delete user
+
 ```
 
 ### Example 2: Nested Resource
 ```
+
 GET    /api/v1/users/:id/posts       - List user's posts
 POST   /api/v1/users/:id/posts       - Create post for user
 DELETE /api/v1/users/:id/posts/:pid  - Delete user's post
+
 ```
 
 Now design endpoints for: $ARGUMENTS
@@ -127,6 +137,7 @@ Now design endpoints for: $ARGUMENTS
 Define explicit constraints to guide behavior.
 
 **Pattern:**
+
 ```markdown
 ## Constraints
 
@@ -146,6 +157,7 @@ All solutions must satisfy these constraints.
 ```
 
 **Example:**
+
 ```markdown
 ## Database Schema Design
 
@@ -175,6 +187,7 @@ Design a database schema with these constraints:
 Always specify exact output format with examples.
 
 **Pattern:**
+
 ```markdown
 ## Output Format
 
@@ -185,9 +198,11 @@ Create a [file type] named `[path/filename]` with this structure:
 ```
 
 Include:
+
 - [Required element 1]
 - [Required element 2]
 - [Required element 3]
+
 ```
 
 **Example:**
@@ -231,11 +246,13 @@ Create a JSON file named `schema/database.json` with this structure:
 ```
 
 Include:
+
 - All tables with descriptions
 - Complete column definitions
 - All indexes and constraints
 - Foreign key relationships
 - Comments explaining design decisions
+
 ```
 
 ## Advanced Patterns
@@ -265,6 +282,7 @@ Break complex tasks into phases with validation.
 ```
 
 **Example:**
+
 ```markdown
 ## Feature Implementation Process
 
@@ -298,6 +316,7 @@ Break complex tasks into phases with validation.
 Guide agents to use project-specific context.
 
 **Pattern:**
+
 ```markdown
 ## Context Integration
 
@@ -321,6 +340,7 @@ Before proceeding:
 ```
 
 **Example:**
+
 ```markdown
 ## API Implementation
 
@@ -349,6 +369,7 @@ Before creating new API endpoints:
 Proactively address common issues.
 
 **Pattern:**
+
 ```markdown
 ## Error Handling
 
@@ -373,6 +394,7 @@ Before considering complete:
 ```
 
 **Example:**
+
 ```markdown
 ## Database Migration Creation
 
@@ -408,6 +430,7 @@ Before considering migration complete:
 Combine different output types for clarity.
 
 **Pattern:**
+
 ```markdown
 ## Output Format
 
@@ -421,15 +444,18 @@ Provide multiple representations:
    [ASCII art or diagram code]
    ```
 
-3. **Structured Data**
+1. **Structured Data**
+
    ```[format]
    [Machine-readable representation]
    ```
 
-4. **Code Examples**
+2. **Code Examples**
+
    ```[language]
    [Working code samples]
    ```
+
 ```
 
 **Example:**
@@ -450,7 +476,8 @@ Provide comprehensive architecture documentation:
        C --> E[Cache]
    ```
 
-3. **Component Structure (YAML)**
+1. **Component Structure (YAML)**
+
    ```yaml
    components:
      - name: API Gateway
@@ -459,12 +486,14 @@ Provide comprehensive architecture documentation:
        technologies: [Express, JWT]
    ```
 
-4. **Usage Examples (Code)**
+2. **Usage Examples (Code)**
+
    ```javascript
    // Example API call
    const response = await fetch('/api/v1/users');
    const users = await response.json();
    ```
+
 ```
 
 ### 10. Conditional Logic
@@ -486,6 +515,7 @@ Provide different paths based on context.
 ```
 
 **Example:**
+
 ```markdown
 ## Testing Strategy
 
@@ -551,6 +581,7 @@ paths:
         '200':
           description: Successful response
 ```
+
 ```
 
 ### ❌ Missing Context

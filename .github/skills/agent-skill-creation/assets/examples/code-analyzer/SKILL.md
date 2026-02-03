@@ -44,6 +44,7 @@ read_file(filePath="/path/to/file.py", startLine=1, endLine=100)
 ### Step 2: Analyze Structure
 
 Examine:
+
 - Function complexity (cyclomatic complexity)
 - Nesting levels
 - Function length
@@ -53,6 +54,7 @@ Examine:
 ### Step 3: Identify Issues
 
 Look for:
+
 - Long functions (>50 lines)
 - High cyclomatic complexity (>10)
 - Deep nesting (>4 levels)
@@ -64,18 +66,21 @@ Look for:
 Provide:
 
 **Metrics:**
+
 - Lines of code
 - Number of functions/classes
 - Average function length
 - Complexity score
 
 **Issues Found:**
+
 - Critical: Security issues, major bugs
 - High: Code smells, high complexity
 - Medium: Style violations, minor improvements
 - Low: Suggestions, optimizations
 
 **Recommendations:**
+
 - Prioritized action items
 - Code examples for fixes
 - Best practice references
@@ -83,6 +88,7 @@ Provide:
 ## Example
 
 **Input:**
+
 ```python
 def process_data(data):
     if data:
@@ -96,6 +102,7 @@ def process_data(data):
 ```
 
 **Analysis:**
+
 ```
 Issues:
 1. High nesting (5 levels) - Consider early returns
@@ -149,6 +156,7 @@ Always provide analysis in this structure:
 ---
 
 This is a minimal example. Real skills may include:
+
 - references/ directory with detailed guidelines
 - templates/ for report formats
 - scripts/ for automation

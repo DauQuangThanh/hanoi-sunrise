@@ -9,18 +9,21 @@ This document provides advanced guidance for creating high-quality agent skills 
 ### Three-Tier Loading Model
 
 **Tier 1: Metadata (Always Loaded)**
+
 - Size: ~100 tokens per skill
 - Content: `name` + `description` fields only
 - Purpose: Skill discovery and selection
 - Loaded: Agent startup for ALL skills
 
 **Tier 2: Instructions (Load on Activation)**
+
 - Size: <5000 tokens (aim for <500 lines)
 - Content: Full SKILL.md body
 - Purpose: Detailed execution instructions
 - Loaded: When skill activated based on task match
 
 **Tier 3: Resources (Load on Demand)**
+
 - Size: Variable
 - Content: scripts/, references/, assets/
 - Purpose: Specialized tools and reference data
@@ -29,6 +32,7 @@ This document provides advanced guidance for creating high-quality agent skills 
 ### Why This Matters
 
 **Context Window Management:**
+
 ```
 Without progressive disclosure:
   200 skills × 5000 tokens = 1,000,000 tokens (OVERFLOW)
@@ -51,35 +55,42 @@ With progressive disclosure:
 ### Part 1: Actions (What It Does)
 
 ✅ **Use active, specific verbs:**
+
 - "Extracts", "Analyzes", "Generates", "Converts", "Validates"
 - "Reviews", "Optimizes", "Transforms", "Merges", "Filters"
 
 ❌ **Avoid vague terms:**
+
 - "Helps with", "Tool for", "Manages", "Handles"
 
 **Examples:**
+
 - ✅ "Extracts text and tables from PDF files, fills forms, merges documents"
 - ❌ "Helps with PDF documents"
 
 ### Part 2: Use Cases (When to Use)
 
 ✅ **Specific scenarios:**
+
 - "Use when reviewing pull requests"
 - "Use for data format conversions"
 - "Use during security audits"
 
 ❌ **Generic situations:**
+
 - "Use when working with files"
 - "Use for development tasks"
 
 ### Part 3: Keywords (Matching Terms)
 
 ✅ **Terms users might say:**
+
 - Technical: "API", "GraphQL", "REST", "OAuth"
 - Non-technical: "slow website", "broken links", "missing data"
 - Problem-focused: "errors", "crashes", "performance"
 
 **Example:**
+
 ```yaml
 description: "Analyzes GraphQL schemas for performance issues, validates resolver implementations, and suggests optimizations. Use when reviewing GraphQL APIs, troubleshooting slow queries, or when user mentions GraphQL, schema design, or resolver problems."
 ```
@@ -93,6 +104,7 @@ description: "Analyzes GraphQL schemas for performance issues, validates resolve
 ### Testing Descriptions
 
 Ask these questions:
+
 1. Can someone else determine when to use this skill?
 2. Would a search for [keyword] find this skill?
 3. Are the actions specific enough to differentiate from similar skills?
@@ -103,11 +115,13 @@ Ask these questions:
 ### Name Format Rules
 
 **Required:**
+
 - Only lowercase letters (a-z)
 - Numbers (0-9)
 - Hyphens (-) as separators
 
 **Forbidden:**
+
 - Uppercase letters (A-Z)
 - Underscores (_)
 - Spaces
@@ -118,16 +132,19 @@ Ask these questions:
 ### Naming Strategies
 
 **Strategy 1: Action-Target**
+
 - `pdf-extraction`
 - `code-review`
 - `api-documentation`
 
 **Strategy 2: Domain-Function**
+
 - `graphql-schema-validator`
 - `docker-deployment`
 - `aws-cost-optimizer`
 
 **Strategy 3: Tool-Operation**
+
 - `git-workflow-automation`
 - `database-migration`
 - `elasticsearch-indexing`
@@ -152,6 +169,7 @@ echo "your-skill-name" | grep -E '^[a-z0-9]+(-[a-z0-9]+)*$'
 ### Section Priority (What to Keep in Main File)
 
 **Priority 1 (Must have in SKILL.md):**
+
 1. Frontmatter (name, description, metadata)
 2. Overview (2-3 sentences)
 3. When to Use (3-5 bullet points)
@@ -162,6 +180,7 @@ echo "your-skill-name" | grep -E '^[a-z0-9]+(-[a-z0-9]+)*$'
 8. Common Errors (top 5)
 
 **Priority 2 (Can move to references/ if >400 lines):**
+
 1. Advanced instructions
 2. Extensive examples
 3. Detailed edge cases
@@ -170,6 +189,7 @@ echo "your-skill-name" | grep -E '^[a-z0-9]+(-[a-z0-9]+)*$'
 6. API documentation
 
 **Priority 3 (Should be in references/):**
+
 1. Theory and concepts
 2. Historical context
 3. Alternative approaches
@@ -198,6 +218,7 @@ Total:                     450 lines  (100%)
 ### Keeping Under 500 Lines
 
 **Technique 1: Consolidate Examples**
+
 ```markdown
 ❌ Bad (100 lines of examples):
 ## Example 1: Basic Usage
@@ -220,6 +241,7 @@ See [references/examples.md](references/examples.md) for complete examples.
 ```
 
 **Technique 2: Summarize Error Handling**
+
 ```markdown
 ❌ Bad (verbose):
 ### Error: Module Not Found
@@ -238,6 +260,7 @@ See [references/troubleshooting.md](references/troubleshooting.md) for details.
 ```
 
 **Technique 3: Reference Linking**
+
 ```markdown
 ✅ In SKILL.md (keep it brief):
 For advanced patterns, see [references/advanced-patterns.md](references/advanced-patterns.md)
@@ -251,12 +274,14 @@ For advanced patterns, see [references/advanced-patterns.md](references/advanced
 ### Why Python 3.8+?
 
 **✅ Advantages:**
+
 - Single script works on Windows, macOS, Linux
 - Rich standard library (pathlib, argparse, subprocess)
 - Widely available (pre-installed on most systems)
 - Easy dependency management (pip, requirements.txt)
 
 **❌ Alternatives have limitations:**
+
 - Bash: macOS/Linux only
 - PowerShell: Windows-focused
 - Node.js: Requires installation
@@ -264,6 +289,7 @@ For advanced patterns, see [references/advanced-patterns.md](references/advanced
 ### Essential Python Patterns
 
 **Pattern 1: Cross-Platform Paths**
+
 ```python
 from pathlib import Path
 
@@ -277,6 +303,7 @@ input_path = "data/file.txt"   # Unix only
 ```
 
 **Pattern 2: Error Handling**
+
 ```python
 import sys
 
@@ -302,6 +329,7 @@ if __name__ == "__main__":
 ```
 
 **Pattern 3: Argument Parsing**
+
 ```python
 import argparse
 
@@ -321,6 +349,7 @@ def main():
 ```
 
 **Pattern 4: Platform Detection (When Needed)**
+
 ```python
 import platform
 
@@ -350,6 +379,7 @@ else:
 ### Testing Cross-Platform Scripts
 
 **Test Matrix:**
+
 ```bash
 # Windows (PowerShell)
 python scripts/process.py test-data.txt
@@ -370,6 +400,7 @@ docker run -v $(pwd):/work -w /work python:3.8 \
 ### Pre-Deployment Checklist
 
 **Structure Validation:**
+
 ```bash
 # Check name format
 [[ "$(basename $(pwd))" =~ ^[a-z0-9]+(-[a-z0-9]+)*$ ]] && echo "✅ Name valid" || echo "❌ Name invalid"
@@ -384,6 +415,7 @@ lines=$(wc -l < SKILL.md)
 ```
 
 **Content Validation:**
+
 ```bash
 # Check required sections
 for section in "## When to Use" "## Prerequisites" "## Instructions" "## Examples" "## Edge Cases" "## Error Handling"; do
@@ -395,6 +427,7 @@ head -1 SKILL.md | grep -q "^---$" && echo "✅ Frontmatter start" || echo "❌ 
 ```
 
 **Script Validation:**
+
 ```bash
 # Check Python scripts
 for script in scripts/*.py; do
@@ -421,6 +454,7 @@ See [scripts/validate-skill.py](../scripts/validate-skill.py) for comprehensive 
 ### Anti-Pattern 1: Implicit Dependencies
 
 ❌ **Bad:**
+
 ```markdown
 ## Instructions
 1. Run the script
@@ -428,6 +462,7 @@ See [scripts/validate-skill.py](../scripts/validate-skill.py) for comprehensive 
 ```
 
 ✅ **Good:**
+
 ```markdown
 ## Prerequisites
 - Python 3.8+
@@ -442,11 +477,13 @@ See [scripts/validate-skill.py](../scripts/validate-skill.py) for comprehensive 
 ### Anti-Pattern 2: Platform-Specific Assumptions
 
 ❌ **Bad:**
+
 ```python
 output_path = "C:\\Users\\output\\file.txt"
 ```
 
 ✅ **Good:**
+
 ```python
 from pathlib import Path
 output_path = Path.home() / "output" / "file.txt"
@@ -455,6 +492,7 @@ output_path = Path.home() / "output" / "file.txt"
 ### Anti-Pattern 3: Vague Instructions
 
 ❌ **Bad:**
+
 ```markdown
 1. Prepare the data
 2. Run the analysis
@@ -462,6 +500,7 @@ output_path = Path.home() / "output" / "file.txt"
 ```
 
 ✅ **Good:**
+
 ```markdown
 1. Convert CSV to JSON: `python3 scripts/convert.py input.csv output.json`
 2. Validate schema: `python3 scripts/validate.py output.json`
@@ -471,6 +510,7 @@ output_path = Path.home() / "output" / "file.txt"
 ### Anti-Pattern 4: Missing Error Context
 
 ❌ **Bad:**
+
 ```python
 if not file.exists():
     print("Error")
@@ -478,6 +518,7 @@ if not file.exists():
 ```
 
 ✅ **Good:**
+
 ```python
 if not file.exists():
     print(f"Error: Input file not found: {file}", file=sys.stderr)
@@ -491,6 +532,7 @@ if not file.exists():
 ❌ **Bad:** 1200-line SKILL.md with everything
 
 ✅ **Good:**
+
 ```
 skill-name/
 ├── SKILL.md (450 lines, core instructions)

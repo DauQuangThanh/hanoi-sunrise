@@ -7,6 +7,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Structure Validation
 
 ### Directory Structure
+
 - [ ] Directory name matches skill name exactly
 - [ ] Directory name is lowercase with hyphens only
 - [ ] SKILL.md exists in skill root directory
@@ -14,6 +15,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] No unnecessary empty directories
 
 ### File Organization
+
 - [ ] All scripts in scripts/ directory
 - [ ] All additional docs in references/ directory
 - [ ] All static resources in assets/ directory
@@ -23,6 +25,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Frontmatter Validation
 
 ### Required Fields
+
 - [ ] `name` field present
 - [ ] `name` is 1-64 characters
 - [ ] `name` matches pattern: `^[a-z0-9]+(-[a-z0-9]+)*$`
@@ -32,6 +35,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] YAML syntax is valid
 
 ### Optional Fields (If Present)
+
 - [ ] `license` specified (MIT recommended)
 - [ ] `metadata.author` included
 - [ ] `metadata.version` in semantic versioning format
@@ -41,6 +45,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Description Quality
 
 ### Content Requirements
+
 - [ ] Includes 2-4 specific actions (active verbs)
 - [ ] Includes "Use when..." clause with 2-3 scenarios
 - [ ] Includes 3-5 keywords users might mention
@@ -49,6 +54,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] No pronouns (no "it", "this", "that")
 
 ### Discovery Optimization
+
 - [ ] Keywords match likely user queries
 - [ ] Use cases clearly stated
 - [ ] Scope is clear
@@ -57,6 +63,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Content Validation
 
 ### Structure
+
 - [ ] Clear overview section (2-3 sentences)
 - [ ] "When to Use" section with bullet points
 - [ ] Prerequisites documented (if any)
@@ -67,6 +74,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Total length under 500 lines
 
 ### Instructions Quality
+
 - [ ] Steps are numbered and sequential
 - [ ] Each step has clear action verb
 - [ ] Specific, not generic guidance
@@ -76,6 +84,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Commands include full paths/flags
 
 ### Examples
+
 - [ ] At least one complete example
 - [ ] Input clearly shown
 - [ ] Output clearly shown
@@ -84,12 +93,14 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Edge cases demonstrated
 
 ### Edge Cases
+
 - [ ] Common pitfalls identified
 - [ ] Handling approach documented
 - [ ] Platform-specific issues noted
 - [ ] Workarounds provided
 
 ### Error Handling
+
 - [ ] Common errors listed
 - [ ] Error messages included
 - [ ] Resolution steps provided
@@ -98,6 +109,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Script Validation (If Present)
 
 ### General Requirements
+
 - [ ] All scripts in scripts/ directory
 - [ ] Python 3.8+ used for cross-platform compatibility
 - [ ] Shebang line included: `#!/usr/bin/env python3`
@@ -105,6 +117,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Platform support documented (Windows, macOS, Linux)
 
 ### Code Quality
+
 - [ ] Input validation included
 - [ ] Error handling implemented
 - [ ] Clear error messages
@@ -113,6 +126,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Usage examples in docstring
 
 ### Cross-Platform Compatibility
+
 - [ ] Uses pathlib.Path for paths (not hardcoded separators)
 - [ ] No platform-specific commands (unless documented alternative)
 - [ ] Handles line endings correctly
@@ -122,6 +136,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Tested on Linux
 
 ### Execution
+
 - [ ] Script runs without errors
 - [ ] Produces expected output
 - [ ] Handles missing dependencies gracefully
@@ -131,6 +146,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Reference Files (If Present)
 
 ### Organization
+
 - [ ] Each reference focused on one topic
 - [ ] Files referenced from SKILL.md
 - [ ] Clear headings and structure
@@ -138,6 +154,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] No reference chains (max one level deep)
 
 ### Content
+
 - [ ] Information not duplicated from SKILL.md
 - [ ] Provides deeper detail than main file
 - [ ] Well-organized with clear sections
@@ -147,18 +164,21 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Progressive Disclosure
 
 ### Metadata (Tier 1)
+
 - [ ] Name is descriptive
 - [ ] Description optimized for discovery
 - [ ] Description contains all matching keywords
 - [ ] Approximately 100 tokens or less
 
 ### Instructions (Tier 2)
+
 - [ ] SKILL.md under 500 lines
 - [ ] Essential instructions in main file
 - [ ] Detailed content in references/
 - [ ] Approximately 5000 tokens or less
 
 ### Resources (Tier 3)
+
 - [ ] Scripts loaded on demand
 - [ ] References loaded when needed
 - [ ] Assets accessed explicitly
@@ -167,6 +187,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Testing
 
 ### Manual Testing
+
 - [ ] SKILL.md renders correctly in Markdown viewer
 - [ ] All internal links work
 - [ ] All file references resolve
@@ -174,12 +195,14 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Examples can be copied and run
 
 ### Automated Testing
+
 - [ ] Runs through skills-ref validator (if available)
 - [ ] No validation errors
 - [ ] No validation warnings (or documented)
 - [ ] CI/CD pipeline passes (if applicable)
 
 ### Integration Testing
+
 - [ ] Skill loads in target agent platform
 - [ ] Skill activates on expected keywords
 - [ ] Instructions are clear to agent
@@ -189,6 +212,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Quality Standards
 
 ### Writing Quality
+
 - [ ] Active voice used
 - [ ] Imperative mood for instructions
 - [ ] Present tense for descriptions
@@ -198,6 +222,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Consistent terminology throughout
 
 ### Technical Accuracy
+
 - [ ] Commands are correct
 - [ ] Code examples work
 - [ ] Dependencies are accurate
@@ -206,6 +231,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] No outdated information
 
 ### Completeness
+
 - [ ] All prerequisites listed
 - [ ] All dependencies documented
 - [ ] All edge cases covered
@@ -216,6 +242,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Pre-Deployment
 
 ### Documentation
+
 - [ ] README updated (if applicable)
 - [ ] Changelog entry added (if applicable)
 - [ ] Version number updated
@@ -223,12 +250,14 @@ Use this comprehensive checklist before finalizing any agent skill.
 - [ ] Author information correct
 
 ### Version Control
+
 - [ ] Changes committed
 - [ ] Commit message follows convention
 - [ ] Branch named appropriately
 - [ ] No sensitive data in commits
 
 ### Distribution
+
 - [ ] Skill in correct directory
 - [ ] File permissions set correctly (scripts executable)
 - [ ] No unnecessary files included
@@ -237,12 +266,14 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Post-Deployment
 
 ### Monitoring
+
 - [ ] Skill discovery working (activates on keywords)
 - [ ] No errors reported
 - [ ] Usage metrics tracked (if available)
 - [ ] User feedback collected
 
 ### Maintenance
+
 - [ ] Regular updates scheduled
 - [ ] Dependencies kept current
 - [ ] Documentation kept accurate
@@ -251,6 +282,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Common Validation Errors
 
 ### Critical Issues
+
 - ❌ Invalid YAML frontmatter
 - ❌ Missing required fields (name, description)
 - ❌ Name doesn't match directory
@@ -258,6 +290,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - ❌ SKILL.md missing
 
 ### Warnings
+
 - ⚠️ Description too short (under 100 characters)
 - ⚠️ SKILL.md over 500 lines
 - ⚠️ No examples provided
@@ -265,6 +298,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 - ⚠️ Scripts not cross-platform
 
 ### Recommendations
+
 - 💡 Add more keywords to description
 - 💡 Include more examples
 - 💡 Document edge cases
@@ -274,6 +308,7 @@ Use this comprehensive checklist before finalizing any agent skill.
 ## Validation Tools
 
 ### Manual Validation
+
 ```bash
 # Check YAML frontmatter
 head -n 20 SKILL.md
@@ -286,6 +321,7 @@ echo "skill-name" | grep -E '^[a-z0-9]+(-[a-z0-9]+)*$'
 ```
 
 ### Automated Validation
+
 ```bash
 # Using skills-ref tool
 skills-ref validate ./skill-name
@@ -298,6 +334,7 @@ skills-ref validate $CHANGED_SKILL || exit 1
 ```
 
 ### Python Validation Script
+
 ```python
 #!/usr/bin/env python3
 """Quick validation script for agent skills."""

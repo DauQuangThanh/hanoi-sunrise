@@ -14,6 +14,7 @@ CLI-based agents require command-line tools to be installed.
 **CLI Required:** Yes (`claude`)
 
 **Example:**
+
 ```markdown
 ---
 description: "Create feature specification"
@@ -32,6 +33,7 @@ Analyze $ARGUMENTS and create specification...
 **CLI Required:** Yes (`gemini`)
 
 **Example:**
+
 ```toml
 description = "Create feature specification"
 
@@ -80,6 +82,7 @@ IDE-based agents are integrated directly into code editors and do not require se
 **Special Field:** `mode: project.command-name`
 
 **Example:**
+
 ```markdown
 ---
 description: "Create feature specification"
@@ -99,6 +102,7 @@ Analyze $ARGUMENTS and create specification...
 **Optional Field:** `glob: "**/*.ext"` for file-specific rules
 
 **Example:**
+
 ```markdown
 ---
 description: "TypeScript coding rules"
@@ -198,24 +202,29 @@ category: skills
 ## Common Pitfalls
 
 **Wrong directory:**
+
 - ❌ `.claude/command/specify.md` (singular)
 - ✅ `.claude/commands/specify.md` (plural)
 
 **Wrong format:**
+
 - ❌ `.gemini/commands/analyze.md` (should be TOML)
 - ✅ `.gemini/commands/analyze.toml`
 
 **Wrong arguments:**
+
 - ❌ Using `{{args}}` in Markdown files
 - ✅ Using `$ARGUMENTS` in Markdown files
 
 **Missing required fields:**
+
 - ❌ GitHub Copilot command without `mode:` field
 - ✅ Including `mode: project.name` in frontmatter
 
 ## Testing Commands
 
 **For CLI agents:**
+
 ```bash
 # Claude Code
 claude chat /specify "Create user login feature"
@@ -228,6 +237,7 @@ q chat /review
 ```
 
 **For IDE agents:**
+
 - GitHub Copilot: Type `/` in chat to see available commands
 - Cursor: Use Cmd+K (Mac) or Ctrl+K (Windows) then type command
 - Windsurf: Use workflow menu or command palette

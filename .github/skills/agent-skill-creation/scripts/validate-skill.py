@@ -136,17 +136,36 @@ def validate_skill(skill_path: Path) -> bool:
                 # Quality Checks
                 quality_issues = []
                 if "Use when" not in description and "Use for" not in description:
-                    quality_issues.append("Missing 'Use when...'")
+                    quality_issues.append("Missing 'Use when...' clause")
                 
+                if "mention" not in description.lower() and "keyword" not in description.lower():
+                    quality_issues.append("Missing 'user mentions...' clause for discovery")
+
                 vague_terms = ["helps with", "tool for", "does stuff"]
                 for term in vague_terms:
                     if term in description.lower():
                         quality_issues.append(f"Contains vague term '{term}'")
-
+            
                 if quality_issues:
                    print_result("Meta: 'description'", True, f"Valid but weak: {', '.join(quality_issues)}")
                 else:
                    print_result("Meta: 'description'", True, "Follows best practices")
+
+        # License Validation (Recommended)
+        license_field = metadata.get('license')
+        if not license_field:
+             print_result("Meta: 'license'", True, "Missing recommended field") # Soft warn
+        
+        # Last Updated Validation (Recommended)
+        last_updated = None
+        if 'metadata' in metadata and isinstance(metadata['metadata'], dict):
+            last_updated = metadata['metadata'].get('last_updated')
+        
+        if last_updated:
+            # Simple date regex YYYY-MM-DD
+            if not re.match(r'^\d{4}-\d{2}-\d{2}$', str(last_updated)):
+                 print_result("Meta: 'last_updated'", False, f"Invalid date {last_updated}. Use YYYY-MM-DD.")
+                 success = False # Strict on format if present
 
     # 4. File Reference Validation
     # Regex to find links: [text](path)

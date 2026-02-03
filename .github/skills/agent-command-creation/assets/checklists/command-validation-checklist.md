@@ -36,15 +36,18 @@ Use this checklist to systematically review agent commands before deployment.
 ### Agent-Specific Fields
 
 **GitHub Copilot:**
+
 - [ ] `mode` field is present (if applicable)
 - [ ] Mode format is `project.command-name`
 - [ ] Both parts of mode are lowercase
 
 **Cursor:**
+
 - [ ] `glob` pattern is valid (if applicable)
 - [ ] Glob pattern matches intended files
 
 **Google Antigravity:**
+
 - [ ] `category` field is present (if applicable)
 - [ ] Category is either "rules" or "skills"
 
@@ -107,10 +110,12 @@ Use this checklist to systematically review agent commands before deployment.
 ### Argument Syntax
 
 **For Markdown:**
+
 - [ ] Uses `$ARGUMENTS` (not `{{args}}`)
 - [ ] Arguments declaration is present
 
 **For TOML:**
+
 - [ ] Uses `{{args}}` (not `$ARGUMENTS`)
 - [ ] Arguments are in prompt string
 

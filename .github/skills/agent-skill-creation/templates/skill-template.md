@@ -1,6 +1,6 @@
 ---
 name: skill-name
-description: "[ACTION 1], [ACTION 2], and [ACTION 3]. Use when [SCENARIO 1], [SCENARIO 2], or when user mentions [KEYWORD 1], [KEYWORD 2], or [KEYWORD 3]."
+description: "[Active Verbs]. Use when [Specific Scenarios] or when user mentions [Keywords]."
 license: MIT
 metadata:
   author: Your Name
@@ -24,10 +24,12 @@ metadata:
 ## Prerequisites
 
 **Required:**
+
 - [Tool/package name] version X.X+
 - [Another requirement]
 
 **Optional:**
+
 - [Optional tool/package]
 
 ## Instructions
@@ -37,10 +39,12 @@ metadata:
 [Clear, specific instructions for this step]
 
 **Details:**
+
 - [Specific sub-step or consideration]
 - [Another important point]
 
 **Example:**
+
 ```bash
 command --option value
 ```
@@ -50,6 +54,7 @@ command --option value
 [More instructions]
 
 **Validation:**
+
 - [ ] Check 1
 - [ ] Check 2
 
@@ -64,16 +69,19 @@ command --option value
 **Scenario:** [Description of the situation]
 
 **Input:**
+
 ```
 [Sample input]
 ```
 
 **Command/Action:**
+
 ```bash
 command input.txt --output result.txt
 ```
 
 **Output:**
+
 ```
 [Expected output]
 ```
@@ -91,11 +99,13 @@ command input.txt --output result.txt
 **Scenario:** [Describe the unusual situation]
 
 **Handling:**
+
 1. [Step to detect/handle]
 2. [What to do]
 3. [Expected outcome]
 
 **Example:**
+
 ```
 [Code or command showing handling]
 ```
@@ -108,7 +118,8 @@ command input.txt --output result.txt
 
 ### Error: [Error Type or Message]
 
-**Symptom:** 
+**Symptom:**
+
 ```
 [Error message or behavior]
 ```
@@ -116,6 +127,7 @@ command input.txt --output result.txt
 **Cause:** [Why this error occurs]
 
 **Solution:**
+
 1. [Step 1 to fix]
 2. [Step 2 to fix]
 
@@ -132,15 +144,18 @@ command input.txt --output result.txt
 **Purpose:** [What the script does]
 
 **Usage:**
+
 ```bash
 python3 scripts/script-name.py <input> [--option value]
 ```
 
 **Options:**
+
 - `input` (required): [Description]
 - `--option` (optional): [Description]
 
 **Example:**
+
 ```bash
 python3 scripts/process.py data.csv --output results/
 ```
@@ -163,6 +178,7 @@ Before considering this task complete:
 ## Additional Resources
 
 For more detailed information:
+
 - [references/topic.md](references/topic.md) - [Description]
 - [templates/template.ext](templates/template.ext) - [Description]
 
