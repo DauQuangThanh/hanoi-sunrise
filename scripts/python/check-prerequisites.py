@@ -77,13 +77,8 @@ def main():
     parser.add_argument('--require-tasks', action='store_true', help='Require tasks.md to exist')
     parser.add_argument('--include-tasks', action='store_true', help='Include tasks.md in available docs')
     parser.add_argument('--paths-only', action='store_true', help='Only output path variables')
-    parser.add_argument('--help', '-h', action='store_true', help='Show help')
     
     args = parser.parse_args()
-    
-    if args.help:
-        parser.print_help()
-        sys.exit(0)
     
     check_prerequisites(args.json, args.require_tasks, args.include_tasks, args.paths_only)
 

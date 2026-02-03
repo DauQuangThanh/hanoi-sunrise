@@ -48,13 +48,8 @@ def setup_design_e2e_test(json_mode: bool = False):
 def main():
     parser = argparse.ArgumentParser(description="Setup design e2e test workflow")
     parser.add_argument('--json', action='store_true', help='Output in JSON format')
-    parser.add_argument('--help', '-h', action='store_true', help='Show help')
     
     args = parser.parse_args()
-    
-    if args.help:
-        parser.print_help()
-        sys.exit(0)
     
     setup_design_e2e_test(args.json)
 

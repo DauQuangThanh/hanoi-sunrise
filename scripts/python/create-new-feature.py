@@ -84,12 +84,11 @@ def main():
     parser.add_argument('--json', action='store_true', help='Output in JSON format')
     parser.add_argument('--short-name', help='Custom short name for branch')
     parser.add_argument('--number', help='Manual branch number')
-    parser.add_argument('--help', '-h', action='store_true', help='Show help')
     parser.add_argument('feature_description', nargs='?', help='Feature description')
     
     args = parser.parse_args()
     
-    if args.help or not args.feature_description:
+    if not args.feature_description:
         parser.print_help()
         sys.exit(0)
     
