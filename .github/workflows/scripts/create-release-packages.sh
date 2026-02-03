@@ -211,55 +211,55 @@ build_variant() {
       generate_skills opencode "$base_dir/.opencode/skill" ;;
     windsurf)
       mkdir -p "$base_dir/.windsurf/workflows"
-      generate_commands windsurf md "\$ARGUMENTS" "$base_dir/.windsurf/workflows" "$script"
+      generate_commands windsurf md "\$ARGUMENTS" "$base_dir/.windsurf/workflows" "py"
       generate_skills windsurf "$base_dir/.windsurf/skills" ;;
     codex)
       mkdir -p "$base_dir/.codex/commands"
-      generate_commands codex md "\$ARGUMENTS" "$base_dir/.codex/commands" "$script"
+      generate_commands codex md "\$ARGUMENTS" "$base_dir/.codex/commands" "py"
       generate_skills codex "$base_dir/.codex/skills" ;;
     kilocode)
       mkdir -p "$base_dir/.kilocode/rules"
-      generate_commands kilocode md "\$ARGUMENTS" "$base_dir/.kilocode/rules" "$script"
+      generate_commands kilocode md "\$ARGUMENTS" "$base_dir/.kilocode/rules" "py"
       generate_skills kilocode "$base_dir/.kilocode/skills" ;;
     auggie)
       mkdir -p "$base_dir/.augment/rules"
-      generate_commands auggie md "\$ARGUMENTS" "$base_dir/.augment/rules" "$script"
+      generate_commands auggie md "\$ARGUMENTS" "$base_dir/.augment/rules" "py"
       generate_skills auggie "$base_dir/.augment/rules" ;;
     roo)
       mkdir -p "$base_dir/.roo/rules"
-      generate_commands roo md "\$ARGUMENTS" "$base_dir/.roo/rules" "$script"
+      generate_commands roo md "\$ARGUMENTS" "$base_dir/.roo/rules" "py"
       generate_skills roo "$base_dir/.roo/skills" ;;
     codebuddy)
       mkdir -p "$base_dir/.codebuddy/commands"
-      generate_commands codebuddy md "\$ARGUMENTS" "$base_dir/.codebuddy/commands" "$script"
+      generate_commands codebuddy md "\$ARGUMENTS" "$base_dir/.codebuddy/commands" "py"
       generate_skills codebuddy "$base_dir/.codebuddy/skills" ;;
     amp)
       mkdir -p "$base_dir/.agents/commands"
-      generate_commands amp md "\$ARGUMENTS" "$base_dir/.agents/commands" "$script"
+      generate_commands amp md "\$ARGUMENTS" "$base_dir/.agents/commands" "py"
       generate_skills amp "$base_dir/.agents/skills" ;;
     shai)
       mkdir -p "$base_dir/.shai/commands"
-      generate_commands shai md "\$ARGUMENTS" "$base_dir/.shai/commands" "$script"
+      generate_commands shai md "\$ARGUMENTS" "$base_dir/.shai/commands" "py"
       generate_skills shai "$base_dir/.shai/commands" ;;
     q)
       mkdir -p "$base_dir/.amazonq/prompts"
-      generate_commands q md "\$ARGUMENTS" "$base_dir/.amazonq/prompts" "$script"
+      generate_commands q md "\$ARGUMENTS" "$base_dir/.amazonq/prompts" "py"
       generate_skills q "$base_dir/.amazonq/cli-agents" ;;
     bob)
       mkdir -p "$base_dir/.bob/commands"
-      generate_commands bob md "\$ARGUMENTS" "$base_dir/.bob/commands" "$script"
+      generate_commands bob md "\$ARGUMENTS" "$base_dir/.bob/commands" "py"
       generate_skills bob "$base_dir/.bob/skills" ;;
     jules)
       mkdir -p "$base_dir/.agent"
-      generate_commands jules md "\$ARGUMENTS" "$base_dir/.agent" "$script"
+      generate_commands jules md "\$ARGUMENTS" "$base_dir/.agent" "py"
       generate_skills jules "$base_dir/skills" ;;
     qoder)
       mkdir -p "$base_dir/.qoder/commands"
-      generate_commands qoder md "\$ARGUMENTS" "$base_dir/.qoder/commands" "$script"
+      generate_commands qoder md "\$ARGUMENTS" "$base_dir/.qoder/commands" "py"
       generate_skills qoder "$base_dir/.qoder/skills" ;;
     antigravity)
       mkdir -p "$base_dir/.agent/rules"
-      generate_commands antigravity md "\$ARGUMENTS" "$base_dir/.agent/rules" "$script"
+      generate_commands antigravity md "\$ARGUMENTS" "$base_dir/.agent/rules" "py"
       generate_skills antigravity "$base_dir/.agent/skills" ;;
   esac
    ( cd "$base_dir" && zip -r "../sunrise-template-${agent}-${NEW_VERSION}.zip" . )
