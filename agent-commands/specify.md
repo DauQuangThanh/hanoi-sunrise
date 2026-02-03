@@ -14,8 +14,7 @@ handoffs:
     prompt: Create a detailed design for the spec. I am building...
     send: false
 scripts:
-  sh: scripts/bash/create-new-feature.sh --json "{ARGS}"
-  ps: scripts/powershell/create-new-feature.ps1 -Json "{ARGS}"
+   py: python scripts/python/create-new-feature.py --json "{ARGS}"
 ---
 
 ## User Input

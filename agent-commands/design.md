@@ -14,11 +14,9 @@ handoffs:
     prompt: Create an E2E test scripts for the following...
     send: false
 scripts:
-  sh: scripts/bash/setup-design.sh --json
-  ps: scripts/powershell/setup-design.ps1 -Json
+   py: python scripts/python/setup-design.py --json
 agent_scripts:
-  sh: scripts/bash/update-agent-context.sh __AGENT__
-  ps: scripts/powershell/update-agent-context.ps1 -AgentType __AGENT__
+   py: python scripts/python/update-agent-context.py __AGENT__
 ---
 
 ## User Input
