@@ -16,43 +16,24 @@ VERSION="$1"
 VERSION_NO_V=${VERSION#v}
 
 gh release create "$VERSION" \
-  .genreleases/sunrise-template-copilot-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-copilot-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-claude-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-claude-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-gemini-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-gemini-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-cursor-agent-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-cursor-agent-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-opencode-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-opencode-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-qwen-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-qwen-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-windsurf-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-windsurf-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-codex-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-codex-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-kilocode-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-kilocode-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-auggie-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-auggie-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-roo-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-roo-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-codebuddy-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-codebuddy-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-amp-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-amp-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-shai-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-shai-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-q-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-q-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-bob-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-bob-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-jules-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-jules-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-qoder-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-qoder-ps-"$VERSION".zip \
-  .genreleases/sunrise-template-antigravity-sh-"$VERSION".zip \
-  .genreleases/sunrise-template-antigravity-ps-"$VERSION".zip \
+  .genreleases/sunrise-template-copilot-"$VERSION".zip \
+  .genreleases/sunrise-template-claude-"$VERSION".zip \
+  .genreleases/sunrise-template-gemini-"$VERSION".zip \
+  .genreleases/sunrise-template-cursor-agent-"$VERSION".zip \
+  .genreleases/sunrise-template-opencode-"$VERSION".zip \
+  .genreleases/sunrise-template-qwen-"$VERSION".zip \
+  .genreleases/sunrise-template-windsurf-"$VERSION".zip \
+  .genreleases/sunrise-template-codex-"$VERSION".zip \
+  .genreleases/sunrise-template-kilocode-"$VERSION".zip \
+  .genreleases/sunrise-template-auggie-"$VERSION".zip \
+  .genreleases/sunrise-template-roo-"$VERSION".zip \
+  .genreleases/sunrise-template-codebuddy-"$VERSION".zip \
+  .genreleases/sunrise-template-amp-"$VERSION".zip \
+  .genreleases/sunrise-template-shai-"$VERSION".zip \
+  .genreleases/sunrise-template-q-"$VERSION".zip \
+  .genreleases/sunrise-template-bob-"$VERSION".zip \
+  .genreleases/sunrise-template-jules-"$VERSION".zip \
+  .genreleases/sunrise-template-qoder-"$VERSION".zip \
+  .genreleases/sunrise-template-antigravity-"$VERSION".zip \
   --title "Hanoi Sunrise - $VERSION_NO_V" \
   --notes-file release_notes.md
