@@ -86,6 +86,7 @@ sunrise init --here --force --upgrade --ai copilot
 ### Understanding the `--upgrade` flag
 
 The `--upgrade` flag enables upgrade mode, which:
+
 - Detects existing Sunrise installation (.sunrise folder required)
 - Automatically backs up folders with timestamps
 - Replaces .sunrise, agent folders, and skills (for Jules) with latest templates
