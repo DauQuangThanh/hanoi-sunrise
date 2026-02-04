@@ -50,7 +50,7 @@ After installation, you'll have access to these slash commands in your AI assist
 | `/sunrise.clarify` | Clarify underspecified areas through structured questioning |
 | `/sunrise.architect` | Design system architecture with C4 diagrams |
 | `/sunrise.standardize` | Create coding standards and conventions |
-| `/sunrise.design` | Create technical implementation plans |
+| `/sunrise.design` | Create technical detailed design (implementation plans) |
 | `/sunrise.taskify` | Break down into actionable tasks |
 | `/sunrise.analyze` | Check consistency across specifications |
 | `/sunrise.implement` | Execute all tasks and build the feature |

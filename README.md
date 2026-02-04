@@ -613,7 +613,7 @@ Read the review and acceptance checklist, and check off each item in the checkli
 
 It's important to use the interaction with Claude Code as an opportunity to clarify and ask questions around the specification - **do not treat its first attempt as final**.
 
-#### **STEP 4:** Generate a plan
+#### **STEP 4:** Generate a technical detailed design
 
 You can now be specific about the tech stack and other technical requirements. You can use the `/sunrise.design` command that is built into the project template with a prompt like this:
 
@@ -628,25 +628,24 @@ The output of this step will include a number of implementation detail documents
 ```text
 .
 ├── CLAUDE.md
-├── memory
+├── docs/
 │  └── ground-rules.md
-├── specs
+├── specs/
 │  └── 001-create-taskify
 │      ├── contracts
 │      │  ├── api-spec.json
 │      │  └── signalr-spec.md
 │      ├── data-model.md
-│      ├── plan.md
+│      ├── design.md
 │      ├── quickstart.md
 │      ├── research.md
 │      └── spec.md
 └── .sunrise/
-    ├── docs/
-    │   └── ground-rules.md
     ├── scripts/
     └── templates/
         └── templates-for-commands/
-            ├── plan-template.md
+            ├── ground-rules-template.md
+            ├── design-template.md
             ├── spec-template.md
             └── tasks-template.md
 ```
@@ -777,7 +776,7 @@ Ensure principles cover code quality standards found in the assessment, testing 
 and architectural decisions that should guide new feature development.
 ```
 
-This step creates or updates `.sunrise/docs/ground-rules.md` to reflect:
+This step creates or updates `docs/ground-rules.md` to reflect:
 
 - Coding standards and conventions discovered in the codebase
 - Architectural patterns and design principles in use
@@ -846,7 +845,7 @@ Test the new feature in the context of the existing application. Ensure it integ
 
 ---
 
-## � Project Structure
+## 🏗️ Project Structure
 
 After running `sunrise init`, your project will have the following structure:
 
@@ -863,7 +862,7 @@ After running `sunrise init`, your project will have the following structure:
 └── specs/                 # Your feature specifications (created as you work)
     └── <feature-name>/
         ├── spec.md        # Requirements and user stories
-        ├── plan.md        # Technical implementation plan
+        ├── design.md      # Technical detailed design (implementation plan)
         ├── tasks.md       # Task breakdown for execution
         └── research.md    # Tech stack research notes
 ```
@@ -878,7 +877,7 @@ After running `sunrise init`, your project will have the following structure:
 
 ---
 
-## �🛠️ Troubleshooting
+## 🛠️ Troubleshooting
 
 ### Git Authentication on Linux
 
@@ -906,6 +905,16 @@ rm gcm-linux_amd64.2.6.1.deb
 
 echo "✅ Done! Git Credential Manager is ready."
 ```
+
+### Markdown Linting
+
+Before committing changes, lint your Markdown files to ensure consistent formatting:
+
+```bash
+npx markdownlint-cli2 "**/*.md"
+```
+
+This helps maintain code quality and follows the project's standards.
 
 ---
 

@@ -9,7 +9,7 @@
 | What to Upgrade | Command | When to Use |
 | ---------------- | --------- |-------------|
 | **CLI Tool Only** | `uv tool install sunrise-cli --force --from git+https://github.com/dauquangthanh/hanoi-sunrise.git` | Get latest CLI features without touching project files |
-| **Project Files** | `sunrise init --here --force --ai <your-agent>` | Update slash commands, templates, and scripts in your project |
+| **Project Files** | `sunrise init --here --force --upgrade --ai <your-agent>` | Update slash commands, templates, and scripts in your project (automatic backups) |
 | **Both** | Run CLI upgrade, then project update | Recommended for major version updates |
 
 ---
@@ -48,12 +48,13 @@ When Hanoi Sunrise releases new features (like new slash commands or updated tem
 
 ### What gets updated?
 
-Running `sunrise init --here --force` will update:
+Running `sunrise init --here --force --upgrade` will automatically back up and replace:
 
-- ✅ **Slash command files** (`.claude/commands/`, `.github/prompts/`, etc.)
-- ✅ **Script files** (`.sunrise/scripts/`)
-- ✅ **Template files** (`.sunrise/templates/`)
-- ✅ **Shared memory files** (`docs/`) - **⚠️ See warnings below**
+- ✅ **.sunrise/ folder** (scripts, templates, memory files including docs/)
+- ✅ **Agent folders** (e.g., .claude/, .github/, .cursor/) - entire root folders are backed up and replaced
+- ✅ **Skills folder** (for Jules agent) - backed up if present
+
+**Automatic backups are created with timestamps** (e.g., `.sunrise.backup.20260204_120000`). User project files (specs/, source code, etc.) are preserved and never touched.
 
 ### What stays safe?
 
@@ -71,7 +72,7 @@ The `specs/` directory is completely excluded from template packages and will ne
 Run this inside your project directory:
 
 ```bash
-sunrise init --here --force --ai <your-agent>
+sunrise init --here --force --upgrade --ai <your-agent>
 ```
 
 Replace `<your-agent>` with your AI assistant. Refer to this list of [Supported AI Agents](../README.md#-supported-ai-agents)
@@ -79,61 +80,51 @@ Replace `<your-agent>` with your AI assistant. Refer to this list of [Supported 
 **Example:**
 
 ```bash
-sunrise init --here --force --ai copilot
+sunrise init --here --force --upgrade --ai copilot
 ```
 
-### Understanding the `--force` flag
+### Understanding the `--upgrade` flag
 
-Without `--force`, the CLI warns you and asks for confirmation:
-
-```
-Warning: Current directory is not empty (25 items)
-Template files will be merged with existing content and may overwrite existing files
-Proceed? [y/N]
-```
-
-With `--force`, it skips the confirmation and proceeds immediately.
-
-**Important: Your `specs/` directory is always safe.** The `--force` flag only affects template files (commands, scripts, templates, memory). Your feature specifications, plans, and tasks in `specs/` are never included in upgrade packages and cannot be overwritten.
+The `--upgrade` flag enables upgrade mode, which:
+- Detects existing Sunrise installation (.sunrise folder required)
+- Automatically backs up folders with timestamps
+- Replaces .sunrise, agent folders, and skills (for Jules) with latest templates
+- Preserves user content (specs/, source code, git history)
 
 ---
 
 ## ⚠️ Important Warnings
 
-### 1. Ground rules file will be overwritten
+### 1. Automatic backups are created
 
-**Known issue:** `sunrise init --here --force` currently overwrites `docs/ground-rules.md` with the default template, erasing any customizations you made.
-
-**Workaround:**
+The upgrade process automatically creates timestamped backups of replaced folders (e.g., `.sunrise.backup.20260204_120000`). To restore from backup:
 
 ```bash
-# 1. Back up your ground rules before upgrading
-cp docs/ground-rules.md docs/ground-rules-backup.md
+# List backup folders
+ls -la | grep backup
 
-# 2. Run the upgrade
-sunrise init --here --force --ai copilot
-
-# 3. Restore your customized ground rules
-mv docs/ground-rules-backup.md docs/ground-rules.md
+# Remove current folder and rename backup (example)
+rm -rf .sunrise
+mv .sunrise.backup.20260204_120000 .sunrise
 ```
 
-Or use git to restore it:
+### 2. Ground rules file may be overwritten
+
+**Known issue:** The upgrade replaces the entire `docs/` folder within `.sunrise`, which may overwrite `docs/ground-rules.md` with the default template, erasing any customizations.
+
+**Workaround:** After upgrade, restore from backup or git:
 
 ```bash
-# After upgrade, restore from git history
+# If you committed before upgrading
 git restore docs/ground-rules.md
+
+# Or from automatic backup
+cp .sunrise.backup.*/docs/ground-rules.md docs/
 ```
 
-### 2. Custom template modifications
+### 3. Custom template modifications
 
-If you customized any templates in `.sunrise/templates/`, the upgrade will overwrite them. Back them up first:
-
-```bash
-# Back up custom templates
-cp -r .sunrise/templates .sunrise/templates-backup
-
-# After upgrade, merge your changes back manually
-```
+If you customized templates in `.sunrise/templates/`, the upgrade will replace them. Restore from backup after upgrading.
 
 ### 3. Duplicate slash commands (IDE-based agents)
 
@@ -167,28 +158,25 @@ Restart your IDE to refresh the command list.
 # Upgrade CLI (if using persistent install)
 uv tool install sunrise-cli --force --from git+https://github.com/dauquangthanh/hanoi-sunrise.git
 
-# Update project files to get new commands
-sunrise init --here --force --ai copilot
+# Update project files to get new commands (automatic backups created)
+sunrise init --here --force --upgrade --ai copilot
 
-# Restore your ground rules if customized
-git restore docs/ground-rules.md
+# Restore ground rules if customized (from automatic backup)
+cp .sunrise.backup.*/docs/ground-rules.md docs/
 ```
 
 ### Scenario 2: "I customized templates and ground-rules"
 
 ```bash
-# 1. Back up customizations
-cp docs/ground-rules.md /tmp/ground-rules-backup.md
-cp -r .sunrise/templates /tmp/templates-backup
-
-# 2. Upgrade CLI
+# Upgrade CLI
 uv tool install sunrise-cli --force --from git+https://github.com/dauquangthanh/hanoi-sunrise.git
 
-# 3. Update project
-sunrise init --here --force --ai copilot
+# Update project (automatic backups created)
+sunrise init --here --force --upgrade --ai copilot
 
-# 4. Restore customizations
-mv /tmp/ground-rules-backup.md docs/ground-rules.md
+# Restore customizations from automatic backups
+cp .sunrise.backup.*/docs/ground-rules.md docs/
+cp -r .sunrise.backup.*/templates .sunrise/
 # Manually merge template changes if needed
 ```
 
@@ -214,14 +202,11 @@ rm sunrise.old-command-name.md
 If you initialized your project with `--no-git`, you can still upgrade:
 
 ```bash
-# Manually back up files you customized
-cp docs/ground-rules.md /tmp/ground-rules-backup.md
+# Run upgrade (automatic backups created)
+sunrise init --here --force --upgrade --ai copilot --no-git
 
-# Run upgrade
-sunrise init --here --force --ai copilot --no-git
-
-# Restore customizations
-mv /tmp/ground-rules-backup.md docs/ground-rules.md
+# Restore customizations from automatic backups
+cp .sunrise.backup.*/docs/ground-rules.md docs/
 ```
 
 The `--no-git` flag skips git initialization but doesn't affect file updates.
@@ -299,17 +284,17 @@ This tells Hanoi Sunrise which feature directory to use when creating specs, pla
 
 ### "I lost my ground rules customizations"
 
-**Fix:** Restore from git or backup:
+**Fix:** Restore from automatic backup:
 
 ```bash
-# If you committed before upgrading
-git restore docs/ground-rules.md
+# List backups
+ls -la | grep backup
 
-# If you backed up manually
-cp /tmp/ground-rules-backup.md docs/ground-rules.md
+# Restore ground rules
+cp .sunrise.backup.20260204_120000/docs/ground-rules.md docs/
 ```
 
-**Prevention:** Always commit or back up `ground-rules.md` before upgrading.
+**Prevention:** Commit `docs/ground-rules.md` before upgrading if using git.
 
 ### "Warning: Current directory is not empty"
 
@@ -357,11 +342,11 @@ Only Hanoi Sunrise infrastructure files:
 
 **When you see this warning:**
 
-- ✅ **Expected** when upgrading an existing Hanoi Sunrise project
-- ✅ **Expected** when adding Hanoi Sunrise to an existing codebase
+- ✅ **Expected** when upgrading an existing Sunrise project (use `--upgrade` flag)
+- ✅ **Expected** when adding Sunrise to an existing codebase
 - ⚠️ **Unexpected** if you thought you were creating a new project in an empty directory
 
-**Prevention tip:** Before upgrading, commit or back up your `docs/ground-rules.md` if you customized it.
+**Prevention tip:** For upgrades, use the `--upgrade` flag to enable automatic backups.
 
 ### "CLI upgrade doesn't seem to work"
 
@@ -439,6 +424,7 @@ Hanoi Sunrise follows semantic versioning for major releases. The CLI and projec
 After upgrading:
 
 - **Test new slash commands:** Run `/sunrise.set-ground-rules` or another command to verify everything works
+- **Lint Markdown files:** Run `npx markdownlint-cli2 "**/*.md"` before committing
 - **Review release notes:** Check [GitHub Releases](https://github.com/dauquangthanh/hanoi-sunrise/releases) for new features and breaking changes
 - **Update workflows:** If new commands were added, update your team's development workflows
-- **Check documentation:** Visit [github.io/spec-kit](https://github.github.io/spec-kit/) for updated guides
+- **Check documentation:** Visit [https://dauquangthanh.github.io/hanoi-sunrise/](https://dauquangthanh.github.io/hanoi-sunrise/) for updated guides

@@ -2,7 +2,7 @@
 
 **Work on Sunrise CLI locally without publishing releases.**
 
-> **Note:** Scripts are now Python-based for cross-platform compatibility.
+> **Note:** Scripts are now Python-based for cross-platform compatibility. Always lint Markdown files before committing: `npx markdownlint-cli2 "**/*.md"`.
 
 ---
 
@@ -172,37 +172,50 @@ sunrise init demo --skip-tls --ai gemini --ignore-agent-tools
 
 ---
 
-## � Repository Structure
+## 📁 Repository Structure
 
 Understanding the Sunrise CLI repository layout:
 
 ```
 hanoi-sunrise/
-├── agent-commands/        # Slash command definitions (copied to agent folders)
+├── LICENSE                 # MIT license
+├── pyproject.toml          # Python project configuration
+├── README.md               # Main project documentation
+├── agent-commands/         # Slash command definitions (copied to agent folders)
 │   ├── set-ground-rules.md       # Project principles command
-│   ├── specify.md        # Requirements command
-│   ├── design.md         # Technical planning command
+│   ├── specify.md          # Requirements command
+│   ├── design.md           # Technical planning command
 │   └── templates-for-commands/  # Reusable templates
-│
-├── skills/               # Reusable skill modules (copied to agent skills folders)
-│   ├── architecture-design/
-│   ├── coding/
-│   ├── context-assessment/
-│   ├── nextjs-mockup/
-│   └── ... (17 skills total)
-│
-├── docs/                 # Documentation site
-├── scripts/              # Automation scripts (Python)
-├── src/sunrise_cli/      # CLI source code
-├── rules/                # Agent-specific rules and guidelines
-└── .github/workflows/    # CI/CD and release automation
+├── docs/                   # Documentation site (DocFX)
+│   ├── index.md
+│   ├── installation.md
+│   ├── local-development.md
+│   ├── quickstart.md
+│   ├── README.md
+│   ├── toc.yml
+│   └── upgrade.md
+├── media/                  # Media assets
+├── rules/                  # Agent creation rules
+│   ├── agent-skills-creation-rules.md
+│   ├── agent-skills-folder-mapping.md
+│   ├── agents-creation-rules.md
+│   └── agents-folder-mapping.md
+├── scripts/                # Automation scripts (Python)
+├── skills/                 # Reusable skill modules (copied to agent skills folders)
+│   ├── bug-analysis/
+│   ├── git-commit/
+│   └── ... (additional skills)
+├── src/sunrise_cli/        # CLI source code
+└── .github/                # GitHub configurations
+    ├── copilot-instructions.md  # Copilot guidelines
+    └── workflows/          # CI/CD and release automation
 ```
 
 **Note:** The `agent-commands/` and `skills/` folders are source templates. When you run `sunrise init`, these are copied into your project's agent-specific folders (`.claude/commands/`, `.github/agents/`, etc.).
 
 ---
 
-## �🔄 Quick Reference
+## 🔄 Quick Reference
 
 | What You Want | Command |
 | --------------- | ---------- |
@@ -239,9 +252,10 @@ rm -rf .venv dist build *.egg-info
 ## 👉 Next Steps
 
 1. **Test your changes** - Run through the Quick Start guide with your modified CLI
-2. **Update docs** - Document any new features or changes
-3. **Open a PR** - Share your improvements when ready
-4. **Tag a release** - Once merged to `main`, create a release tag (optional)
+2. **Lint Markdown files** - Run `npx markdownlint-cli2 "**/*.md"` before committing
+3. **Update docs** - Document any new features or changes
+4. **Open a PR** - Share your improvements when ready
+5. **Tag a release** - Once merged to `main`, follow the release process: create tag (e.g., `git tag -a v0.1.16 -m "Release version 0.1.16"`), push tag (`git push origin v0.1.16`). CI builds packages and creates GitHub release.
 
 ---
 
