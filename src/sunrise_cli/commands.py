@@ -216,6 +216,10 @@ def init(
             console.print(error_panel)
             raise typer.Exit(1)
 
+        is_upgrade_mode = True
+
+    # Detect existing agent folders for backup (for both upgrade and merge modes)
+    if is_upgrade_mode or merge_into_existing:
         # Detect existing agent folders (backup root/parent folder, not subfolders)
         # Examples: backup .github/ (parent), not .github/agents/ (subfolder)
         #           backup .claude/ (parent), not .claude/commands/ (subfolder)
@@ -235,30 +239,36 @@ def init(
                 detected_roots.add(root_folder)
                 existing_agents.append((agent_key, agent_config["name"], root_folder))
 
-        is_upgrade_mode = True
-
-        # Show upgrade warning
-        upgrade_lines = [
-            "[yellow]⚠️  Upgrade Mode[/yellow]\n",
-            "The following will be [bold red]completely replaced[/bold red]:",
-            "  • .sunrise/ folder (scripts, templates, memory)",
+    if is_upgrade_mode or merge_into_existing:
+        # Show warning about backups
+        mode_name = "Upgrade" if is_upgrade_mode else "Merge"
+        warning_lines = [
+            f"[yellow]⚠️  {mode_name} Mode[/yellow]\n",
         ]
 
-        if existing_agents:
-            upgrade_lines.append("  • Detected agent folders:")
-            for _, agent_name, agent_folder in existing_agents:
-                upgrade_lines.append(f"    - {agent_folder}")
+        if is_upgrade_mode:
+            warning_lines.extend([
+                "The following will be [bold red]completely replaced[/bold red]:",
+                "  • .sunrise/ folder (scripts, templates, memory)",
+            ])
+        else:
+            warning_lines.append("Existing agent folders will be backed up before merging:")
 
-        upgrade_lines.extend([
+        if existing_agents:
+            warning_lines.append("  • Detected agent folders:")
+            for _, agent_name, agent_folder in existing_agents:
+                warning_lines.append(f"    - {agent_folder}")
+
+        warning_lines.extend([
             "",
             "[cyan]Backups will be created with timestamp.[/cyan]",
             "[dim]User content (docs/, project files) will be preserved.[/dim]"
         ])
 
         console.print()
-        console.print(Panel("\n".join(upgrade_lines), border_style="yellow", padding=(1, 2)))
+        console.print(Panel("\n".join([line for line in warning_lines if line]), border_style="yellow", padding=(1, 2)))
 
-        if not force:
+        if is_upgrade_mode and not force:
             response = typer.confirm("\nDo you want to continue with the upgrade?")
             if not response:
                 console.print("[yellow]Upgrade cancelled[/yellow]")
@@ -374,8 +384,8 @@ def init(
     tracker.add("ai-select", "Select AI assistant(s)")
     tracker.complete("ai-select", f"{', '.join(selected_ais)}")
 
-    # Add backup step for upgrade mode
-    if is_upgrade_mode:
+    # Add backup step for upgrade or merge mode
+    if is_upgrade_mode or merge_into_existing:
         tracker.add("backup", "Backup existing files")
 
     # Add steps for each AI assistant template download (only if not using local templates)
@@ -411,8 +421,8 @@ def init(
             local_ssl_context = ssl_context if verify else False
             local_client = httpx.Client(verify=local_ssl_context)
 
-            # Perform backup in upgrade mode
-            if is_upgrade_mode:
+            # Perform backup in upgrade or merge mode
+            if is_upgrade_mode or merge_into_existing:
                 tracker.start("backup")
                 timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
 
@@ -499,8 +509,8 @@ def init(
     console.print(tracker.render())
     console.print("\n[bold green]Project ready.[/bold green]")
 
-    # Show backup information for upgrade mode
-    if is_upgrade_mode and backup_paths:
+    # Show backup information for upgrade or merge mode
+    if (is_upgrade_mode or merge_into_existing) and backup_paths:
         console.print()
         backup_lines = ["[cyan]Backups created:[/cyan]"]
         for original, backup in backup_paths.items():
