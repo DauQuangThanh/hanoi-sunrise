@@ -17,7 +17,7 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 ## Outline
 
-You are creating or updating the project ground rules at `docs/ground-rules.md` based on the template at `.sunrise/templates/templates-for-commands/ground-rules-template.md`. The template contains placeholder tokens in square brackets (e.g. `[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`). Your job is to (a) copy the template, (b) collect/derive concrete values, (c) fill the template precisely, and (d) propagate any amendments across dependent artifacts. Incorporate the essential rules for maximizing source code readability, simplicity and long-term maintainability.
+You are creating or updating the project ground rules at `docs/ground-rules.md` based on the template at `.sunrise/templates/templates-for-commands/ground-rules-template.md`. The template contains placeholder tokens in square brackets (e.g. `[PROJECT_NAME]`, `[PRINCIPLE_1_NAME]`). Your job is to (a) copy the template, (b) collect/derive concrete values, (c) fill the template precisely, and (d) propagate any amendments across dependent artifacts. Incorporate the essential rules for maximizing source code simplicity, readability and long-term maintainability.
 
 Follow this execution flow:
 
