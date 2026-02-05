@@ -122,7 +122,7 @@ This skill guides AI agents through systematic bug identification, analysis, and
 - **ConcurrentModificationException**: Use proper iteration methods
 - **Memory leaks**: Close resources properly
 
-### C&#35;
+### C-Sharp
 
 - **NullReferenceException**: Use null-conditional operators
 - **IndexOutOfRangeException**: Check array bounds
