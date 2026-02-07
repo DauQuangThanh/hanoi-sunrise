@@ -36,7 +36,7 @@ This skill generates well-structured git commit messages following conventional 
 4. **Be clear**: Write for others (including future you)
 5. **Be complete**: Include why and context when needed
 6. **Be conventional**: Follow standard format for automation
-7. **Be considerate**: Do not push code until users ask for it
+7. **Be considerate**: Do not push changes to the remote repository unless requested
 
 ## Standard Format
 
