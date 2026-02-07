@@ -1,27 +1,27 @@
 ---
 name: code-refactoring
-description: Refactors code for improved readability, performance, and maintainability. Use when cleaning up code, optimizing functions, or when user mentions refactoring, code improvement, or optimization.
+description: Refactors code for improved simplicity, maintainability, performance, and readability. Use when cleaning up code, optimizing functions, or when user mentions refactoring, code improvement, or optimization.
 license: MIT
 metadata:
   author: Dau Quang Thanh
-  version: "1.1"
-  last_updated: "2026-02-05"
+  version: "1.2"
+  last_updated: "2026-02-07"
 ---
 
 # Code Refactoring
 
 ## Overview
 
-This skill guides AI agents through systematic code refactoring processes to improve code quality, readability, performance, and maintainability. It provides structured approaches for identifying refactoring opportunities and applying best practices.
+This skill guides AI agents through systematic code refactoring processes to improve code quality, simplicity, maintainability, performance, and readability. It provides structured approaches for identifying refactoring opportunities, simplifying complex code structures, and applying best practices across different programming languages and frameworks.
 
 ## When to Use
 
-- Code has become hard to understand or maintain
-- Functions are too long or complex
-- Code duplication exists
-- Performance optimizations needed
-- Preparing for new features
-- User mentions: "refactor", "clean up code", "optimize", "improve code", "code quality"
+- Code has become overly complex or hard to understand
+- Functions are too long, have too many responsibilities, or contain duplicate logic
+- Code duplication exists across multiple files or modules
+- Performance optimizations are needed without sacrificing clarity
+- Preparing for new features by simplifying existing code
+- User mentions: "refactor", "simplify code", "clean up code", "optimize", "improve code", "code quality"
 
 ## Prerequisites
 
@@ -34,37 +34,42 @@ This skill guides AI agents through systematic code refactoring processes to imp
 
 ### Step 1: Analyze Code for Refactoring Opportunities
 
-1. **Identify Code Smells**
+1. **Identify Code Smells and Complexity Issues**
 
-   - Long methods (>50 lines)
-   - Large classes (>300 lines)
-   - Duplicate code
-   - Complex conditionals
-   - Unused variables/functions
-   - Tight coupling
+   - Long methods (>50 lines) or methods with multiple responsibilities
+   - Large classes (>300 lines) with too many concerns
+   - Code duplication across files or within methods
+   - Complex conditionals (nested ifs, long boolean expressions)
+   - Tight coupling between components
+   - Unused variables, functions, or imports
+   - Overly complex algorithms that could be simplified
 
-2. **Assess Impact**
+2. **Assess Impact and Simplicity**
 
-   - Dependencies on the code
-   - Test coverage
-   - Frequency of changes
-   - Business criticality
+   - Dependencies on the code and potential ripple effects
+   - Test coverage to ensure safe refactoring
+   - Frequency of changes (hotspots may need more care)
+   - Business criticality and risk tolerance
+   - Current complexity level and readability barriers
 
 ### Step 2: Plan Refactoring
 
-1. **Choose Refactoring Technique**
+1. **Choose Refactoring Techniques for Simplicity and Quality**
 
-   - Extract Method
-   - Rename Variable/Function
-   - Move Method/Class
-   - Replace Conditional with Polymorphism
-   - Introduce Parameter Object
+   - Extract Method: Break down complex functions into smaller, focused ones
+   - Rename Variable/Function: Use clear, descriptive names
+   - Move Method/Class: Organize code into logical groupings
+   - Replace Conditional with Polymorphism: Simplify complex conditionals
+   - Introduce Parameter Object: Reduce method parameter complexity
+   - Simplify Conditional Logic: Use early returns, guard clauses
+   - Remove Code Duplication: Extract common logic into shared functions
 
 2. **Create Refactoring Plan**
 
-   - List steps in order
-   - Identify potential risks
-   - Plan testing strategy
+   - List steps in order of execution
+   - Identify potential risks and mitigation strategies
+   - Plan testing strategy including unit and integration tests
+   - Consider performance implications of changes
 
 ### Step 3: Apply Refactoring
 
@@ -96,16 +101,18 @@ This skill guides AI agents through systematic code refactoring processes to imp
 
 ### Python
 
-- **Use type hints**: Add type annotations for better IDE support and documentation
-- **Follow PEP 8**: Use consistent naming, spacing, and line length
-- **Replace list comprehensions**: For complex logic, use generator expressions or regular loops for readability
+- **Use type hints**: Add type annotations for better IDE support, documentation, and error prevention
+- **Follow PEP 8**: Use consistent naming, spacing, and line length for readability
+- **Simplify comprehensions**: Use list comprehensions for simple transformations; break complex nested comprehensions into explicit loops for clarity
+- **Prefer explicit over implicit**: Use clear variable names and avoid overly clever one-liners that sacrifice understandability
 
 ### JavaScript/TypeScript
 
-- **Use const/let**: Replace var with const/let for block scoping
-- **Arrow functions**: Convert function expressions to arrow functions where appropriate
-- **Destructuring**: Use object/array destructuring to simplify variable assignments
-- **Optional chaining**: Replace nested null checks with `?.` operator
+- **Use const/let**: Replace var with const/let for block scoping and immutability where appropriate
+- **Arrow functions**: Convert function expressions to arrow functions for concise syntax, but prefer named functions for complex logic
+- **Destructuring**: Use object/array destructuring to simplify variable assignments and improve readability
+- **Optional chaining**: Replace nested null checks with `?.` operator for cleaner, simpler conditional logic
+- **Async/await**: Simplify promise chains with async/await for linear, easier-to-follow asynchronous code
 
 ### Java
 
@@ -239,6 +246,47 @@ function calculate_total_price(base_price, tax_rate, discount) {
 }
 ```
 
+### Example 3: Simplify Complex Conditional Logic
+
+**Before:**
+
+```javascript
+function processOrder(order) {
+    let discount = 0;
+    if (order.customerType === 'premium') {
+        if (order.total > 1000) {
+            discount = order.total * 0.15;
+        } else if (order.total > 500) {
+            discount = order.total * 0.10;
+        } else {
+            discount = order.total * 0.05;
+        }
+    } else if (order.customerType === 'regular') {
+        if (order.total > 500) {
+            discount = order.total * 0.05;
+        }
+    }
+    return order.total - discount;
+}
+```
+
+**After:**
+
+```javascript
+function calculateDiscount(customerType, total) {
+    const discountRates = {
+        premium: total > 1000 ? 0.15 : total > 500 ? 0.10 : 0.05,
+        regular: total > 500 ? 0.05 : 0
+    };
+    return total * (discountRates[customerType] || 0);
+}
+
+function processOrder(order) {
+    const discount = calculateDiscount(order.customerType, order.total);
+    return order.total - discount;
+}
+```
+
 ## Edge Cases
 
 ### Case 1: Legacy Code with No Tests
@@ -253,6 +301,10 @@ function calculate_total_price(base_price, tax_rate, discount) {
 
 **Handling:** Communicate refactoring plans, use feature flags for gradual rollout.
 
+### Case 4: Over-Simplification Risk
+
+**Handling:** Balance simplicity with functionality; avoid removing necessary complexity; ensure all edge cases are covered by tests.
+
 ## Error Handling
 
 ### Refactoring Breaks Functionality
@@ -266,3 +318,7 @@ function calculate_total_price(base_price, tax_rate, discount) {
 ### Performance Degradation
 
 **Solution:** Profile the code, identify bottlenecks, optimize specific sections.
+
+### Over-Simplification Causes Bugs
+
+**Solution:** Review the simplified code for missing edge cases, add comprehensive tests, consider if some complexity was necessary.
