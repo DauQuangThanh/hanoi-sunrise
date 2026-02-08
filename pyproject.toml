@@ -1,6 +1,6 @@
 [project]
 name = "sunrise-cli"
-version = "0.3.1"
+version = "0.3.3"
 description = "Sunrise CLI, part of Hanoi Sunrise Project. A framework to develop your project with Spec-Driven Development (SDD)."
 requires-python = ">=3.11"
 dependencies = [
