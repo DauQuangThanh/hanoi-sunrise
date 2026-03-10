@@ -46,7 +46,7 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Validate task completeness (each user story has all needed tasks, independently testable)
    - Ensure tasks align with architectural decisions and patterns from architecture.md (if available)
 
-4. **Generate tasks.md**: Use `.sunrise/templates/tasks-template.md` as structure, fill with:
+4. **Generate tasks.md**: Use `.sunrise/templates/templates-for-commands/tasks-template.md` as structure, fill with:
    - Correct feature name from design.md
    - Phase 1: Setup tasks (project initialization, aligned with deployment architecture if defined)
    - Phase 2: Foundational tasks (blocking prerequisites for all user stories, following architectural patterns)

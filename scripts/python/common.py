@@ -129,7 +129,7 @@ def detect_ai_agent(repo_root: str) -> str:
     checks = [
         ('.claude/commands', 'claude'),
         ('.github/agents', 'copilot'),
-        ('.cursor/commands', 'cursor'),
+        ('.cursor/commands', 'cursor-agent'),
         ('.windsurf/workflows', 'windsurf'),
         ('.windsurf/rules', 'windsurf'),
         ('.gemini/commands', 'gemini'),
@@ -150,11 +150,13 @@ def detect_ai_agent(repo_root: str) -> str:
         if Path(repo_root, check_path).exists():
             return agent
 
-    # Special checks
-    if Path(repo_root, '.agent').exists() and Path(repo_root, 'AGENTS.md').is_file():
-        return 'jules'
+    # Special checks - order matters: check antigravity (more specific) before jules (more general)
+    # Antigravity uses .agent/rules/ or .agent/skills/ (specific subfolders)
     if Path(repo_root, '.agent/rules').exists() or Path(repo_root, '.agent/skills').exists():
         return 'antigravity'
+    # Jules uses .agent/ as top-level folder (without rules/skills subfolders)
+    if Path(repo_root, '.agent').exists():
+        return 'jules'
     return 'unknown'
 
 def detect_all_ai_agents(repo_root: str) -> List[str]:
@@ -162,7 +164,7 @@ def detect_all_ai_agents(repo_root: str) -> List[str]:
     checks = [
         ('.claude/commands', 'claude'),
         ('.github/agents', 'copilot'),
-        ('.cursor/commands', 'cursor'),
+        ('.cursor/commands', 'cursor-agent'),
         ('.windsurf/workflows', 'windsurf'),
         ('.windsurf/rules', 'windsurf'),
         ('.gemini/commands', 'gemini'),
@@ -183,12 +185,15 @@ def detect_all_ai_agents(repo_root: str) -> List[str]:
         if Path(repo_root, check_path).exists():
             agents.append(agent)
 
-    # Special
-    if Path(repo_root, '.agent').exists() and Path(repo_root, 'AGENTS.md').is_file():
-        if 'jules' not in agents:
-            agents.append('jules')
+    # Special - check antigravity (more specific) before jules (more general)
     if (Path(repo_root, '.agent/rules').exists() or Path(repo_root, '.agent/skills').exists()) and 'antigravity' not in agents:
         agents.append('antigravity')
+    # Jules uses .agent/ as top-level folder (without rules/skills subfolders)
+    if Path(repo_root, '.agent').exists() and 'jules' not in agents:
+        # Only add jules if antigravity wasn't already detected (they share .agent/)
+        has_antigravity_markers = Path(repo_root, '.agent/rules').exists() or Path(repo_root, '.agent/skills').exists()
+        if not has_antigravity_markers:
+            agents.append('jules')
 
     return agents if agents else ['unknown']
 
@@ -197,7 +202,7 @@ def get_skills_folder(agent: str) -> str:
         'copilot': '.github/skills',
         'claude': '.claude/skills',
         'gemini': '.gemini/extensions',
-        'cursor': '.cursor/rules',
+        'cursor-agent': '.cursor/rules',
         'qwen': '.qwen/skills',
         'opencode': '.opencode/skill',
         'codex': '.codex/skills',

@@ -24,9 +24,11 @@ def setup_architect(json_mode: bool = False):
     # Ensure feature dir
     Path(paths['FEATURE_DIR']).mkdir(parents=True, exist_ok=True)
     
-    # Copy architect template
+    # Copy architect template to docs/ (product-level, not feature-level)
     template = Path(paths['REPO_ROOT']) / '.sunrise/templates/templates-for-commands/arch-template.md'
-    architect_file = Path(paths['FEATURE_DIR']) / 'architect.md'
+    docs_dir = Path(paths['REPO_ROOT']) / 'docs'
+    docs_dir.mkdir(parents=True, exist_ok=True)
+    architect_file = docs_dir / 'architecture.md'
     if template.exists():
         copy2(template, architect_file)
         print(f"Copied architect template to {architect_file}")

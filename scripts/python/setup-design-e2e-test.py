@@ -25,8 +25,10 @@ def setup_design_e2e_test(json_mode: bool = False):
     Path(paths['FEATURE_DIR']).mkdir(parents=True, exist_ok=True)
     
     # Copy design e2e test template
-    template = Path(paths['REPO_ROOT']) / '.sunrise/templates/templates-for-commands/design-e2e-test-template.md'
-    design_e2e_file = Path(paths['FEATURE_DIR']) / 'design-e2e-test.md'
+    template = Path(paths['REPO_ROOT']) / '.sunrise/templates/templates-for-commands/e2e-test-template.md'
+    docs_dir = Path(paths['REPO_ROOT']) / 'docs'
+    docs_dir.mkdir(parents=True, exist_ok=True)
+    design_e2e_file = docs_dir / 'e2e-test-plan.md'
     if template.exists():
         copy2(template, design_e2e_file)
         print(f"Copied design e2e test template to {design_e2e_file}")
@@ -39,6 +41,7 @@ def setup_design_e2e_test(json_mode: bool = False):
         import json
         print(json.dumps({
             'design_e2e_test': str(design_e2e_file),
+            'docs_dir': str(docs_dir),
             'repo_root': paths['REPO_ROOT'],
             'has_git': paths['HAS_GIT'] == 'true'
         }))

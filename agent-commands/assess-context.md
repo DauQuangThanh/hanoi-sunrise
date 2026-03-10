@@ -10,7 +10,7 @@ handoffs:
     prompt: Create specification for...
     send: false
   - label: Get Architecture Review
-    agent: hanoi.architect
+    agent: sunrise.architect
     prompt: Review architecture assessment and provide recommendations
     send: true
 scripts:

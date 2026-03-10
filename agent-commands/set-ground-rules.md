@@ -53,7 +53,7 @@ Follow this execution flow:
    - Read `.sunrise/templates/templates-for-commands/design-template.md` and ensure any "Ground-rules Check" or rules align with updated principles.
    - Read `.sunrise/templates/templates-for-commands/spec-template.md` for scope/requirements alignment—update if ground-rules adds/removes mandatory sections or constraints.
    - Read `.sunrise/templates/templates-for-commands/tasks-template.md` and ensure task categorization reflects new or removed principle-driven task types (e.g., observability, versioning, testing discipline).
-   - Read each command file in `agent-commands/*.md` (including this one) to verify no outdated references remain when generic guidance is required.
+   - Read each sunrise command file (files matching `sunrise.*.md` or `sunrise.*.toml` in the agent commands folder) to verify no outdated references remain when generic guidance is required.
    - Read any runtime guidance docs (e.g., `README.md`, `docs/quickstart.md`, or agent-specific guidance files if present). Update references to principles changed.
 
 5. Produce a Sync Impact Report (prepend as an HTML comment at top of the ground-rules file after update):

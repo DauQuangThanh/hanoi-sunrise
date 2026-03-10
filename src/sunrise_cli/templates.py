@@ -1,6 +1,7 @@
 """Template operations for Sunrise CLI."""
 
 import json
+import re
 import shutil
 import tempfile
 import zipfile
@@ -15,6 +16,91 @@ from .ui import console
 
 if TYPE_CHECKING:
     from .ui import StepTracker
+
+
+def _process_command_content(content: str, ai_assistant: str, script_type: str = "py") -> str:
+    """Process a command file's content: extract script commands from frontmatter,
+    replace {SCRIPT}/{AGENT_SCRIPT} placeholders, strip script sections from
+    frontmatter, and rewrite scripts/ paths to .sunrise/scripts/.
+
+    This mirrors what create-release-packages.sh's generate_commands() does
+    for release builds, ensuring local template installs produce identical output.
+    """
+    # Normalize line endings
+    content = content.replace('\r\n', '\n').replace('\r', '\n')
+
+    def _rewrite_script_paths(text: str) -> str:
+        text = text.replace('scripts/', '.sunrise/scripts/')
+        text = text.replace('.sunrise/.sunrise/scripts/', '.sunrise/scripts/')
+        return text
+
+    # Check if file has YAML frontmatter
+    if not content.startswith('---\n'):
+        # No frontmatter; just rewrite paths
+        return _rewrite_script_paths(content)
+
+    # Split into frontmatter and body
+    parts = content.split('---\n', 2)
+    if len(parts) < 3:
+        return _rewrite_script_paths(content)
+
+    frontmatter = parts[1]
+    body = parts[2]
+
+    # Extract script command from frontmatter (e.g., "scripts:\n   py: python scripts/python/...")
+    script_command = ''
+    script_match = re.search(
+        r'^scripts:\s*\n\s+' + re.escape(script_type) + r':\s*(.+)$',
+        frontmatter, re.MULTILINE
+    )
+    if script_match:
+        script_command = script_match.group(1).strip()
+
+    # Extract agent_script command from frontmatter
+    agent_script_command = ''
+    agent_script_match = re.search(
+        r'^agent_scripts:\s*\n\s+' + re.escape(script_type) + r':\s*(.+)$',
+        frontmatter, re.MULTILINE
+    )
+    if agent_script_match:
+        agent_script_command = agent_script_match.group(1).strip()
+
+    # Replace {SCRIPT} placeholder in body with the extracted script command
+    if script_command:
+        body = body.replace('{SCRIPT}', script_command)
+
+    # Replace {AGENT_SCRIPT} placeholder in body with the extracted agent script command
+    if agent_script_command:
+        body = body.replace('{AGENT_SCRIPT}', agent_script_command)
+
+    # Remove scripts: and agent_scripts: sections from frontmatter
+    # Each section is: key line + indented child lines
+    cleaned_lines = []
+    skip_section = False
+    for line in frontmatter.splitlines():
+        if re.match(r'^scripts:\s*$', line) or re.match(r'^agent_scripts:\s*$', line):
+            skip_section = True
+            continue
+        if skip_section:
+            # If line is indented, it's part of the section to skip
+            if line.startswith(' ') or line.startswith('\t') or line == '':
+                continue
+            else:
+                # New top-level key, stop skipping
+                skip_section = False
+        cleaned_lines.append(line)
+
+    cleaned_frontmatter = '\n'.join(cleaned_lines)
+    if cleaned_frontmatter and not cleaned_frontmatter.endswith('\n'):
+        cleaned_frontmatter += '\n'
+
+    # Reassemble with frontmatter
+    result = '---\n' + cleaned_frontmatter + '---\n' + body
+
+    # Rewrite scripts/ paths to .sunrise/scripts/ (avoid double-prefixing)
+    result = _rewrite_script_paths(result)
+
+    return result
 
 
 def handle_vscode_settings(sub_item, dest_file, rel_path, verbose=False, tracker=None) -> None:
@@ -182,7 +268,12 @@ def copy_local_template(
             # Read the command file
             content = cmd_file.read_text()
 
+            # Process frontmatter: extract script commands, replace {SCRIPT}/{AGENT_SCRIPT},
+            # strip script sections, and rewrite scripts/ paths
+            content = _process_command_content(content, ai_assistant)
+
             # Replace placeholders
+            content = content.replace("{ARGS}", args_format)
             content = content.replace("$ARGUMENTS", args_format)
             content = content.replace("__AGENT__", ai_assistant)
 

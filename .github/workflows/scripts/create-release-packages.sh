@@ -29,9 +29,11 @@ mkdir -p "$GENRELEASES_DIR"
 rm -rf "$GENRELEASES_DIR"/* || true
 
 rewrite_paths() {
+  # Only rewrite scripts/ paths. Template references in command files already
+  # use the correct .sunrise/templates/ prefix, so rewriting templates/ would
+  # corrupt them to .sunrise.sunrise/templates/.
   sed -E \
-    -e 's@(/?)scripts/@.sunrise/scripts/@g' \
-    -e 's@(/?)templates/@.sunrise/templates/@g'
+    -e 's@(/?)scripts/@.sunrise/scripts/@g'
 }
 
 generate_commands() {
