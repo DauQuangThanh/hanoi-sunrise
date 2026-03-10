@@ -16,7 +16,7 @@ VERSION="$1"
 PYTHON_VERSION=${VERSION#v}
 
 if [ -f "pyproject.toml" ]; then
-  sed -i "s/version = \".*\"/version = \"$PYTHON_VERSION\"/" pyproject.toml
+  sed -i'' -e "s/version = \".*\"/version = \"$PYTHON_VERSION\"/" pyproject.toml
   echo "Updated pyproject.toml version to $PYTHON_VERSION (for release artifacts only)"
 else
   echo "Warning: pyproject.toml not found, skipping version update"
