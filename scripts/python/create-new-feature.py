@@ -23,22 +23,36 @@ def create_new_feature(json_mode: bool = False, short_name: str = '', branch_num
         sys.exit(1)
     
     # Generate branch name
-    if has_git:
+    if has_git_repo:
         if branch_number:
             number = int(branch_number)
         else:
-            # Find next number
+            # Collect used numbers from both specs/ dirs and existing git branches
+            existing = set()
+
             specs_dir = Path(repo_root) / 'specs'
             if specs_dir.exists():
-                existing = []
                 for d in specs_dir.iterdir():
                     if d.is_dir():
                         m = re.match(r'^(\d{3})-', d.name)
                         if m:
-                            existing.append(int(m.group(1)))
-                number = max(existing) + 1 if existing else 1
-            else:
-                number = 1
+                            existing.add(int(m.group(1)))
+
+            # Also check git branches so we never reuse a number even if specs/ is missing
+            try:
+                result = subprocess.run(
+                    ['git', 'branch', '--all', '--format=%(refname:short)'],
+                    capture_output=True, text=True, check=True
+                )
+                for line in result.stdout.splitlines():
+                    branch = line.strip().split('/')[-1]  # strip remote prefix
+                    m = re.match(r'^(\d{3})-', branch)
+                    if m:
+                        existing.add(int(m.group(1)))
+            except subprocess.CalledProcessError:
+                pass
+
+            number = max(existing) + 1 if existing else 1
         
         if short_name:
             branch_name = f"{number:03d}-{short_name.replace(' ', '-')}"
@@ -52,7 +66,7 @@ def create_new_feature(json_mode: bool = False, short_name: str = '', branch_num
         subprocess.run(['git', 'checkout', '-b', branch_name], check=True)
         print(f"Created and switched to branch: {branch_name}")
     else:
-        # For non-git, use description as branch
+        # For non-git repos, use description as branch name
         branch_name = feature_description.replace(' ', '-').lower()
         print(f"Using feature name: {branch_name}")
     
